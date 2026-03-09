@@ -8,15 +8,17 @@
 <style>
   :root {
     --black: #0a0a0a;
-    --white: #f5f2ee;
-    --cream: #ede8e0;
-    --red: #2a7a4b;
-    --red-dark: #1f5c38;
+    --surface: #111111;
+    --surface2: #181818;
+    --border: #222222;
+    --border2: #2e2e2e;
+    --white: #f0ece6;
+    --muted: #555;
     --green: #2a7a4b;
+    --green-light: #4aad72;
+    --red: #d63c2f;
     --amber: #c97c1a;
-    --grey: #6b6560;
-    --border: #d4cfc8;
-    --card: #ffffff;
+    --blue: #4a9eff;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -28,32 +30,18 @@
     min-height: 100vh;
   }
 
-  /* ── LOGIN ── */
   #login-screen {
     min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: var(--black);
-    position: relative;
-    overflow: hidden;
-  }
-
-  #login-screen::before {
-    content: '';
-    position: absolute;
-    width: 600px; height: 600px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(214,60,47,0.15) 0%, transparent 70%);
-    top: -100px; right: -100px;
-    pointer-events: none;
   }
 
   .login-box {
-    background: #141414;
-    border: 1px solid #2a2a2a;
+    background: var(--surface);
+    border: 1px solid var(--border);
     padding: 48px;
-    width: 380px;
+    width: 360px;
     position: relative;
   }
 
@@ -61,95 +49,93 @@
     content: '';
     position: absolute;
     top: 0; left: 0; right: 0;
-    height: 3px;
-    background: var(--red);
+    height: 2px;
+    background: var(--green);
   }
 
   .login-logo {
-    font-size: 11px;
     font-family: 'DM Mono', monospace;
-    letter-spacing: 0.2em;
-    color: var(--red);
+    font-size: 10px;
+    letter-spacing: 0.25em;
     text-transform: uppercase;
-    margin-bottom: 32px;
+    color: var(--green-light);
+    margin-bottom: 28px;
   }
 
   .login-title {
-    font-size: 28px;
+    font-size: 30px;
     font-weight: 800;
-    line-height: 1.1;
-    margin-bottom: 8px;
-    color: var(--white);
+    line-height: 1;
+    margin-bottom: 6px;
   }
 
   .login-sub {
-    font-size: 13px;
-    color: #666;
     font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
     margin-bottom: 36px;
   }
 
   .login-box label {
     display: block;
-    font-size: 11px;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: #666;
-    margin-bottom: 8px;
     font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 8px;
   }
 
   .login-box input {
     width: 100%;
-    padding: 14px 16px;
-    background: #1e1e1e;
-    border: 1px solid #2a2a2a;
+    padding: 13px 15px;
+    background: var(--surface2);
+    border: 1px solid var(--border2);
     color: var(--white);
     font-family: 'DM Mono', monospace;
     font-size: 14px;
     outline: none;
-    transition: border-color 0.2s;
-    margin-bottom: 24px;
+    margin-bottom: 20px;
+    transition: border-color 0.15s;
   }
 
-  .login-box input:focus { border-color: var(--red); }
+  .login-box input:focus { border-color: var(--green); }
 
   .login-btn {
     width: 100%;
-    padding: 14px;
-    background: var(--red);
+    padding: 13px;
+    background: var(--green);
     border: none;
     color: white;
     font-family: 'Syne', sans-serif;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 700;
     letter-spacing: 0.1em;
     text-transform: uppercase;
     cursor: pointer;
-    transition: background 0.2s;
+    transition: opacity 0.15s;
   }
 
-  .login-btn:hover { background: var(--red-dark); }
+  .login-btn:hover { opacity: 0.85; }
 
   .login-error {
-    margin-top: 16px;
-    font-size: 12px;
+    margin-top: 14px;
     font-family: 'DM Mono', monospace;
+    font-size: 11px;
     color: var(--red);
     display: none;
   }
 
-  /* ── APP ── */
   #app { display: none; }
 
   header {
-    background: #0f0f0f;
-    border-bottom: 1px solid #1e1e1e;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
     padding: 0 32px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    height: 60px;
+    height: 56px;
     position: sticky;
     top: 0;
     z-index: 100;
@@ -158,155 +144,171 @@
   .header-brand {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
   }
 
   .brand-mark {
-    width: 28px; height: 28px;
-    background: var(--red);
+    width: 26px; height: 26px;
+    background: var(--green);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 800;
   }
 
   .brand-name {
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 700;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
+    color: #888;
   }
 
-  .header-nav {
-    display: flex;
-    gap: 4px;
-  }
+  .header-nav { display: flex; gap: 2px; }
 
   .nav-btn {
-    padding: 8px 20px;
+    padding: 7px 18px;
     background: transparent;
     border: 1px solid transparent;
-    color: #666;
+    color: var(--muted);
     font-family: 'Syne', sans-serif;
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 600;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
     cursor: pointer;
     transition: all 0.15s;
+    position: relative;
   }
 
-  .nav-btn:hover { color: var(--white); border-color: #2a2a2a; }
-  .nav-btn.active { color: var(--white); border-color: var(--red); background: rgba(214,60,47,0.08); }
+  .nav-btn:hover { color: var(--white); }
+
+  .nav-btn.active {
+    color: var(--white);
+    border-color: var(--border2);
+    background: var(--surface2);
+  }
+
+  .nav-badge {
+    display: inline-block;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--red);
+    margin-left: 6px;
+    vertical-align: middle;
+    visibility: hidden;
+  }
+
+  .nav-badge.show { visibility: visible; }
 
   .header-right {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    color: #444;
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 14px;
+  }
+
+  .header-date {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: #444;
   }
 
   .logout-btn {
     background: none;
-    border: 1px solid #2a2a2a;
+    border: 1px solid var(--border2);
     color: #555;
     font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    padding: 5px 12px;
+    font-size: 10px;
+    padding: 5px 10px;
     cursor: pointer;
     transition: all 0.15s;
   }
-  .logout-btn:hover { border-color: #555; color: #999; }
+
+  .logout-btn:hover { border-color: var(--muted); color: #999; }
 
   main {
     padding: 40px 32px;
-    max-width: 1200px;
+    max-width: 1100px;
     margin: 0 auto;
   }
 
   .tab-content { display: none; }
   .tab-content.active { display: block; }
 
-  /* ── PAGE HEADER ── */
   .page-header {
-    margin-bottom: 40px;
-    padding-bottom: 24px;
-    border-bottom: 1px solid #1e1e1e;
+    margin-bottom: 32px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border);
   }
 
   .page-tag {
     font-family: 'DM Mono', monospace;
     font-size: 10px;
-    letter-spacing: 0.2em;
+    letter-spacing: 0.22em;
     text-transform: uppercase;
-    color: var(--red);
-    margin-bottom: 10px;
+    color: var(--green-light);
+    margin-bottom: 8px;
   }
 
   .page-title {
-    font-size: 32px;
+    font-size: 28px;
     font-weight: 800;
-    color: var(--white);
     line-height: 1;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
   }
 
   .page-desc {
     font-family: 'DM Mono', monospace;
-    font-size: 12px;
-    color: #555;
-  }
-
-  /* ── CARDS ── */
-  .card {
-    background: #141414;
-    border: 1px solid #1e1e1e;
-    padding: 28px;
-    margin-bottom: 24px;
-  }
-
-  .card-title {
     font-size: 11px;
+    color: var(--muted);
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 24px 28px;
+    margin-bottom: 18px;
+  }
+
+  .card-label {
     font-family: 'DM Mono', monospace;
-    letter-spacing: 0.15em;
+    font-size: 10px;
+    letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: #555;
-    margin-bottom: 20px;
+    color: var(--muted);
+    margin-bottom: 16px;
     display: flex;
     align-items: center;
     gap: 10px;
   }
 
-  .card-title::after {
+  .card-label::after {
     content: '';
     flex: 1;
     height: 1px;
-    background: #1e1e1e;
+    background: var(--border);
   }
 
-  /* ── UPLOAD AREA ── */
   .upload-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-    margin-bottom: 20px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-bottom: 22px;
   }
 
   .upload-zone {
-    border: 1px dashed #2a2a2a;
-    padding: 32px 24px;
+    border: 1px dashed var(--border2);
+    padding: 28px 20px;
     text-align: center;
     cursor: pointer;
     transition: all 0.2s;
     position: relative;
   }
 
-  .upload-zone:hover, .upload-zone.drag-over {
-    border-color: var(--red);
-    background: rgba(214,60,47,0.04);
+  .upload-zone:hover {
+    border-color: var(--green);
+    background: rgba(42,122,75,0.04);
   }
 
   .upload-zone input {
@@ -318,621 +320,446 @@
     height: 100%;
   }
 
-  .upload-icon {
-    font-size: 24px;
-    margin-bottom: 12px;
-    display: block;
+  .upload-type {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--green-light);
+    margin-bottom: 8px;
   }
 
-  .upload-label {
+  .upload-icon { font-size: 22px; margin-bottom: 10px; display: block; }
+
+  .upload-name {
     font-size: 13px;
     font-weight: 700;
-    color: var(--white);
     margin-bottom: 4px;
   }
 
-  .upload-sub {
-    font-size: 11px;
+  .upload-hint {
     font-family: 'DM Mono', monospace;
-    color: #555;
+    font-size: 10px;
+    color: var(--muted);
+    line-height: 1.4;
   }
 
-  .upload-zone.has-file .upload-icon { color: var(--green); }
-  .upload-zone.has-file { border-color: var(--green); background: rgba(42,122,75,0.04); }
+  .upload-zone.has-file {
+    border-color: var(--green);
+    background: rgba(42,122,75,0.05);
+  }
 
-  /* ── BRAND SELECT ── */
-  .brand-select-row {
+  .upload-zone.has-file .upload-hint { color: var(--green-light); }
+
+  .brand-row {
     display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
+    gap: 8px;
     flex-wrap: wrap;
   }
 
-  .brand-pill {
-    padding: 8px 18px;
-    border: 1px solid #2a2a2a;
+  .brand-btn {
+    padding: 6px 14px;
+    border: 1px solid var(--border2);
     background: transparent;
     color: #666;
     font-family: 'Syne', sans-serif;
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 600;
     letter-spacing: 0.06em;
+    text-transform: uppercase;
     cursor: pointer;
     transition: all 0.15s;
-    text-transform: uppercase;
   }
 
-  .brand-pill:hover { border-color: #444; color: #999; }
-  .brand-pill.active { border-color: var(--red); color: var(--white); background: rgba(214,60,47,0.1); }
+  .brand-btn:hover { color: #999; border-color: #444; }
+  .brand-btn.active { border-color: var(--green); color: var(--white); background: rgba(42,122,75,0.1); }
 
-  /* ── ACTION BUTTON ── */
-  .action-btn {
-    padding: 14px 32px;
-    background: var(--red);
+  .process-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .process-btn {
+    padding: 12px 28px;
+    background: var(--green);
     border: none;
     color: white;
     font-family: 'Syne', sans-serif;
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 700;
     letter-spacing: 0.1em;
     text-transform: uppercase;
     cursor: pointer;
-    transition: background 0.15s;
+    transition: opacity 0.15s;
   }
 
-  .action-btn:hover { background: var(--red-dark); }
-  .action-btn:disabled { background: #2a2a2a; color: #555; cursor: not-allowed; }
+  .process-btn:hover { opacity: 0.85; }
+  .process-btn:disabled { background: var(--border2); color: var(--muted); cursor: not-allowed; opacity: 1; }
 
-  /* ── RESULTS TABLE ── */
-  .results-wrap {
-    overflow-x: auto;
-    margin-top: 8px;
-  }
-
-  table {
-    width: 100%;
-    border-collapse: collapse;
+  .process-hint {
     font-family: 'DM Mono', monospace;
-    font-size: 12px;
-  }
-
-  thead tr {
-    border-bottom: 1px solid #2a2a2a;
-  }
-
-  th {
-    text-align: left;
-    padding: 10px 16px;
     font-size: 10px;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: #555;
-    font-weight: 500;
+    color: var(--muted);
   }
 
-  td {
-    padding: 12px 16px;
-    border-bottom: 1px solid #141414;
-    color: #ccc;
-    vertical-align: middle;
-  }
-
-  tr:last-child td { border-bottom: none; }
-
-  tbody tr:hover td { background: #1a1a1a; }
-
-  .site-name-cell {
-    font-weight: 500;
-    color: var(--white);
-    font-family: 'Syne', sans-serif;
-    font-size: 13px;
-  }
-
-  .status-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 4px 10px;
-    font-size: 10px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    font-weight: 600;
-    border: 1px solid;
-  }
-
-  .badge-over { color: #e8703a; border-color: rgba(232,112,58,0.3); background: rgba(232,112,58,0.08); }
-  .badge-under { color: #4a9eff; border-color: rgba(74,158,255,0.3); background: rgba(74,158,255,0.08); }
-  .badge-ok { color: #4aad72; border-color: rgba(74,173,114,0.3); background: rgba(74,173,114,0.08); }
-  .badge-fail { color: #d63c2f; border-color: rgba(214,60,47,0.3); background: rgba(214,60,47,0.08); }
-  .badge-pass { color: #4aad72; border-color: rgba(74,173,114,0.3); background: rgba(74,173,114,0.08); }
-
-  .variance-positive { color: #e8703a; }
-  .variance-negative { color: #4a9eff; }
-  .variance-neutral { color: #4aad72; }
-
-  /* ── SUMMARY STATS ── */
   .stats-row {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 16px;
-    margin-bottom: 32px;
+    gap: 12px;
+    margin-bottom: 20px;
   }
 
   .stat-box {
-    background: #141414;
-    border: 1px solid #1e1e1e;
-    padding: 20px 24px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 16px 20px;
     position: relative;
-    overflow: hidden;
   }
 
-  .stat-box::before {
+  .stat-box::after {
     content: '';
     position: absolute;
     bottom: 0; left: 0; right: 0;
     height: 2px;
   }
 
-  .stat-box.red::before { background: #d63c2f; }
-  .stat-box.green::before { background: var(--green); }
-  .stat-box.amber::before { background: var(--amber); }
-  .stat-box.blue::before { background: #4a9eff; }
+  .stat-box.s-red::after { background: var(--red); }
+  .stat-box.s-green::after { background: var(--green-light); }
+  .stat-box.s-amber::after { background: var(--amber); }
+  .stat-box.s-blue::after { background: var(--blue); }
 
   .stat-label {
     font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.15em;
+    font-size: 9px;
+    letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: #555;
-    margin-bottom: 10px;
-  }
-
-  .stat-value {
-    font-size: 36px;
-    font-weight: 800;
-    line-height: 1;
-    color: var(--white);
-  }
-
-  .stat-value.red { color: var(--red); }
-  .stat-value.amber { color: var(--amber); }
-  .stat-value.green { color: #4aad72; }
-
-  /* ── PACKAGING LOG FORM ── */
-  .log-form {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 16px;
-    margin-bottom: 20px;
-  }
-
-  .form-group label {
-    display: block;
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: #555;
+    color: var(--muted);
     margin-bottom: 8px;
   }
 
-  .form-group input,
-  .form-group select {
+  .stat-num {
+    font-size: 30px;
+    font-weight: 800;
+    line-height: 1;
+  }
+
+  .stat-num.c-red { color: var(--red); }
+  .stat-num.c-green { color: var(--green-light); }
+  .stat-num.c-amber { color: var(--amber); }
+  .stat-num.c-blue { color: var(--blue); }
+
+  .table-wrap { overflow-x: auto; }
+
+  table {
     width: 100%;
-    padding: 11px 14px;
-    background: #1a1a1a;
-    border: 1px solid #2a2a2a;
-    color: var(--white);
-    font-family: 'DM Mono', monospace;
-    font-size: 12px;
-    outline: none;
-    transition: border-color 0.15s;
-    appearance: none;
-  }
-
-  .form-group input:focus,
-  .form-group select:focus { border-color: var(--red); }
-
-  .form-group select option { background: #1a1a1a; }
-
-  .checkbox-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 8px;
-    margin-bottom: 20px;
-  }
-
-  .checkbox-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 10px 14px;
-    background: #1a1a1a;
-    border: 1px solid #2a2a2a;
-    cursor: pointer;
-    transition: border-color 0.15s;
-  }
-
-  .checkbox-item:hover { border-color: #444; }
-  .checkbox-item input { width: auto; margin: 0; accent-color: var(--red); }
-
-  .checkbox-item label {
+    border-collapse: collapse;
     font-family: 'DM Mono', monospace;
     font-size: 11px;
-    color: #888;
-    cursor: pointer;
-    letter-spacing: 0.05em;
-    margin: 0;
   }
 
-  .checkbox-item.checked { border-color: var(--red); background: rgba(214,60,47,0.05); }
-  .checkbox-item.checked label { color: var(--white); }
+  thead tr { border-bottom: 1px solid var(--border2); }
 
-  /* ── SITE HEALTH TAB ── */
-  .health-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 16px;
+  th {
+    text-align: left;
+    padding: 9px 14px;
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 500;
+    white-space: nowrap;
   }
 
-  .health-card {
-    background: #141414;
-    border: 1px solid #1e1e1e;
-    padding: 20px 24px;
-    position: relative;
+  td {
+    padding: 11px 14px;
+    border-bottom: 1px solid #161616;
+    color: #bbb;
+    vertical-align: middle;
   }
 
-  .health-card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 16px;
-  }
+  tr:last-child td { border-bottom: none; }
+  tbody tr:hover td { background: #161616; }
 
-  .health-site-name {
-    font-size: 16px;
-    font-weight: 700;
+  .td-site {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
     color: var(--white);
   }
 
-  .health-brand {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    color: #555;
+  .pill {
+    display: inline-block;
+    padding: 3px 8px;
+    font-size: 9px;
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    margin-top: 2px;
+    font-weight: 600;
+    border: 1px solid;
+    white-space: nowrap;
+    font-family: 'DM Mono', monospace;
   }
 
-  .health-score {
-    font-size: 28px;
-    font-weight: 800;
+  .pill-red { color: var(--red); border-color: rgba(214,60,47,0.35); background: rgba(214,60,47,0.07); }
+  .pill-green { color: var(--green-light); border-color: rgba(74,173,114,0.35); background: rgba(74,173,114,0.07); }
+  .pill-amber { color: var(--amber); border-color: rgba(201,124,26,0.35); background: rgba(201,124,26,0.07); }
+  .pill-blue { color: var(--blue); border-color: rgba(74,158,255,0.35); background: rgba(74,158,255,0.07); }
+  .pill-grey { color: #555; border-color: #333; background: transparent; }
+
+  .empty {
+    text-align: center;
+    padding: 56px 20px;
+    border: 1px dashed var(--border);
+    margin-bottom: 20px;
   }
 
-  .health-score.good { color: #4aad72; }
-  .health-score.warn { color: var(--amber); }
-  .health-score.bad { color: #d63c2f; }
+  .empty-icon { font-size: 28px; margin-bottom: 12px; }
+  .empty-title { font-size: 13px; font-weight: 700; color: var(--muted); margin-bottom: 5px; }
+  .empty-sub { font-family: 'DM Mono', monospace; font-size: 10px; color: #444; }
 
-  .health-bars { display: flex; flex-direction: column; gap: 8px; }
+  .flags-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 14px;
+  }
 
-  .health-bar-row {
+  .flag-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 20px 22px;
+    border-left: 3px solid var(--border2);
+  }
+
+  .flag-card.both { border-left-color: var(--amber); }
+  .flag-card.pkg-only { border-left-color: var(--red); }
+  .flag-card.stock-only { border-left-color: var(--blue); }
+
+  .flag-site {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 3px;
+  }
+
+  .flag-brand {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  .flag-issues { display: flex; flex-direction: column; gap: 7px; }
+
+  .flag-issue {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: #888;
+    line-height: 1.4;
+  }
+
+  .fdot {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-top: 4px;
+  }
+
+  .fdot.red { background: var(--red); }
+  .fdot.blue { background: var(--blue); }
+  .fdot.amber { background: var(--amber); }
+
+  .week-bar {
     display: flex;
     align-items: center;
-    gap: 10px;
+    justify-content: space-between;
+    margin-bottom: 20px;
   }
 
-  .health-bar-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    color: #555;
-    width: 80px;
-    flex-shrink: 0;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-  }
-
-  .health-bar-track {
-    flex: 1;
-    height: 4px;
-    background: #2a2a2a;
-    overflow: hidden;
-  }
-
-  .health-bar-fill {
-    height: 100%;
-    transition: width 0.5s ease;
-  }
-
-  .health-bar-fill.green { background: #4aad72; }
-  .health-bar-fill.amber { background: var(--amber); }
-  .health-bar-fill.red { background: #d63c2f; }
-
-  .health-bar-val {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    color: #666;
-    width: 30px;
-    text-align: right;
-  }
-
-  /* ── EMPTY STATE ── */
-  .empty-state {
-    text-align: center;
-    padding: 60px 20px;
-    border: 1px dashed #2a2a2a;
-  }
-
-  .empty-icon { font-size: 32px; margin-bottom: 12px; }
-
-  .empty-title {
-    font-size: 14px;
-    font-weight: 700;
-    color: #555;
-    margin-bottom: 6px;
-  }
-
-  .empty-sub {
+  .week-label {
     font-family: 'DM Mono', monospace;
     font-size: 11px;
-    color: #444;
+    color: var(--muted);
   }
 
-  /* ── NOTICE ── */
+  .week-label strong { color: var(--white); }
+
   .notice {
-    padding: 12px 16px;
-    background: rgba(201,124,26,0.08);
+    padding: 10px 14px;
+    background: rgba(201,124,26,0.06);
     border: 1px solid rgba(201,124,26,0.2);
     font-family: 'DM Mono', monospace;
-    font-size: 11px;
+    font-size: 10px;
     color: var(--amber);
-    margin-bottom: 20px;
-    line-height: 1.6;
+    margin-bottom: 18px;
+    line-height: 1.7;
   }
-
-  /* ── TOOLTIP ── */
-  [data-tip] { position: relative; cursor: help; }
-  [data-tip]::after {
-    content: attr(data-tip);
-    position: absolute;
-    bottom: calc(100% + 6px);
-    left: 50%;
-    transform: translateX(-50%);
-    background: #2a2a2a;
-    color: #ccc;
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    padding: 5px 9px;
-    white-space: nowrap;
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 0.15s;
-    z-index: 10;
-  }
-  [data-tip]:hover::after { opacity: 1; }
-
-  /* ── LOG TABLE ── */
-  #pkg-log-rows tr.compliant td { }
-  #pkg-log-rows tr.non-compliant td:first-child { border-left: 2px solid var(--red); }
-
-  .del-btn {
-    background: none;
-    border: 1px solid #2a2a2a;
-    color: #555;
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    padding: 3px 8px;
-    cursor: pointer;
-    transition: all 0.15s;
-  }
-  .del-btn:hover { border-color: var(--red); color: var(--red); }
 
   @media (max-width: 768px) {
-    .upload-grid, .log-form, .stats-row { grid-template-columns: 1fr; }
+    .upload-grid, .stats-row { grid-template-columns: 1fr; }
     main { padding: 24px 16px; }
     header { padding: 0 16px; }
-    .brand-name { display: none; }
   }
 </style>
 </head>
 <body>
 
-<!-- ══ LOGIN SCREEN ══ -->
+<!-- LOGIN -->
 <div id="login-screen">
   <div class="login-box">
     <div class="login-logo">Growth Kitchen</div>
     <div class="login-title">GK<br>Compliance</div>
-    <div class="login-sub">// internal use only</div>
-    <label>Access Password</label>
-    <input type="password" id="pw-input" placeholder="Enter password" />
-    <button class="login-btn" onclick="checkLogin()">Enter</button>
-    <div class="login-error" id="login-error">Incorrect password. Try again.</div>
+    <div class="login-sub">// internal tool — restricted access</div>
+    <label>Password</label>
+    <input type="password" id="pw-input" placeholder="Enter access password">
+    <button class="login-btn" onclick="doLogin()">Enter Dashboard</button>
+    <div class="login-error" id="login-err">Incorrect password.</div>
   </div>
 </div>
 
-<!-- ══ MAIN APP ══ -->
+<!-- APP -->
 <div id="app">
   <header>
     <div class="header-brand">
       <div class="brand-mark">GK</div>
-      <div class="brand-name">GK Compliance</div>
+      <div class="brand-name">Compliance</div>
     </div>
     <nav class="header-nav">
-      <button class="nav-btn active" onclick="switchTab('stock', this)">Stock Compliance</button>
-      <button class="nav-btn" onclick="switchTab('packaging', this)">Packaging Log</button>
-      <button class="nav-btn" onclick="switchTab('health', this)">Site Health</button>
+      <button class="nav-btn active" onclick="goTab('upload', this)">Upload</button>
+      <button class="nav-btn" onclick="goTab('database', this)">Database</button>
+      <button class="nav-btn" onclick="goTab('flags', this)">
+        Weekly Flags <span class="nav-badge" id="flags-badge"></span>
+      </button>
     </nav>
     <div class="header-right">
-      <span id="header-date"></span>
-      <button class="logout-btn" onclick="logout()">Sign out</button>
+      <span class="header-date" id="hdr-date"></span>
+      <button class="logout-btn" onclick="doLogout()">Sign out</button>
     </div>
   </header>
 
   <main>
 
-    <!-- ══ TAB 1: STOCK COMPLIANCE ══ -->
-    <div class="tab-content active" id="tab-stock">
+    <!-- UPLOAD TAB -->
+    <div class="tab-content active" id="tab-upload">
       <div class="page-header">
-        <div class="page-tag">01 — Stock Compliance Engine</div>
-        <div class="page-title">Over & Under Ordering</div>
-        <div class="page-desc">// upload ordering report + sales report to flag variances by site</div>
+        <div class="page-tag">01 — Upload</div>
+        <div class="page-title">Import Reports</div>
+        <div class="page-desc">// upload stock, sales and mystery diner CSVs to process</div>
       </div>
 
       <div class="notice">
-        ⚠ Expected format: CSV with columns — <strong>site_name, item, quantity</strong> for ordering; <strong>site_name, item, units_sold</strong> for sales. Column names are case-insensitive.
+        Expected columns — <strong>Stock:</strong> site_name, item, quantity &nbsp;·&nbsp;
+        <strong>Sales:</strong> site_name, item, units_sold &nbsp;·&nbsp;
+        <strong>Mystery Diner:</strong> site_name, visit_date, brand, grab_bag, box, greaseproof_paper, wrap_tube, overall &nbsp;(values: pass / fail / n/a)
       </div>
 
       <div class="card">
-        <div class="card-title">Select Brand</div>
-        <div class="brand-select-row">
-          <button class="brand-pill active" onclick="selectBrand('Coqfighter', this)">Coqfighter</button>
-          <button class="brand-pill" onclick="selectBrand('The Athenian', this)">The Athenian</button>
-          <button class="brand-pill" onclick="selectBrand('GBK', this)">GBK</button>
-          <button class="brand-pill" onclick="selectBrand('Tortilla', this)">Tortilla</button>
+        <div class="card-label">Brand (applies to stock &amp; sales)</div>
+        <div class="brand-row">
+          <button class="brand-btn active" onclick="setBrand('Coqfighter',this)">Coqfighter</button>
+          <button class="brand-btn" onclick="setBrand('The Athenian',this)">The Athenian</button>
+          <button class="brand-btn" onclick="setBrand('GBK',this)">GBK</button>
+          <button class="brand-btn" onclick="setBrand('Tortilla',this)">Tortilla</button>
         </div>
       </div>
 
       <div class="card">
-        <div class="card-title">Upload Reports</div>
+        <div class="card-label">Upload Files</div>
         <div class="upload-grid">
-          <div class="upload-zone" id="order-zone">
-            <input type="file" accept=".csv" onchange="handleFile(this, 'order')">
+          <div class="upload-zone" id="zone-stock">
+            <input type="file" accept=".csv" onchange="loadFile(this,'stock')">
+            <div class="upload-type">Stock</div>
             <span class="upload-icon">📦</span>
-            <div class="upload-label">Ordering Report</div>
-            <div class="upload-sub" id="order-filename">Drop CSV here or click to browse</div>
+            <div class="upload-name">Ordering Report</div>
+            <div class="upload-hint" id="hint-stock">Drop CSV or click to browse</div>
           </div>
-          <div class="upload-zone" id="sales-zone">
-            <input type="file" accept=".csv" onchange="handleFile(this, 'sales')">
+          <div class="upload-zone" id="zone-sales">
+            <input type="file" accept=".csv" onchange="loadFile(this,'sales')">
+            <div class="upload-type">Sales</div>
             <span class="upload-icon">📊</span>
-            <div class="upload-label">Sales Report</div>
-            <div class="upload-sub" id="sales-filename">Drop CSV here or click to browse</div>
+            <div class="upload-name">Sales Report</div>
+            <div class="upload-hint" id="hint-sales">Drop CSV or click to browse</div>
+          </div>
+          <div class="upload-zone" id="zone-mystery">
+            <input type="file" accept=".csv" onchange="loadFile(this,'mystery')">
+            <div class="upload-type">Mystery Diner</div>
+            <span class="upload-icon">🔍</span>
+            <div class="upload-name">Gemini Audit CSV</div>
+            <div class="upload-hint" id="hint-mystery">Drop CSV or click to browse</div>
           </div>
         </div>
-        <button class="action-btn" id="analyse-btn" onclick="analyseStock()" disabled>Analyse Reports</button>
+        <div class="process-row">
+          <button class="process-btn" id="process-btn" onclick="processAll()" disabled>Process Reports</button>
+          <span class="process-hint" id="process-hint">Upload at least one file to continue</span>
+        </div>
       </div>
 
-      <div id="stock-results" style="display:none">
-        <div class="stats-row" id="stock-stats"></div>
-        <div class="card">
-          <div class="card-title">Results</div>
-          <div class="results-wrap">
+      <div id="upload-result" style="display:none">
+        <div class="stats-row" id="upload-stats"></div>
+      </div>
+    </div>
+
+    <!-- DATABASE TAB -->
+    <div class="tab-content" id="tab-database">
+      <div class="page-header">
+        <div class="page-tag">02 — Database</div>
+        <div class="page-title">Site Summary</div>
+        <div class="page-desc">// combined view — one row per site across all data sources</div>
+      </div>
+
+      <div id="db-empty" class="empty">
+        <div class="empty-icon">🗄</div>
+        <div class="empty-title">No data loaded</div>
+        <div class="empty-sub">Upload and process reports first</div>
+      </div>
+
+      <div id="db-content" style="display:none">
+        <div class="stats-row" id="db-stats"></div>
+        <div class="card" style="padding:0">
+          <div class="table-wrap">
             <table>
               <thead>
                 <tr>
                   <th>Site</th>
-                  <th>Item</th>
-                  <th>Ordered</th>
-                  <th>Expected</th>
-                  <th>Variance</th>
-                  <th>Status</th>
+                  <th>Brand</th>
+                  <th>Stock</th>
+                  <th>Over lines</th>
+                  <th>Under lines</th>
+                  <th>Packaging</th>
+                  <th>Failed items</th>
+                  <th>MD visit date</th>
                 </tr>
               </thead>
-              <tbody id="stock-table-body"></tbody>
+              <tbody id="db-tbody"></tbody>
             </table>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- ══ TAB 2: PACKAGING LOG ══ -->
-    <div class="tab-content" id="tab-packaging">
+    <!-- FLAGS TAB -->
+    <div class="tab-content" id="tab-flags">
       <div class="page-header">
-        <div class="page-tag">02 — Packaging Compliance</div>
-        <div class="page-title">Mystery Diner Log</div>
-        <div class="page-desc">// log gemini audit results to track packaging compliance over time</div>
+        <div class="page-tag">03 — Weekly Flags</div>
+        <div class="page-title">Sites Needing Attention</div>
+        <div class="page-desc">// every site with any failure in the current dataset</div>
       </div>
 
-      <div class="card">
-        <div class="card-title">Log New Audit Result</div>
-        <div class="log-form">
-          <div class="form-group">
-            <label>Site Name</label>
-            <input type="text" id="pkg-site" placeholder="e.g. Stockport">
-          </div>
-          <div class="form-group">
-            <label>Brand</label>
-            <select id="pkg-brand">
-              <option value="">Select brand</option>
-              <option>Coqfighter</option>
-              <option>The Athenian</option>
-              <option>GBK</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label>Visit Date</label>
-            <input type="date" id="pkg-date">
-          </div>
+      <div id="flags-empty" class="empty">
+        <div class="empty-icon">✅</div>
+        <div class="empty-title">No flags</div>
+        <div class="empty-sub">No failures detected — or no data loaded yet</div>
+      </div>
+
+      <div id="flags-content" style="display:none">
+        <div class="week-bar">
+          <div class="week-label">Week commencing: <strong id="flags-wc"></strong></div>
+          <div class="week-label"><strong id="flags-count"></strong></div>
         </div>
-
-        <div class="card-title" style="margin-top:4px">Items Non-Compliant</div>
-        <div class="checkbox-grid">
-          <div class="checkbox-item" onclick="toggleCheck(this)">
-            <input type="checkbox" value="Grab Bag">
-            <label>Grab Bag</label>
-          </div>
-          <div class="checkbox-item" onclick="toggleCheck(this)">
-            <input type="checkbox" value="Box">
-            <label>Box</label>
-          </div>
-          <div class="checkbox-item" onclick="toggleCheck(this)">
-            <input type="checkbox" value="Greaseproof Paper">
-            <label>Greaseproof Paper</label>
-          </div>
-          <div class="checkbox-item" onclick="toggleCheck(this)">
-            <input type="checkbox" value="Wrap Tube">
-            <label>Wrap Tube</label>
-          </div>
-        </div>
-
-        <button class="action-btn" onclick="logPackaging()">Log Entry</button>
-      </div>
-
-      <div class="card">
-        <div class="card-title">Audit History <span style="color:#444;font-size:10px;margin-left:8px">(this session)</span></div>
-        <div id="pkg-empty" class="empty-state">
-          <div class="empty-icon">📋</div>
-          <div class="empty-title">No entries yet</div>
-          <div class="empty-sub">Log your first audit result above</div>
-        </div>
-        <div class="results-wrap" id="pkg-table-wrap" style="display:none">
-          <table>
-            <thead>
-              <tr>
-                <th>Site</th>
-                <th>Brand</th>
-                <th>Visit Date</th>
-                <th>Failed Items</th>
-                <th>Overall</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody id="pkg-log-rows"></tbody>
-          </table>
-        </div>
-      </div>
-
-      <div class="card" id="pkg-patterns-card" style="display:none">
-        <div class="card-title">Repeat Offenders</div>
-        <div id="pkg-patterns"></div>
-      </div>
-    </div>
-
-    <!-- ══ TAB 3: SITE HEALTH ══ -->
-    <div class="tab-content" id="tab-health">
-      <div class="page-header">
-        <div class="page-tag">03 — Site Health</div>
-        <div class="page-title">Combined Overview</div>
-        <div class="page-desc">// per-site summary across stock and packaging compliance</div>
-      </div>
-
-      <div id="health-empty" class="empty-state">
-        <div class="empty-icon">🏪</div>
-        <div class="empty-title">No data yet</div>
-        <div class="empty-sub">Upload stock reports and log packaging audits to see site health scores</div>
-      </div>
-
-      <div id="health-content" style="display:none">
-        <div class="stats-row" id="health-stats"></div>
-        <div class="health-grid" id="health-grid"></div>
+        <div class="flags-grid" id="flags-grid"></div>
       </div>
     </div>
 
@@ -940,334 +767,310 @@
 </div>
 
 <script>
-// ── CONFIG ──
 const PASSWORD = 'kitchen2026';
 
-// ── STATE ──
-let state = {
+const S = {
   brand: 'Coqfighter',
-  orderData: null,
-  salesData: null,
-  stockResults: [],
-  packagingLog: [],
+  raw: { stock: null, sales: null, mystery: null },
+  sites: {},
 };
 
-// ── LOGIN ──
-function checkLogin() {
-  const val = document.getElementById('pw-input').value;
-  if (val === PASSWORD) {
+// LOGIN
+function doLogin() {
+  if (document.getElementById('pw-input').value === PASSWORD) {
     document.getElementById('login-screen').style.display = 'none';
     document.getElementById('app').style.display = 'block';
-    document.getElementById('header-date').textContent = new Date().toLocaleDateString('en-GB', {day:'numeric',month:'short',year:'numeric'});
+    document.getElementById('hdr-date').textContent =
+      new Date().toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' });
   } else {
-    document.getElementById('login-error').style.display = 'block';
+    document.getElementById('login-err').style.display = 'block';
     document.getElementById('pw-input').value = '';
     document.getElementById('pw-input').focus();
   }
 }
 
 document.getElementById('pw-input').addEventListener('keydown', e => {
-  if (e.key === 'Enter') checkLogin();
+  if (e.key === 'Enter') doLogin();
 });
 
-function logout() {
+function doLogout() {
   document.getElementById('login-screen').style.display = 'flex';
   document.getElementById('app').style.display = 'none';
   document.getElementById('pw-input').value = '';
-  document.getElementById('login-error').style.display = 'none';
+  document.getElementById('login-err').style.display = 'none';
 }
 
-// ── TABS ──
-function switchTab(id, btn) {
+// TABS
+function goTab(id, btn) {
   document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
   document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
   document.getElementById('tab-' + id).classList.add('active');
   btn.classList.add('active');
-  if (id === 'health') renderHealth();
+  if (id === 'database') renderDatabase();
+  if (id === 'flags') renderFlags();
 }
 
-// ── BRAND SELECT ──
-function selectBrand(brand, btn) {
-  state.brand = brand;
-  document.querySelectorAll('.brand-pill').forEach(b => b.classList.remove('active'));
+// BRAND
+function setBrand(brand, btn) {
+  S.brand = brand;
+  document.querySelectorAll('.brand-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
 }
 
-// ── FILE HANDLING ──
-function handleFile(input, type) {
+// FILE LOAD
+function loadFile(input, type) {
   const file = input.files[0];
   if (!file) return;
   const reader = new FileReader();
   reader.onload = e => {
-    const parsed = parseCSV(e.target.result);
-    if (type === 'order') {
-      state.orderData = parsed;
-      document.getElementById('order-filename').textContent = '✓ ' + file.name;
-      document.getElementById('order-zone').classList.add('has-file');
-    } else {
-      state.salesData = parsed;
-      document.getElementById('sales-filename').textContent = '✓ ' + file.name;
-      document.getElementById('sales-zone').classList.add('has-file');
-    }
-    document.getElementById('analyse-btn').disabled = !(state.orderData && state.salesData);
+    S.raw[type] = parseCSV(e.target.result);
+    document.getElementById('zone-' + type).classList.add('has-file');
+    document.getElementById('hint-' + type).textContent = '✓ ' + file.name;
+    updateProcessBtn();
   };
   reader.readAsText(file);
 }
 
+function updateProcessBtn() {
+  const any = S.raw.stock || S.raw.sales || S.raw.mystery;
+  document.getElementById('process-btn').disabled = !any;
+  if (any) {
+    const parts = [];
+    if (S.raw.stock) parts.push('stock');
+    if (S.raw.sales) parts.push('sales');
+    if (S.raw.mystery) parts.push('mystery diner');
+    document.getElementById('process-hint').textContent = 'Ready: ' + parts.join(', ');
+  }
+}
+
+// CSV PARSER
 function parseCSV(text) {
-  const lines = text.trim().split('\n');
-  const headers = lines[0].split(',').map(h => h.trim().toLowerCase().replace(/"/g,''));
+  const lines = text.trim().split('\n').filter(l => l.trim());
+  if (lines.length < 2) return [];
+  const headers = lines[0].split(',').map(h => h.trim().toLowerCase().replace(/"/g,'').replace(/\s+/g,'_'));
   return lines.slice(1).map(line => {
-    const vals = line.split(',').map(v => v.trim().replace(/"/g,''));
+    const vals = []; let cur = '', inQ = false;
+    for (const ch of line) {
+      if (ch === '"') { inQ = !inQ; continue; }
+      if (ch === ',' && !inQ) { vals.push(cur.trim()); cur = ''; continue; }
+      cur += ch;
+    }
+    vals.push(cur.trim());
     const obj = {};
     headers.forEach((h, i) => obj[h] = vals[i] || '');
     return obj;
   }).filter(r => Object.values(r).some(v => v));
 }
 
-// ── STOCK ANALYSIS ──
-function analyseStock() {
-  const orders = state.orderData;
-  const sales = state.salesData;
+function get(row, ...aliases) {
+  for (const a of aliases) if (row[a] !== undefined && row[a] !== '') return row[a];
+  return '';
+}
 
-  // Build lookup: site+item → qty ordered
-  const orderMap = {};
-  orders.forEach(row => {
-    const key = (row.site_name || row.site || '') + '||' + (row.item || row.product || '');
-    orderMap[key] = parseFloat(row.quantity || row.qty || row.ordered || 0);
+// PROCESS
+function processAll() {
+  S.sites = {};
+  if (S.raw.stock || S.raw.sales) processStock();
+  if (S.raw.mystery) processMystery();
+  renderUploadSummary();
+  updateFlagsBadge();
+}
+
+function processStock() {
+  const orders = S.raw.stock || [];
+  const sales = S.raw.sales || [];
+
+  const oMap = {};
+  orders.forEach(r => {
+    const site = get(r,'site_name','site','location');
+    const item = get(r,'item','product','sku');
+    const qty = parseFloat(get(r,'quantity','qty','ordered','amount') || 0);
+    if (site && item) oMap[site+'||'+item] = qty;
   });
 
-  // Build lookup: site+item → units sold
-  const salesMap = {};
-  sales.forEach(row => {
-    const key = (row.site_name || row.site || '') + '||' + (row.item || row.product || '');
-    salesMap[key] = parseFloat(row.units_sold || row.sales || row.sold || 0);
+  const sMap = {};
+  sales.forEach(r => {
+    const site = get(r,'site_name','site','location');
+    const item = get(r,'item','product','sku');
+    const sold = parseFloat(get(r,'units_sold','sales','sold','qty_sold') || 0);
+    if (site && item) sMap[site+'||'+item] = sold;
   });
 
-  // Merge and calculate
-  const allKeys = new Set([...Object.keys(orderMap), ...Object.keys(salesMap)]);
-  const results = [];
-
-  allKeys.forEach(key => {
-    const [site, item] = key.split('||');
-    const ordered = orderMap[key] || 0;
-    const sold = salesMap[key] || 0;
+  const keys = new Set([...Object.keys(oMap), ...Object.keys(sMap)]);
+  keys.forEach(k => {
+    const [site, item] = k.split('||');
     if (!site || !item) return;
-
-    // Expected order = sold * 1.1 (10% buffer)
+    const ordered = oMap[k] || 0;
+    const sold = sMap[k] || 0;
     const expected = Math.round(sold * 1.1);
     const variance = ordered - expected;
-    const variancePct = expected > 0 ? Math.round((variance / expected) * 100) : 0;
-
-    let status;
-    if (Math.abs(variancePct) <= 10) status = 'ok';
-    else if (variance > 0) status = 'over';
-    else status = 'under';
-
-    results.push({ site, item, ordered, expected, variance, variancePct, status });
+    const pct = expected > 0 ? Math.round((variance / expected) * 100) : 0;
+    const status = Math.abs(pct) <= 10 ? 'ok' : variance > 0 ? 'over' : 'under';
+    if (!S.sites[site]) S.sites[site] = { brand: S.brand, stockLines: [], pkgResult: null, pkgFailed: [], mdDate: null };
+    S.sites[site].stockLines.push({ item, ordered, expected, variance, pct, status });
   });
-
-  state.stockResults = results;
-  renderStockResults(results);
 }
 
-function renderStockResults(results) {
-  document.getElementById('stock-results').style.display = 'block';
+function processMystery() {
+  (S.raw.mystery || []).forEach(r => {
+    const site = get(r,'site_name','site','location');
+    if (!site) return;
+    const brand = get(r,'brand') || S.brand;
+    const date = get(r,'visit_date','date','visit date');
+    const overall = get(r,'overall','result','status').toLowerCase().trim();
+    const cols = ['grab_bag','box','greaseproof_paper','wrap_tube'];
+    const failed = cols.filter(c => {
+      const v = get(r, c, c.replace('_',' ')).toLowerCase().trim();
+      return v === 'fail';
+    }).map(c => c.replace(/_/g,' '));
+    if (!S.sites[site]) S.sites[site] = { brand, stockLines: [], pkgResult: null, pkgFailed: [], mdDate: null };
+    S.sites[site].brand = brand;
+    S.sites[site].pkgResult = overall === 'fail' ? 'fail' : 'pass';
+    S.sites[site].pkgFailed = failed;
+    S.sites[site].mdDate = date;
+  });
+}
 
-  const over = results.filter(r => r.status === 'over').length;
-  const under = results.filter(r => r.status === 'under').length;
-  const ok = results.filter(r => r.status === 'ok').length;
-  const sites = new Set(results.map(r => r.site)).size;
+function renderUploadSummary() {
+  const el = document.getElementById('upload-result');
+  el.style.display = 'block';
+  const sites = Object.values(S.sites);
+  const stockFails = sites.filter(s => s.stockLines.some(l => l.status !== 'ok')).length;
+  const pkgFails = sites.filter(s => s.pkgResult === 'fail').length;
+  const totalLines = sites.reduce((a, s) => a + s.stockLines.length, 0);
+  document.getElementById('upload-stats').innerHTML = `
+    <div class="stat-box s-blue"><div class="stat-label">Sites loaded</div><div class="stat-num c-blue">${Object.keys(S.sites).length}</div></div>
+    <div class="stat-box s-amber"><div class="stat-label">Stock lines</div><div class="stat-num c-amber">${totalLines}</div></div>
+    <div class="stat-box s-red"><div class="stat-label">Stock failures</div><div class="stat-num c-red">${stockFails}</div></div>
+    <div class="stat-box s-red"><div class="stat-label">Pkg fails</div><div class="stat-num c-red">${pkgFails}</div></div>
+  `;
+}
 
-  document.getElementById('stock-stats').innerHTML = `
-    <div class="stat-box red"><div class="stat-label">Over-ordering</div><div class="stat-value" style="color:#d63c2f">${over}</div></div>
-    <div class="stat-box blue"><div class="stat-label">Under-ordering</div><div class="stat-value" style="color:#4a9eff">${under}</div></div>
-    <div class="stat-box green"><div class="stat-label">Compliant lines</div><div class="stat-value green">${ok}</div></div>
-    <div class="stat-box amber"><div class="stat-label">Sites analysed</div><div class="stat-value amber">${sites}</div></div>
+// DATABASE
+function renderDatabase() {
+  const entries = Object.entries(S.sites);
+  if (!entries.length) {
+    document.getElementById('db-empty').style.display = 'block';
+    document.getElementById('db-content').style.display = 'none';
+    return;
+  }
+  document.getElementById('db-empty').style.display = 'none';
+  document.getElementById('db-content').style.display = 'block';
+
+  const total = entries.length;
+  const stockIssues = entries.filter(([,s]) => s.stockLines.some(l => l.status !== 'ok')).length;
+  const pkgFails = entries.filter(([,s]) => s.pkgResult === 'fail').length;
+  const clean = entries.filter(([,s]) => !s.stockLines.some(l => l.status !== 'ok') && s.pkgResult !== 'fail').length;
+
+  document.getElementById('db-stats').innerHTML = `
+    <div class="stat-box s-blue"><div class="stat-label">Total sites</div><div class="stat-num c-blue">${total}</div></div>
+    <div class="stat-box s-red"><div class="stat-label">Stock issues</div><div class="stat-num c-red">${stockIssues}</div></div>
+    <div class="stat-box s-red"><div class="stat-label">Pkg non-compliant</div><div class="stat-num c-red">${pkgFails}</div></div>
+    <div class="stat-box s-green"><div class="stat-label">Fully clean</div><div class="stat-num c-green">${clean}</div></div>
   `;
 
-  const tbody = document.getElementById('stock-table-body');
-  tbody.innerHTML = results.sort((a,b) => Math.abs(b.variancePct) - Math.abs(a.variancePct)).map(r => `
-    <tr>
-      <td class="site-name-cell">${r.site}</td>
-      <td>${r.item}</td>
-      <td>${r.ordered}</td>
-      <td>${r.expected}</td>
-      <td class="${r.variance > 0 ? 'variance-positive' : r.variance < 0 ? 'variance-negative' : 'variance-neutral'}">
-        ${r.variance > 0 ? '+' : ''}${r.variance} (${r.variancePct > 0 ? '+' : ''}${r.variancePct}%)
-      </td>
-      <td>
-        ${r.status === 'over' ? '<span class="status-badge badge-over">▲ Over</span>' :
-          r.status === 'under' ? '<span class="status-badge badge-under">▼ Under</span>' :
-          '<span class="status-badge badge-ok">✓ OK</span>'}
-      </td>
-    </tr>
-  `).join('');
+  document.getElementById('db-tbody').innerHTML = entries
+    .sort(([,a],[,b]) => {
+      const sa = (a.stockLines.filter(l=>l.status!=='ok').length) + (a.pkgResult==='fail'?5:0);
+      const sb = (b.stockLines.filter(l=>l.status!=='ok').length) + (b.pkgResult==='fail'?5:0);
+      return sb - sa;
+    })
+    .map(([site, s]) => {
+      const over = s.stockLines.filter(l => l.status === 'over');
+      const under = s.stockLines.filter(l => l.status === 'under');
+      const stockBadge = s.stockLines.length === 0
+        ? '<span class="pill pill-grey">No data</span>'
+        : (over.length || under.length)
+          ? '<span class="pill pill-red">Issues</span>'
+          : '<span class="pill pill-green">OK</span>';
+      const pkgBadge = !s.pkgResult
+        ? '<span class="pill pill-grey">No data</span>'
+        : s.pkgResult === 'pass'
+          ? '<span class="pill pill-green">Pass</span>'
+          : '<span class="pill pill-red">Fail</span>';
+      const failStr = s.pkgFailed.length
+        ? s.pkgFailed.map(f=>`<span style="color:#777;font-size:10px;margin-right:3px">${f}</span>`).join('')
+        : '<span style="color:#444">—</span>';
+      return `<tr>
+        <td class="td-site">${site}</td>
+        <td style="color:#666">${s.brand}</td>
+        <td>${stockBadge}</td>
+        <td style="color:${over.length?'var(--red)':'#555'}">${over.length||'—'}</td>
+        <td style="color:${under.length?'var(--blue)':'#555'}">${under.length||'—'}</td>
+        <td>${pkgBadge}</td>
+        <td>${failStr}</td>
+        <td style="color:#666">${s.mdDate||'—'}</td>
+      </tr>`;
+    }).join('');
 }
 
-// ── PACKAGING LOG ──
-function toggleCheck(el) {
-  const cb = el.querySelector('input');
-  cb.checked = !cb.checked;
-  el.classList.toggle('checked', cb.checked);
-}
+// FLAGS
+function renderFlags() {
+  const flagged = Object.entries(S.sites).filter(([,s]) =>
+    s.stockLines.some(l => l.status !== 'ok') || s.pkgResult === 'fail'
+  );
 
-function logPackaging() {
-  const site = document.getElementById('pkg-site').value.trim();
-  const brand = document.getElementById('pkg-brand').value;
-  const date = document.getElementById('pkg-date').value;
-
-  if (!site || !brand || !date) {
-    alert('Please fill in site name, brand, and visit date.');
+  if (!flagged.length) {
+    document.getElementById('flags-empty').style.display = 'block';
+    document.getElementById('flags-content').style.display = 'none';
     return;
   }
 
-  const failed = Array.from(document.querySelectorAll('.checkbox-item input:checked')).map(cb => cb.value);
+  document.getElementById('flags-empty').style.display = 'none';
+  document.getElementById('flags-content').style.display = 'block';
 
-  const entry = { site, brand, date, failed, compliant: failed.length === 0 };
-  state.packagingLog.push(entry);
+  const today = new Date();
+  const wc = new Date(today);
+  wc.setDate(today.getDate() - ((today.getDay() + 6) % 7));
+  document.getElementById('flags-wc').textContent =
+    wc.toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' });
+  document.getElementById('flags-count').textContent =
+    flagged.length + ' site' + (flagged.length !== 1 ? 's' : '') + ' flagged';
 
-  // Reset form
-  document.getElementById('pkg-site').value = '';
-  document.getElementById('pkg-brand').value = '';
-  document.getElementById('pkg-date').value = '';
-  document.querySelectorAll('.checkbox-item').forEach(el => {
-    el.querySelector('input').checked = false;
-    el.classList.remove('checked');
-  });
+  document.getElementById('flags-grid').innerHTML = flagged
+    .sort(([,a],[,b]) => {
+      const sa = (a.stockLines.filter(l=>l.status!=='ok').length) + (a.pkgResult==='fail'?10:0);
+      const sb = (b.stockLines.filter(l=>l.status!=='ok').length) + (b.pkgResult==='fail'?10:0);
+      return sb - sa;
+    })
+    .map(([site, s]) => {
+      const over = s.stockLines.filter(l => l.status === 'over');
+      const under = s.stockLines.filter(l => l.status === 'under');
+      const hasPkg = s.pkgResult === 'fail';
+      const hasStock = over.length || under.length;
+      const cls = hasStock && hasPkg ? 'both' : hasPkg ? 'pkg-only' : 'stock-only';
 
-  renderPackagingLog();
+      const issues = [];
+
+      over.sort((a,b)=>Math.abs(b.pct)-Math.abs(a.pct)).slice(0,2).forEach(l =>
+        issues.push(`<div class="flag-issue"><div class="fdot blue"></div><span>Over-ordered: <strong style="color:#ddd">${l.item}</strong> (+${l.pct}%)</span></div>`)
+      );
+      if (over.length > 2)
+        issues.push(`<div class="flag-issue"><div class="fdot blue"></div><span>+${over.length-2} more over-ordering lines</span></div>`);
+
+      under.sort((a,b)=>Math.abs(b.pct)-Math.abs(a.pct)).slice(0,2).forEach(l =>
+        issues.push(`<div class="flag-issue"><div class="fdot amber"></div><span>Under-ordered: <strong style="color:#ddd">${l.item}</strong> (${l.pct}%)</span></div>`)
+      );
+      if (under.length > 2)
+        issues.push(`<div class="flag-issue"><div class="fdot amber"></div><span>+${under.length-2} more under-ordering lines</span></div>`);
+
+      if (hasPkg) {
+        const fs = s.pkgFailed.length ? s.pkgFailed.join(', ') : 'non-compliant packaging';
+        issues.push(`<div class="flag-issue"><div class="fdot red"></div><span>Packaging fail: <strong style="color:#ddd">${fs}</strong>${s.mdDate?' ('+s.mdDate+')':''}</span></div>`);
+      }
+
+      return `<div class="flag-card ${cls}">
+        <div class="flag-site">${site}</div>
+        <div class="flag-brand">${s.brand}</div>
+        <div class="flag-issues">${issues.join('')}</div>
+      </div>`;
+    }).join('');
 }
 
-function deleteLogEntry(idx) {
-  state.packagingLog.splice(idx, 1);
-  renderPackagingLog();
-}
-
-function renderPackagingLog() {
-  const log = state.packagingLog;
-  const empty = document.getElementById('pkg-empty');
-  const tableWrap = document.getElementById('pkg-table-wrap');
-
-  if (log.length === 0) {
-    empty.style.display = 'block';
-    tableWrap.style.display = 'none';
-    document.getElementById('pkg-patterns-card').style.display = 'none';
-    return;
-  }
-
-  empty.style.display = 'none';
-  tableWrap.style.display = 'block';
-
-  document.getElementById('pkg-log-rows').innerHTML = log.map((e, i) => `
-    <tr class="${e.compliant ? 'compliant' : 'non-compliant'}">
-      <td class="site-name-cell">${e.site}</td>
-      <td style="color:#666">${e.brand}</td>
-      <td style="color:#666">${e.date}</td>
-      <td>${e.failed.length > 0 ? e.failed.map(f => `<span style="color:var(--red);font-size:10px;margin-right:6px">${f}</span>`).join('') : '<span style="color:#444">—</span>'}</td>
-      <td>${e.compliant ? '<span class="status-badge badge-pass">✓ Pass</span>' : '<span class="status-badge badge-fail">✗ Fail</span>'}</td>
-      <td><button class="del-btn" onclick="deleteLogEntry(${i})">remove</button></td>
-    </tr>
-  `).join('');
-
-  // Repeat offenders
-  const failCount = {};
-  log.filter(e => !e.compliant).forEach(e => {
-    failCount[e.site] = (failCount[e.site] || 0) + 1;
-  });
-  const repeats = Object.entries(failCount).filter(([,c]) => c > 1).sort((a,b) => b[1]-a[1]);
-
-  if (repeats.length > 0) {
-    document.getElementById('pkg-patterns-card').style.display = 'block';
-    document.getElementById('pkg-patterns').innerHTML = repeats.map(([site, count]) => `
-      <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid #1e1e1e">
-        <span class="site-name-cell">${site}</span>
-        <span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--red)">${count} failures logged this session</span>
-      </div>
-    `).join('');
-  } else {
-    document.getElementById('pkg-patterns-card').style.display = 'none';
-  }
-}
-
-// ── SITE HEALTH ──
-function renderHealth() {
-  const hasStock = state.stockResults.length > 0;
-  const hasPkg = state.packagingLog.length > 0;
-
-  if (!hasStock && !hasPkg) {
-    document.getElementById('health-empty').style.display = 'block';
-    document.getElementById('health-content').style.display = 'none';
-    return;
-  }
-
-  document.getElementById('health-empty').style.display = 'none';
-  document.getElementById('health-content').style.display = 'block';
-
-  // Gather all sites
-  const sites = new Set([
-    ...state.stockResults.map(r => r.site),
-    ...state.packagingLog.map(e => e.site)
-  ]);
-
-  const cards = [];
-  sites.forEach(site => {
-    const stockRows = state.stockResults.filter(r => r.site === site);
-    const pkgRows = state.packagingLog.filter(e => e.site === site);
-
-    const stockOk = stockRows.length > 0 ? Math.round((stockRows.filter(r => r.status === 'ok').length / stockRows.length) * 100) : null;
-    const pkgOk = pkgRows.length > 0 ? Math.round((pkgRows.filter(e => e.compliant).length / pkgRows.length) * 100) : null;
-
-    const scores = [stockOk, pkgOk].filter(v => v !== null);
-    const overall = scores.length > 0 ? Math.round(scores.reduce((a,b) => a+b, 0) / scores.length) : null;
-
-    const brand = pkgRows[0]?.brand || stockRows[0]?.brand || '';
-    cards.push({ site, brand, stockOk, pkgOk, overall });
-  });
-
-  // Summary stats
-  const avg = cards.filter(c => c.overall !== null);
-  const avgScore = avg.length > 0 ? Math.round(avg.reduce((a,b) => a + b.overall, 0) / avg.length) : 0;
-  const flagged = cards.filter(c => c.overall !== null && c.overall < 70).length;
-
-  document.getElementById('health-stats').innerHTML = `
-    <div class="stat-box amber"><div class="stat-label">Sites tracked</div><div class="stat-value amber">${cards.length}</div></div>
-    <div class="stat-box ${avgScore >= 80 ? 'green' : avgScore >= 60 ? 'amber' : 'red'}">
-      <div class="stat-label">Avg health score</div>
-      <div class="stat-value ${avgScore >= 80 ? 'green' : avgScore >= 60 ? 'amber' : 'red'}">${avgScore}%</div>
-    </div>
-    <div class="stat-box red"><div class="stat-label">Sites needing attention</div><div class="stat-value red">${flagged}</div></div>
-    <div class="stat-box green"><div class="stat-label">Fully compliant</div><div class="stat-value green">${cards.filter(c => c.overall === 100).length}</div></div>
-  `;
-
-  document.getElementById('health-grid').innerHTML = cards.sort((a,b) => (a.overall||0) - (b.overall||0)).map(c => {
-    const scoreClass = c.overall >= 80 ? 'good' : c.overall >= 60 ? 'warn' : 'bad';
-    return `
-      <div class="health-card">
-        <div class="health-card-header">
-          <div>
-            <div class="health-site-name">${c.site}</div>
-            <div class="health-brand">${c.brand}</div>
-          </div>
-          <div class="health-score ${scoreClass}">${c.overall !== null ? c.overall + '%' : '—'}</div>
-        </div>
-        <div class="health-bars">
-          ${c.stockOk !== null ? `
-          <div class="health-bar-row">
-            <div class="health-bar-label">Stock</div>
-            <div class="health-bar-track"><div class="health-bar-fill ${c.stockOk >= 80 ? 'green' : c.stockOk >= 60 ? 'amber' : 'red'}" style="width:${c.stockOk}%"></div></div>
-            <div class="health-bar-val">${c.stockOk}%</div>
-          </div>` : ''}
-          ${c.pkgOk !== null ? `
-          <div class="health-bar-row">
-            <div class="health-bar-label">Packaging</div>
-            <div class="health-bar-track"><div class="health-bar-fill ${c.pkgOk >= 80 ? 'green' : c.pkgOk >= 60 ? 'amber' : 'red'}" style="width:${c.pkgOk}%"></div></div>
-            <div class="health-bar-val">${c.pkgOk}%</div>
-          </div>` : ''}
-        </div>
-      </div>
-    `;
-  }).join('');
+function updateFlagsBadge() {
+  const n = Object.values(S.sites).filter(s =>
+    s.stockLines.some(l => l.status !== 'ok') || s.pkgResult === 'fail').length;
+  document.getElementById('flags-badge').classList.toggle('show', n > 0);
 }
 </script>
 </body>
