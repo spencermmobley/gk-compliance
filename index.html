@@ -62,7 +62,7 @@
   /* ADD ROW FORM */
   .dict-add-form{background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--gl);padding:20px 24px;margin-bottom:18px;}
   .dict-form-title{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--gl);margin-bottom:16px;}
-  .dict-form-row{display:grid;grid-template-columns:1fr 1fr 160px auto;gap:10px;align-items:end;}
+  .dict-form-row{display:grid;grid-template-columns:1fr 140px 140px 1fr auto;gap:10px;align-items:end;}
   .dict-field label{display:block;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;}
   .dict-field input,.dict-field select{width:100%;padding:10px 12px;background:var(--surface2);border:1px solid var(--border2);color:var(--white);font-family:'DM Mono',monospace;font-size:12px;outline:none;transition:border-color .15s;}
   .dict-field input:focus,.dict-field select:focus{border-color:var(--green);}
@@ -157,6 +157,9 @@
   .core-item{background:var(--surface2);border:1px solid var(--border2);padding:12px 14px;}
   .core-item-name{font-size:12px;font-weight:600;margin-bottom:4px;}
   .core-item-meta{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);}
+  .dict-filter-btn{padding:5px 12px;background:transparent;border:1px solid var(--border2);color:#666;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:all .15s;}
+  .dict-filter-btn:hover{color:#999;border-color:#444;}
+  .dict-filter-btn.active{border-color:var(--green);color:var(--white);background:rgba(42,122,75,.1);}
   .save-toast{position:fixed;bottom:24px;right:24px;background:var(--green);color:white;padding:10px 18px;font-family:'DM Mono',monospace;font-size:11px;opacity:0;transition:opacity .3s;pointer-events:none;z-index:999;}
   .save-toast.show{opacity:1;}
 
@@ -317,7 +320,7 @@
       </div>
 
       <div class="info">
-        This dictionary is how the dashboard links a Bidfood order (e.g. "GYRO FACTORY CO - 68120138") to a GK site name (e.g. "Balham"). Add or edit rows whenever a new partner launches or an account name changes. Changes are <strong>saved automatically</strong> in your browser.
+        This dictionary links a supplier account name (e.g. "GYRO FACTORY CO - 68120138" from Bidfood) to a GK Metabase site name (e.g. "Balham"). Different brands use different suppliers — Athenian uses Bidfood; Coqfighter, GBK and Tortilla use their own separate suppliers. Add rows for each supplier as you onboard their data. Changes are <strong>saved automatically</strong> in your browser.
       </div>
 
       <!-- ADD ROW FORM -->
@@ -329,10 +332,6 @@
             <input type="text" id="new-gk-site" placeholder="e.g. Balham">
           </div>
           <div class="dict-field">
-            <label>Supplier Account Name</label>
-            <input type="text" id="new-supplier-acc" placeholder="e.g. GYRO FACTORY CO - 68120138">
-          </div>
-          <div class="dict-field">
             <label>Brand</label>
             <select id="new-brand">
               <option value="The Athenian">The Athenian</option>
@@ -341,13 +340,33 @@
               <option value="Tortilla">Tortilla</option>
             </select>
           </div>
+          <div class="dict-field">
+            <label>Supplier</label>
+            <select id="new-supplier">
+              <option value="Bidfood">Bidfood</option>
+              <option value="Unknown">Unknown</option>
+            </select>
+          </div>
+          <div class="dict-field">
+            <label>Supplier Account Name</label>
+            <input type="text" id="new-supplier-acc" placeholder="e.g. GYRO FACTORY CO - 68120138">
+          </div>
           <button class="btn-add" onclick="addDictRow()">Add Row</button>
         </div>
       </div>
 
       <!-- SEARCH + META -->
       <div class="dict-controls">
-        <input class="dict-search" type="text" id="dict-search" placeholder="Search sites or accounts…" oninput="renderDictTable()">
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+          <input class="dict-search" type="text" id="dict-search" placeholder="Search sites or accounts…" oninput="renderDictTable()">
+          <div style="display:flex;gap:6px;" id="dict-brand-filters">
+            <button class="dict-filter-btn active" data-brand="" onclick="setDictFilter('',this)">All</button>
+            <button class="dict-filter-btn" data-brand="The Athenian" onclick="setDictFilter('The Athenian',this)">The Athenian</button>
+            <button class="dict-filter-btn" data-brand="Coqfighter" onclick="setDictFilter('Coqfighter',this)">Coqfighter</button>
+            <button class="dict-filter-btn" data-brand="GBK" onclick="setDictFilter('GBK',this)">GBK</button>
+            <button class="dict-filter-btn" data-brand="Tortilla" onclick="setDictFilter('Tortilla',this)">Tortilla</button>
+          </div>
+        </div>
         <div class="dict-meta" id="dict-meta"></div>
       </div>
 
@@ -358,8 +377,9 @@
             <thead><tr>
               <th>#</th>
               <th>GK Metabase Site Name</th>
-              <th>Supplier Account Name</th>
               <th>Brand</th>
+              <th>Supplier</th>
+              <th>Supplier Account Name</th>
               <th>Actions</th>
             </tr></thead>
             <tbody id="dict-tbody"></tbody>
@@ -417,7 +437,7 @@ const CORE_ITEMS = {
 };
 
 // Pre-populated seed data — 102 matched pairs from compliance master
-const SEED_DATA = [{"gk_site":"Aberdeen - Hutcheon Street","supplier_account":"PERI PERI ORIGINAL ABDERDEEN - 22143844","brand":"The Athenian"},{"gk_site":"Altrincham","supplier_account":"PITA BOX - 80123303","brand":"The Athenian"},{"gk_site":"Aylesbury","supplier_account":"KRAVE KEBAB& CURRY - 66140943","brand":"The Athenian"},{"gk_site":"Aylesbury","supplier_account":"DONER GYROS - 25124599","brand":"The Athenian"},{"gk_site":"Balham","supplier_account":"GYRO FACTORY CO - 68120138","brand":"The Athenian"},{"gk_site":"Beckenham","supplier_account":"BURGER GUYS - 33142796","brand":"The Athenian"},{"gk_site":"Beckenham","supplier_account":"PWB23 LTD - 33145769","brand":"The Athenian"},{"gk_site":"Bedford - Harpur","supplier_account":"PUTT PUTT SOCIAL - 66142678","brand":"The Athenian"},{"gk_site":"Bermondsey","supplier_account":"SEVEN ENTERPRISES LTD - 33144616","brand":"The Athenian"},{"gk_site":"Bexleyheath","supplier_account":"FOODLICIOUS& MORE LTD - 33142717","brand":"The Athenian"},{"gk_site":"Bolton","supplier_account":"YASMINE BEIRUT CAFE - 25123449","brand":"The Athenian"},{"gk_site":"Boxpark Wembley","supplier_account":"ATHENIAN WEMBLEY - 68120696","brand":"The Athenian"},{"gk_site":"Bromley","supplier_account":"MEDLEY MARKET - 33142611","brand":"The Athenian"},{"gk_site":"Cam","supplier_account":"PIZZA PLANET - 67123743","brand":"The Athenian"},{"gk_site":"Camberley","supplier_account":"CLUCK CLUCK PERI PERI - 29516374","brand":"The Athenian"},{"gk_site":"Canary Wharf","supplier_account":"LITTLE KEBAB HOUSE THE - 38131815","brand":"The Athenian"},{"gk_site":"Canning Town","supplier_account":"YUM YARD - 38131274","brand":"The Athenian"},{"gk_site":"Canterbury","supplier_account":"MAIDENS HEAD - 33143586","brand":"The Athenian"},{"gk_site":"Cardiff - City Road","supplier_account":"IFEED LTD - 67122043","brand":"The Athenian"},{"gk_site":"Cardiff - City Road","supplier_account":"VRG SH LTD - 67123398","brand":"The Athenian"},{"gk_site":"Catford","supplier_account":"PIZZA ROMA - 33143196","brand":"The Athenian"},{"gk_site":"Cheltenham - Bath Road","supplier_account":"BURGER& SHAKES - 66140782","brand":"The Athenian"},{"gk_site":"Cheltenham - Bath Road","supplier_account":"NSSR FRESH - 66143653","brand":"The Athenian"},{"gk_site":"Chester - Northgate Street","supplier_account":"CHIP'D - 80121713","brand":"The Athenian"},{"gk_site":"Cirencester","supplier_account":"PIZZA PLANET CIRENCESTER - 67124116","brand":"The Athenian"},{"gk_site":"Colchester","supplier_account":"GREEK OASIS - 37123490","brand":"The Athenian"},{"gk_site":"Corby","supplier_account":"DIXY CHICKEN - 19901029","brand":"The Athenian"},{"gk_site":"Crawley","supplier_account":"CARAMELLO COFFEE& GELATO - 70861201","brand":"The Athenian"},{"gk_site":"Crewe","supplier_account":"RIAS KITCHEN& CATERING - 80122837","brand":"The Athenian"},{"gk_site":"Croydon","supplier_account":"GALITO'S PIRI PIRI - 33143195","brand":"The Athenian"},{"gk_site":"Darlington","supplier_account":"A1 GOLDENFRY - 36116113","brand":"The Athenian"},{"gk_site":"Dartford","supplier_account":"TIME & PLAICE - 33142595","brand":"The Athenian"},{"gk_site":"Derby","supplier_account":"ATHENIAN THE - 24119789","brand":"The Athenian"},{"gk_site":"Didcot","supplier_account":"COURTYARD OXFORD SOUTH - 66143581","brand":"The Athenian"},{"gk_site":"Dover - Tower Hamlets Road","supplier_account":"KENT FISH BAR AND PIZZA KEBAB - 33144294","brand":"The Athenian"},{"gk_site":"Dover - Tower Hamlets Road","supplier_account":"RODYS BURGER - 33146736","brand":"The Athenian"},{"gk_site":"Dudley","supplier_account":"CASTLE PIZZA - 21860267","brand":"The Athenian"},{"gk_site":"Durrington","supplier_account":"STONEHENDGE INN - 5114779","brand":"The Athenian"},{"gk_site":"Earl Shilton","supplier_account":"DESSERT HOUSE - 24122821","brand":"The Athenian"},{"gk_site":"Eastleigh","supplier_account":"ATHENIAN EASTLEIGH - 5114168","brand":"The Athenian"},{"gk_site":"Evesham","supplier_account":"PIZZA PLANET THE - 21860568","brand":"The Athenian"},{"gk_site":"Fleet","supplier_account":"HART PERI PERI - 29514716","brand":"The Athenian"},{"gk_site":"Guildford","supplier_account":"K&M FLAVOURS - 29516551","brand":"The Athenian"},{"gk_site":"Hastings","supplier_account":"ATHENIAN HASTINGS - 33145315","brand":"The Athenian"},{"gk_site":"Haywards Heath","supplier_account":"CHIEFS CHICKEN - 70862360","brand":"The Athenian"},{"gk_site":"Hemel Hempstead - Duxons Turn","supplier_account":"50NINE - 66142985","brand":"The Athenian"},{"gk_site":"Herne Bay","supplier_account":"SALOON BAR& GRILL - 33145558","brand":"The Athenian"},{"gk_site":"High Wycombe","supplier_account":"PAPARIZZAA HIGH WYCOMBE - 66141901","brand":"The Athenian"},{"gk_site":"Hove","supplier_account":"ORIGINAL CHIP BASKET THE - 70862415","brand":"The Athenian"},{"gk_site":"Huddersfield","supplier_account":"SHOWTIME - 25123707","brand":"The Athenian"},{"gk_site":"Huddersfield","supplier_account":"HUDDS BARS LTD - 25125401","brand":"The Athenian"},{"gk_site":"Jewellery Quarter","supplier_account":"NEWHALL ASSOCIATES LTD - 21858522","brand":"The Athenian"},{"gk_site":"Kenilworth","supplier_account":"PEACOCK HOTEL - 24121790","brand":"The Athenian"},{"gk_site":"Kingston","supplier_account":"DOUBLE TREE BY HILTON KINGSTON - 33143670","brand":"The Athenian"},{"gk_site":"Lancaster","supplier_account":"ATHENIAN LANCASTER - 25126641","brand":"The Athenian"},{"gk_site":"Leamington Spa","supplier_account":"LEAMINGTON SPA - 66141439","brand":"The Athenian"},{"gk_site":"Leatherhead","supplier_account":"K&M FLAVOURS - 29514941","brand":"The Athenian"},{"gk_site":"Lincoln - High Street","supplier_account":"SNACC LINCOLN - 24120579","brand":"The Athenian"},{"gk_site":"Lincoln - High Street","supplier_account":"BANGERS CAFE - 24123387","brand":"The Athenian"},{"gk_site":"Litherland","supplier_account":"JSS FOOD HUB UK LTD - 80121668","brand":"The Athenian"},{"gk_site":"Liverpool","supplier_account":"SOUTH INDIAN - 80121439","brand":"The Athenian"},{"gk_site":"Milton Keynes","supplier_account":"ASHS FISH AND CHICKEN - 66140675","brand":"The Athenian"},{"gk_site":"Minster","supplier_account":"MINSTER FISH& CHIPS - 33145147","brand":"The Athenian"},{"gk_site":"Motherwell","supplier_account":"MR BUNS - 22142141","brand":"The Athenian"},{"gk_site":"Newcastle - Fenkle Street","supplier_account":"MASH BURGER LTD - 36115767","brand":"The Athenian"},{"gk_site":"Nottingham - Goldsmith Street","supplier_account":"NA RESTAURANTS LTD - 24121002","brand":"The Athenian"},{"gk_site":"Nottingham - Goldsmith Street","supplier_account":"RKM KITCHEN LTD - 24122660","brand":"The Athenian"},{"gk_site":"Nuneaton","supplier_account":"NUM NUM MUNCHIES - 24121587","brand":"The Athenian"},{"gk_site":"Paisley","supplier_account":"LOVE DESSERTS - 85902087","brand":"The Athenian"},{"gk_site":"Peterborough","supplier_account":"SPUDYS - 24121233","brand":"The Athenian"},{"gk_site":"Pinner","supplier_account":"FINE BURGER CATERING CO LTD - 68118545","brand":"The Athenian"},{"gk_site":"Plymouth","supplier_account":"UNO STREET FOODS CO - 20114137","brand":"The Athenian"},{"gk_site":"Portsmouth","supplier_account":"SHAHSUB - 5114874","brand":"The Athenian"},{"gk_site":"Reading","supplier_account":"DEVILS KITCHEN - 29514656","brand":"The Athenian"},{"gk_site":"Redditch","supplier_account":"PICCOLO PIZZA - 21859384","brand":"The Athenian"},{"gk_site":"Redditch","supplier_account":"PICCOLO PIZZA - 21859936","brand":"The Athenian"},{"gk_site":"Rugby - Church Street","supplier_account":"PB FLAMING GRILL - 24120889","brand":"The Athenian"},{"gk_site":"Scunthorpe","supplier_account":"PRITAMS - 58132624","brand":"The Athenian"},{"gk_site":"Sheffield - Orchard Square","supplier_account":"HORSE& JOCKEY - 58131195","brand":"The Athenian"},{"gk_site":"Shoreditch","supplier_account":"SALAD& POKE BOWL - 38133509","brand":"The Athenian"},{"gk_site":"Slough","supplier_account":"MUSAS DONER - 68120234","brand":"The Athenian"},{"gk_site":"Southend","supplier_account":"PIZZA STATION - 38133476","brand":"The Athenian"},{"gk_site":"Stafford","supplier_account":"SPICE ISLAND - 21859190","brand":"The Athenian"},{"gk_site":"Stapleford","supplier_account":"WRAP N BOWL CO - 24122966","brand":"The Athenian"},{"gk_site":"Stockport","supplier_account":"GHOST KITCHEN - 25122511","brand":"The Athenian"},{"gk_site":"Sutton Coldfield","supplier_account":"RILAND SPORTS CAFE - 21860120","brand":"The Athenian"},{"gk_site":"Swindon - Brunel Plaza","supplier_account":"PEPPER KITCHEN FAST FOOD LTD - 67122312","brand":"The Athenian"},{"gk_site":"Swindon - Brunel Plaza","supplier_account":"ATHENIAN THE - 29515898","brand":"The Athenian"},{"gk_site":"Tunbridge Wells","supplier_account":"GALITOS - 33142900","brand":"The Athenian"},{"gk_site":"Uxbridge - Marlborough Parade","supplier_account":"HILLINGDON FISH BAR - 68119428","brand":"The Athenian"},{"gk_site":"Walthamstow - James Street","supplier_account":"FRANZOS - 24120322","brand":"The Athenian"},{"gk_site":"Walthamstow - James Street","supplier_account":"DONER BASE - 38131258","brand":"The Athenian"},{"gk_site":"Warrington","supplier_account":"ZEUS KITCHEN - 80121158","brand":"The Athenian"},{"gk_site":"Watford - Market Street","supplier_account":"FAT PIZZA WATFORD - 66140007","brand":"The Athenian"},{"gk_site":"West Bromwich","supplier_account":"PIZZARIOO - 21859425","brand":"The Athenian"},{"gk_site":"West Bromwich","supplier_account":"PIZZARIOO - 21859948","brand":"The Athenian"},{"gk_site":"Weston-super-Mare","supplier_account":"TOPPINZ WSM LTD - 20115242","brand":"The Athenian"},{"gk_site":"Wimbledon - Merton High Street","supplier_account":"FIRE ON - 68118176","brand":"The Athenian"},{"gk_site":"Winchester","supplier_account":"BFG KITCHEN - 5113946","brand":"The Athenian"},{"gk_site":"Wolverhampton","supplier_account":"GO ATHENIAN - 21859499","brand":"The Athenian"},{"gk_site":"Wood Green - Clarendon Road","supplier_account":"JAPANIKA - 38132843","brand":"The Athenian"},{"gk_site":"Worcester","supplier_account":"ROYAL KEBAB - 21859562","brand":"The Athenian"}];
+const SEED_DATA = [{"gk_site":"Aberdeen - Hutcheon Street","supplier_account":"PERI PERI ORIGINAL ABDERDEEN - 22143844","brand":"The Athenian","supplier":"Bidfood"},{"gk_site":"Altrincham","supplier_account":"PITA BOX - 80123303","brand":"The Athenian","supplier":"Bidfood"},{"gk_site":"Aylesbury","supplier_account":"KRAVE KEBAB& CURRY - 66140943","brand":"The Athenian","supplier":"Bidfood"},{"gk_site":"Aylesbury","supplier_account":"DONER GYROS - 25124599","brand":"The Athenian","supplier":"Bidfood"},{"gk_site":"Balham","supplier_account":"GYRO FACTORY CO - 68120138","brand":"The Athenian","supplier":"Bidfood"},{"gk_site":"Beckenham","supplier_account":"BURGER GUYS - 33142796","brand":"The Athenian","supplier":"Bidfood"},{"gk_site":"Beckenham","supplier_account":"PWB23 LTD - 33145769","brand":"The Athenian","supplier":"Bidfood"},{"gk_site":"Bedford - Harpur","supplier_account":"PUTT PUTT SOCIAL - 66142678","brand":"The Athenian","supplier":"Bidfood"},{"gk_site":"Bermondsey","supplier_account":"SEVEN ENTERPRISES LTD - 33144616","brand":"The Athenian","supplier":"Bidfood"},{"gk_site":"Bexleyheath","supplier_account":"FOODLICIOUS& MORE LTD - 33142717","brand":"The Athenian","supplier":"Bidfood"},{"gk_site":"Bolton","supplier_account":"YASMINE BEIRUT CAFE - 25123449","brand":"The Athenian","supplier":"Bidfood"},{"gk_site":"Boxpark Wembley","supplier_account":"ATHENIAN WEMBLEY - 68120696","brand":"The Athenian","supplier":"Bidfood"},{"gk_site":"Bromley","supplier_account":"MEDLEY MARKET - 33142611","brand":"The Athenian","supplier":"Bidfood"},{"gk_site":"Cam","supplier_account":"PIZZA PLANET - 67123743","brand":"The Athenian","supplier":"Bidfood"},{"gk_site":"Camberley","supplier_account":"CLUCK CLUCK PERI PERI - 29516374","brand":"The Athenian","supplier":"Bidfood"},{"gk_site":"Canary Wharf","supplier_account":"LITTLE KEBAB HOUSE THE - 38131815","brand":"The Athenian","supplier":"Bidfood"},{"gk_site":"Canning Town","supplier_account":"YUM YARD - 38131274","brand":"The Athenian","supplier":"Bidfood"},{"gk_site":"Canterbury","supplier_account":"MAIDENS HEAD - 33143586","brand":"The Athenian","supplier":"Bidfood"},{"gk_site":"Cardiff - City Road","supplier_account":"IFEED LTD - 67122043","brand":"The Athenian","supplier":"Bidfood"},{"gk_site":"Cardiff - City Road","supplier_account":"VRG SH LTD - 67123398","brand":"The Athenian","supplier":"Bidfood"},{"gk_site":"Catford","supplier_account":"PIZZA ROMA - 33143196","brand":"The Athenian","supplier":"Bidfood"},{"gk_site":"Cheltenham - Bath Road","supplier_account":"BURGER& SHAKES - 66140782","brand":"The Athenian","supplier":"Bidfood"},{"gk_site":"Cheltenham - Bath Road","supplier_account":"NSSR FRESH - 66143653","brand":"The Athenian","supplier":"Bidfood"},{"gk_site":"Chester - Northgate Street","supplier_account":"CHIP'D - 80121713","brand":"The Athenian","supplier":"Bidfood"},{"gk_site":"Cirencester","supplier_account":"PIZZA PLANET CIRENCESTER - 67124116","brand":"The Athenian","supplier":"Bidfood"},{"gk_site":"Colchester","supplier_account":"GREEK OASIS - 37123490","brand":"The Athenian","supplier":"Bidfood"},{"gk_site":"Corby","supplier_account":"DIXY CHICKEN - 19901029","brand":"The Athenian","supplier":"Bidfood"},{"gk_site":"Crawley","supplier_account":"CARAMELLO COFFEE& GELATO - 70861201","brand":"The Athenian","supplier":"Bidfood"},{"gk_site":"Crewe","supplier_account":"RIAS KITCHEN& CATERING - 80122837","brand":"The Athenian","supplier":"Bidfood"},{"gk_site":"Croydon","supplier_account":"GALITO'S PIRI PIRI - 33143195","brand":"The Athenian","supplier":"Bidfood"},{"gk_site":"Darlington","supplier_account":"A1 GOLDENFRY - 36116113","brand":"The Athenian","supplier":"Bidfood"},{"gk_site":"Dartford","supplier_account":"TIME & PLAICE - 33142595","brand":"The Athenian","supplier":"Bidfood"},{"gk_site":"Derby","supplier_account":"ATHENIAN THE - 24119789","brand":"The Athenian","supplier":"Bidfood"},{"gk_site":"Didcot","supplier_account":"COURTYARD OXFORD SOUTH - 66143581","brand":"The Athenian","supplier":"Bidfood"},{"gk_site":"Dover - Tower Hamlets Road","supplier_account":"KENT FISH BAR AND PIZZA KEBAB - 33144294","brand":"The Athenian","supplier":"Bidfood"},{"gk_site":"Dover - Tower Hamlets Road","supplier_account":"RODYS BURGER - 33146736","brand":"The Athenian","supplier":"Bidfood"},{"gk_site":"Dudley","supplier_account":"CASTLE PIZZA - 21860267","brand":"The Athenian","supplier":"Bidfood"},{"gk_site":"Durrington","supplier_account":"STONEHENDGE INN - 5114779","brand":"The Athenian","supplier":"Bidfood"},{"gk_site":"Earl Shilton","supplier_account":"DESSERT HOUSE - 24122821","brand":"The Athenian","supplier":"Bidfood"},{"gk_site":"Eastleigh","supplier_account":"ATHENIAN EASTLEIGH - 5114168","brand":"The Athenian","supplier":"Bidfood"},{"gk_site":"Evesham","supplier_account":"PIZZA PLANET THE - 21860568","brand":"The Athenian","supplier":"Bidfood"},{"gk_site":"Fleet","supplier_account":"HART PERI PERI - 29514716","brand":"The Athenian","supplier":"Bidfood"},{"gk_site":"Guildford","supplier_account":"K&M FLAVOURS - 29516551","brand":"The Athenian","supplier":"Bidfood"},{"gk_site":"Hastings","supplier_account":"ATHENIAN HASTINGS - 33145315","brand":"The Athenian","supplier":"Bidfood"},{"gk_site":"Haywards Heath","supplier_account":"CHIEFS CHICKEN - 70862360","brand":"The Athenian","supplier":"Bidfood"},{"gk_site":"Hemel Hempstead - Duxons Turn","supplier_account":"50NINE - 66142985","brand":"The Athenian","supplier":"Bidfood"},{"gk_site":"Herne Bay","supplier_account":"SALOON BAR& GRILL - 33145558","brand":"The Athenian","supplier":"Bidfood"},{"gk_site":"High Wycombe","supplier_account":"PAPARIZZAA HIGH WYCOMBE - 66141901","brand":"The Athenian","supplier":"Bidfood"},{"gk_site":"Hove","supplier_account":"ORIGINAL CHIP BASKET THE - 70862415","brand":"The Athenian","supplier":"Bidfood"},{"gk_site":"Huddersfield","supplier_account":"SHOWTIME - 25123707","brand":"The Athenian","supplier":"Bidfood"},{"gk_site":"Huddersfield","supplier_account":"HUDDS BARS LTD - 25125401","brand":"The Athenian","supplier":"Bidfood"},{"gk_site":"Jewellery Quarter","supplier_account":"NEWHALL ASSOCIATES LTD - 21858522","brand":"The Athenian","supplier":"Bidfood"},{"gk_site":"Kenilworth","supplier_account":"PEACOCK HOTEL - 24121790","brand":"The Athenian","supplier":"Bidfood"},{"gk_site":"Kingston","supplier_account":"DOUBLE TREE BY HILTON KINGSTON - 33143670","brand":"The Athenian","supplier":"Bidfood"},{"gk_site":"Lancaster","supplier_account":"ATHENIAN LANCASTER - 25126641","brand":"The Athenian","supplier":"Bidfood"},{"gk_site":"Leamington Spa","supplier_account":"LEAMINGTON SPA - 66141439","brand":"The Athenian","supplier":"Bidfood"},{"gk_site":"Leatherhead","supplier_account":"K&M FLAVOURS - 29514941","brand":"The Athenian","supplier":"Bidfood"},{"gk_site":"Lincoln - High Street","supplier_account":"SNACC LINCOLN - 24120579","brand":"The Athenian","supplier":"Bidfood"},{"gk_site":"Lincoln - High Street","supplier_account":"BANGERS CAFE - 24123387","brand":"The Athenian","supplier":"Bidfood"},{"gk_site":"Litherland","supplier_account":"JSS FOOD HUB UK LTD - 80121668","brand":"The Athenian","supplier":"Bidfood"},{"gk_site":"Liverpool","supplier_account":"SOUTH INDIAN - 80121439","brand":"The Athenian","supplier":"Bidfood"},{"gk_site":"Milton Keynes","supplier_account":"ASHS FISH AND CHICKEN - 66140675","brand":"The Athenian","supplier":"Bidfood"},{"gk_site":"Minster","supplier_account":"MINSTER FISH& CHIPS - 33145147","brand":"The Athenian","supplier":"Bidfood"},{"gk_site":"Motherwell","supplier_account":"MR BUNS - 22142141","brand":"The Athenian","supplier":"Bidfood"},{"gk_site":"Newcastle - Fenkle Street","supplier_account":"MASH BURGER LTD - 36115767","brand":"The Athenian","supplier":"Bidfood"},{"gk_site":"Nottingham - Goldsmith Street","supplier_account":"NA RESTAURANTS LTD - 24121002","brand":"The Athenian","supplier":"Bidfood"},{"gk_site":"Nottingham - Goldsmith Street","supplier_account":"RKM KITCHEN LTD - 24122660","brand":"The Athenian","supplier":"Bidfood"},{"gk_site":"Nuneaton","supplier_account":"NUM NUM MUNCHIES - 24121587","brand":"The Athenian","supplier":"Bidfood"},{"gk_site":"Paisley","supplier_account":"LOVE DESSERTS - 85902087","brand":"The Athenian","supplier":"Bidfood"},{"gk_site":"Peterborough","supplier_account":"SPUDYS - 24121233","brand":"The Athenian","supplier":"Bidfood"},{"gk_site":"Pinner","supplier_account":"FINE BURGER CATERING CO LTD - 68118545","brand":"The Athenian","supplier":"Bidfood"},{"gk_site":"Plymouth","supplier_account":"UNO STREET FOODS CO - 20114137","brand":"The Athenian","supplier":"Bidfood"},{"gk_site":"Portsmouth","supplier_account":"SHAHSUB - 5114874","brand":"The Athenian","supplier":"Bidfood"},{"gk_site":"Reading","supplier_account":"DEVILS KITCHEN - 29514656","brand":"The Athenian","supplier":"Bidfood"},{"gk_site":"Redditch","supplier_account":"PICCOLO PIZZA - 21859384","brand":"The Athenian","supplier":"Bidfood"},{"gk_site":"Redditch","supplier_account":"PICCOLO PIZZA - 21859936","brand":"The Athenian","supplier":"Bidfood"},{"gk_site":"Rugby - Church Street","supplier_account":"PB FLAMING GRILL - 24120889","brand":"The Athenian","supplier":"Bidfood"},{"gk_site":"Scunthorpe","supplier_account":"PRITAMS - 58132624","brand":"The Athenian","supplier":"Bidfood"},{"gk_site":"Sheffield - Orchard Square","supplier_account":"HORSE& JOCKEY - 58131195","brand":"The Athenian","supplier":"Bidfood"},{"gk_site":"Shoreditch","supplier_account":"SALAD& POKE BOWL - 38133509","brand":"The Athenian","supplier":"Bidfood"},{"gk_site":"Slough","supplier_account":"MUSAS DONER - 68120234","brand":"The Athenian","supplier":"Bidfood"},{"gk_site":"Southend","supplier_account":"PIZZA STATION - 38133476","brand":"The Athenian","supplier":"Bidfood"},{"gk_site":"Stafford","supplier_account":"SPICE ISLAND - 21859190","brand":"The Athenian","supplier":"Bidfood"},{"gk_site":"Stapleford","supplier_account":"WRAP N BOWL CO - 24122966","brand":"The Athenian","supplier":"Bidfood"},{"gk_site":"Stockport","supplier_account":"GHOST KITCHEN - 25122511","brand":"The Athenian","supplier":"Bidfood"},{"gk_site":"Sutton Coldfield","supplier_account":"RILAND SPORTS CAFE - 21860120","brand":"The Athenian","supplier":"Bidfood"},{"gk_site":"Swindon - Brunel Plaza","supplier_account":"PEPPER KITCHEN FAST FOOD LTD - 67122312","brand":"The Athenian","supplier":"Bidfood"},{"gk_site":"Swindon - Brunel Plaza","supplier_account":"ATHENIAN THE - 29515898","brand":"The Athenian","supplier":"Bidfood"},{"gk_site":"Tunbridge Wells","supplier_account":"GALITOS - 33142900","brand":"The Athenian","supplier":"Bidfood"},{"gk_site":"Uxbridge - Marlborough Parade","supplier_account":"HILLINGDON FISH BAR - 68119428","brand":"The Athenian","supplier":"Bidfood"},{"gk_site":"Walthamstow - James Street","supplier_account":"FRANZOS - 24120322","brand":"The Athenian","supplier":"Bidfood"},{"gk_site":"Walthamstow - James Street","supplier_account":"DONER BASE - 38131258","brand":"The Athenian","supplier":"Bidfood"},{"gk_site":"Warrington","supplier_account":"ZEUS KITCHEN - 80121158","brand":"The Athenian","supplier":"Bidfood"},{"gk_site":"Watford - Market Street","supplier_account":"FAT PIZZA WATFORD - 66140007","brand":"The Athenian","supplier":"Bidfood"},{"gk_site":"West Bromwich","supplier_account":"PIZZARIOO - 21859425","brand":"The Athenian","supplier":"Bidfood"},{"gk_site":"West Bromwich","supplier_account":"PIZZARIOO - 21859948","brand":"The Athenian","supplier":"Bidfood"},{"gk_site":"Weston-super-Mare","supplier_account":"TOPPINZ WSM LTD - 20115242","brand":"The Athenian","supplier":"Bidfood"},{"gk_site":"Wimbledon - Merton High Street","supplier_account":"FIRE ON - 68118176","brand":"The Athenian","supplier":"Bidfood"},{"gk_site":"Winchester","supplier_account":"BFG KITCHEN - 5113946","brand":"The Athenian","supplier":"Bidfood"},{"gk_site":"Wolverhampton","supplier_account":"GO ATHENIAN - 21859499","brand":"The Athenian","supplier":"Bidfood"},{"gk_site":"Wood Green - Clarendon Road","supplier_account":"JAPANIKA - 38132843","brand":"The Athenian","supplier":"Bidfood"},{"gk_site":"Worcester","supplier_account":"ROYAL KEBAB - 21859562","brand":"The Athenian","supplier":"Bidfood"},{"gk_site":"Darlington","brand":"Coqfighter","supplier":"Unknown","supplier_account":"A1 GOLDEN FRY (COQFIGHTER)"},{"gk_site":"Wokingham","brand":"Coqfighter","supplier":"Unknown","supplier_account":"BOISHAKI (COQFIGHTER)"},{"gk_site":"Crawley","brand":"Coqfighter","supplier":"Unknown","supplier_account":"CARAMELLO COFFEE AND GELATO"},{"gk_site":"Aberdeen","brand":"Coqfighter","supplier":"Unknown","supplier_account":"CHILLI FLAMES ABERDEEN (COQFIG"},{"gk_site":"Redhill","brand":"Coqfighter","supplier":"Unknown","supplier_account":"CHILLIS (COQFIGHTER)"},{"gk_site":"Salford","brand":"Coqfighter","supplier":"Unknown","supplier_account":"COQFIGHTER - MANCHESTER"},{"gk_site":"Leatherhead","brand":"Coqfighter","supplier":"Unknown","supplier_account":"DUTCH DELIGHTS (COQFIGHTER)"},{"gk_site":"Eltham","brand":"Coqfighter","supplier":"Unknown","supplier_account":"FOOD DHABA (COQFIGHTER)"},{"gk_site":"Coventry","brand":"Coqfighter","supplier":"Unknown","supplier_account":"FRANZOS (COQFIGHTER)"},{"gk_site":"Balham","brand":"Coqfighter","supplier":"Unknown","supplier_account":"GYROS FACTORY CO (COQFIGHTER)"},{"gk_site":"Kingston","brand":"Coqfighter","supplier":"Unknown","supplier_account":"HAWKERS BAR & BRASSERIE (COQFI"},{"gk_site":"Leeds","brand":"Coqfighter","supplier":"Unknown","supplier_account":"JUICI SUSHI (COQFIGHTER)"},{"gk_site":"Aylesbury","brand":"Coqfighter","supplier":"Unknown","supplier_account":"KRAVE KEBAB & CURRY (COQFIGHTE"},{"gk_site":"Huddersfield","brand":"Coqfighter","supplier":"Unknown","supplier_account":"LIMIT COQFIGHTER"},{"gk_site":"Bromley","brand":"Coqfighter","supplier":"Unknown","supplier_account":"MEDLEY BAR & KITCHEN (COQFIGHT"},{"gk_site":"Uxbridge","brand":"Coqfighter","supplier":"Unknown","supplier_account":"ORBIT BUN UXBRIDGE"},{"gk_site":"Wimbledon","brand":"Coqfighter","supplier":"Unknown","supplier_account":"PITAPLEX (COQFIGHTER)"},{"gk_site":"Watford","brand":"Coqfighter","supplier":"Unknown","supplier_account":"PRIME PIZZA (COQFIGHTER)"},{"gk_site":"Enfield","brand":"Coqfighter","supplier":"Unknown","supplier_account":"QUICK BITES EXPRESS (COQFIGHTE"},{"gk_site":"Worcester","brand":"Coqfighter","supplier":"Unknown","supplier_account":"ROYAL KEBAB (COQFIGHTER)"},{"gk_site":"Chiswick","brand":"Coqfighter","supplier":"Unknown","supplier_account":"SCHOOL KITCHEN AT CHISWICK FIE"},{"gk_site":"Peckham","brand":"Coqfighter","supplier":"Unknown","supplier_account":"SEVEN ENTERPRISE (COQFIGHTER)"},{"gk_site":"Stockport","brand":"Coqfighter","supplier":"Unknown","supplier_account":"STOCKPORT COQFIGHTER"},{"gk_site":"Canary Wharf","brand":"Coqfighter","supplier":"Unknown","supplier_account":"THE LITTLE KEBAB HOUSE (COQFIG"},{"gk_site":"Canning Town","brand":"Coqfighter","supplier":"Unknown","supplier_account":"YUM YARD (COQFIGHTER)"}];
 
 // ─── STATE ───────────────────────────────────────────────────────
 const S = {
@@ -429,6 +449,14 @@ const S = {
 };
 
 // ─── DICTIONARY STORAGE ──────────────────────────────────────────
+let dictBrandFilter = '';
+
+function setDictFilter(brand, btn) {
+  dictBrandFilter = brand;
+  document.querySelectorAll('.dict-filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderDictTable();
+}
 function loadDict() {
   try {
     const stored = localStorage.getItem(STORAGE_KEY);
@@ -502,16 +530,17 @@ function setBrand(brand, btn) {
 // ─── DICTIONARY CRUD ─────────────────────────────────────────────
 function brandPill(brand) {
   const map = {'The Athenian':'pill-ath','Coqfighter':'pill-coq','GBK':'pill-gbk','Tortilla':'pill-tor'};
-  return `<span class="pill ${map[brand]||'pill-green'}">${brand}</span>`;
+  return `<span class="pill ${map[brand]||'pill-green'}">${brand||'—'}</span>`;
 }
 
 function addDictRow() {
   const gk = document.getElementById('new-gk-site').value.trim();
   const acc = document.getElementById('new-supplier-acc').value.trim();
   const brand = document.getElementById('new-brand').value;
+  const supplier = document.getElementById('new-supplier').value;
   if (!gk || !acc) { alert('Please fill in both site name and supplier account.'); return; }
   const dict = getDict();
-  dict.push({ gk_site: gk, supplier_account: acc, brand });
+  dict.push({ gk_site: gk, brand, supplier, supplier_account: acc });
   saveDict(dict);
   document.getElementById('new-gk-site').value = '';
   document.getElementById('new-supplier-acc').value = '';
@@ -541,8 +570,9 @@ function saveEdit(idx) {
   const gk = document.getElementById(`edit-gk-${idx}`).value.trim();
   const acc = document.getElementById(`edit-acc-${idx}`).value.trim();
   const brand = document.getElementById(`edit-brand-${idx}`).value;
+  const supplier = document.getElementById(`edit-supplier-${idx}`).value;
   if (!gk || !acc) { alert('Both fields are required.'); return; }
-  dict[idx] = { gk_site: gk, supplier_account: acc, brand };
+  dict[idx] = { gk_site: gk, brand, supplier, supplier_account: acc };
   saveDict(dict);
   S.editingId = null;
   renderDictTable();
@@ -552,23 +582,28 @@ function renderDictTable() {
   const dict = getDict();
   const q = (document.getElementById('dict-search')?.value || '').toLowerCase();
   const filtered = dict.map((r, i) => ({...r, _idx: i}))
-    .filter(r => !q ||
-      r.gk_site.toLowerCase().includes(q) ||
-      r.supplier_account.toLowerCase().includes(q) ||
-      r.brand.toLowerCase().includes(q)
-    );
+    .filter(r => {
+      const matchQ = !q || r.gk_site.toLowerCase().includes(q) || r.supplier_account.toLowerCase().includes(q) || r.brand.toLowerCase().includes(q);
+      const matchBrand = !dictBrandFilter || r.brand === dictBrandFilter;
+      return matchQ && matchBrand;
+    });
+
+  // Brand counts for meta
+  const brandCounts = {};
+  dict.forEach(r => { brandCounts[r.brand] = (brandCounts[r.brand]||0)+1; });
+  const countStr = ['The Athenian','Coqfighter','GBK','Tortilla']
+    .map(b => `${b}: <strong style="color:${brandCounts[b]?'#888':'var(--red)'}">${brandCounts[b]||0}</strong>`)
+    .join(' · ');
 
   document.getElementById('dict-meta').innerHTML =
-    `<strong>${filtered.length}</strong> of <strong>${dict.length}</strong> rows`;
+    `<span style="margin-right:12px">${countStr}</span><strong>${filtered.length}</strong> shown`;
 
   document.getElementById('dict-tbody').innerHTML = filtered.map((r, fi) => {
     const idx = r._idx;
     if (S.editingId === idx) {
-      // Edit mode row
       return `<tr style="background:#161616">
         <td style="color:#444">${idx+1}</td>
         <td class="td-edit"><input id="edit-gk-${idx}" value="${escHtml(r.gk_site)}"></td>
-        <td class="td-edit"><input id="edit-acc-${idx}" value="${escHtml(r.supplier_account)}"></td>
         <td class="td-edit">
           <select id="edit-brand-${idx}">
             ${['The Athenian','Coqfighter','GBK','Tortilla'].map(b =>
@@ -576,17 +611,29 @@ function renderDictTable() {
             ).join('')}
           </select>
         </td>
+        <td class="td-edit">
+          <select id="edit-supplier-${idx}">
+            ${['Bidfood','Unknown'].map(s =>
+              `<option value="${s}" ${(r.supplier||'Unknown')===s?'selected':''}>${s}</option>`
+            ).join('')}
+          </select>
+        </td>
+        <td class="td-edit"><input id="edit-acc-${idx}" value="${escHtml(r.supplier_account)}"></td>
         <td><div class="td-actions">
           <button class="btn-save" onclick="saveEdit(${idx})">Save</button>
           <button class="btn-cancel" onclick="cancelEdit()">Cancel</button>
         </div></td>
       </tr>`;
     }
+    const supplierTag = r.supplier && r.supplier !== 'Unknown'
+      ? `<span style="font-family:'DM Mono',monospace;font-size:10px;color:#888">${escHtml(r.supplier)}</span>`
+      : `<span style="font-family:'DM Mono',monospace;font-size:10px;color:#444">Unknown</span>`;
     return `<tr>
       <td style="color:#444;font-family:'DM Mono',monospace;font-size:10px">${idx+1}</td>
       <td class="td-site">${escHtml(r.gk_site)}</td>
-      <td style="color:#999">${escHtml(r.supplier_account)}</td>
       <td>${brandPill(r.brand)}</td>
+      <td>${supplierTag}</td>
+      <td style="color:#999;font-family:'DM Mono',monospace;font-size:11px">${escHtml(r.supplier_account)}</td>
       <td><div class="td-actions">
         <button class="btn-save" onclick="startEdit(${idx})">Edit</button>
         <button class="btn-del" onclick="deleteRow(${idx})">Delete</button>
@@ -718,7 +765,7 @@ function processBidfood() {
   // Build account → GK site lookup from dictionary
   const accToSite = {};
   dict.forEach(r => {
-    if (r.brand === S.brand) {
+    if (r.brand === 'The Athenian') {
       accToSite[r.supplier_account.toLowerCase().trim()] = r.gk_site;
     }
   });
