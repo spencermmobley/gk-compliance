@@ -7,607 +7,145 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root {
-    --black: #0a0a0a;
-    --surface: #111111;
-    --surface2: #181818;
-    --border: #222222;
-    --border2: #2e2e2e;
-    --white: #f0ece6;
-    --muted: #555;
-    --green: #2a7a4b;
-    --green-light: #4aad72;
-    --red: #d63c2f;
-    --amber: #c97c1a;
-    --blue: #4a9eff;
+    --black: #0a0a0a; --surface: #111111; --surface2: #181818;
+    --border: #222222; --border2: #2e2e2e; --white: #f0ece6;
+    --muted: #555; --green: #2a7a4b; --gl: #4aad72;
+    --red: #d63c2f; --amber: #c97c1a; --blue: #4a9eff;
   }
-
   * { box-sizing: border-box; margin: 0; padding: 0; }
-
-  body {
-    font-family: 'Syne', sans-serif;
-    background: var(--black);
-    color: var(--white);
-    min-height: 100vh;
-  }
-
-  #login-screen {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .login-box {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    padding: 48px;
-    width: 360px;
-    position: relative;
-  }
-
-  .login-box::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 2px;
-    background: var(--green);
-  }
-
-  .login-logo {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
-    color: var(--green-light);
-    margin-bottom: 28px;
-  }
-
-  .login-title {
-    font-size: 30px;
-    font-weight: 800;
-    line-height: 1;
-    margin-bottom: 6px;
-  }
-
-  .login-sub {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    color: var(--muted);
-    margin-bottom: 36px;
-  }
-
-  .login-box label {
-    display: block;
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 8px;
-  }
-
-  .login-box input {
-    width: 100%;
-    padding: 13px 15px;
-    background: var(--surface2);
-    border: 1px solid var(--border2);
-    color: var(--white);
-    font-family: 'DM Mono', monospace;
-    font-size: 14px;
-    outline: none;
-    margin-bottom: 20px;
-    transition: border-color 0.15s;
-  }
-
-  .login-box input:focus { border-color: var(--green); }
-
-  .login-btn {
-    width: 100%;
-    padding: 13px;
-    background: var(--green);
-    border: none;
-    color: white;
-    font-family: 'Syne', sans-serif;
-    font-size: 13px;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: opacity 0.15s;
-  }
-
-  .login-btn:hover { opacity: 0.85; }
-
-  .login-error {
-    margin-top: 14px;
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    color: var(--red);
-    display: none;
-  }
-
-  #app { display: none; }
-
-  header {
-    background: var(--surface);
-    border-bottom: 1px solid var(--border);
-    padding: 0 32px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    height: 56px;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-  }
-
-  .header-brand {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-
-  .brand-mark {
-    width: 26px; height: 26px;
-    background: var(--green);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 11px;
-    font-weight: 800;
-  }
-
-  .brand-name {
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: #888;
-  }
-
-  .header-nav { display: flex; gap: 2px; }
-
-  .nav-btn {
-    padding: 7px 18px;
-    background: transparent;
-    border: 1px solid transparent;
-    color: var(--muted);
-    font-family: 'Syne', sans-serif;
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: all 0.15s;
-    position: relative;
-  }
-
-  .nav-btn:hover { color: var(--white); }
-
-  .nav-btn.active {
-    color: var(--white);
-    border-color: var(--border2);
-    background: var(--surface2);
-  }
-
-  .nav-badge {
-    display: inline-block;
-    width: 6px; height: 6px;
-    border-radius: 50%;
-    background: var(--red);
-    margin-left: 6px;
-    vertical-align: middle;
-    visibility: hidden;
-  }
-
-  .nav-badge.show { visibility: visible; }
-
-  .header-right {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-  }
-
-  .header-date {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    color: #444;
-  }
-
-  .logout-btn {
-    background: none;
-    border: 1px solid var(--border2);
-    color: #555;
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    padding: 5px 10px;
-    cursor: pointer;
-    transition: all 0.15s;
-  }
-
-  .logout-btn:hover { border-color: var(--muted); color: #999; }
-
-  main {
-    padding: 40px 32px;
-    max-width: 1100px;
-    margin: 0 auto;
-  }
-
-  .tab-content { display: none; }
-  .tab-content.active { display: block; }
-
-  .page-header {
-    margin-bottom: 32px;
-    padding-bottom: 20px;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .page-tag {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    color: var(--green-light);
-    margin-bottom: 8px;
-  }
-
-  .page-title {
-    font-size: 28px;
-    font-weight: 800;
-    line-height: 1;
-    margin-bottom: 6px;
-  }
-
-  .page-desc {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    color: var(--muted);
-  }
-
-  .card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    padding: 24px 28px;
-    margin-bottom: 18px;
-  }
-
-  .card-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 16px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-
-  .card-label::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: var(--border);
-  }
-
-  .upload-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 14px;
-    margin-bottom: 22px;
-  }
-
-  .upload-zone {
-    border: 1px dashed var(--border2);
-    padding: 28px 20px;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.2s;
-    position: relative;
-  }
-
-  .upload-zone:hover {
-    border-color: var(--green);
-    background: rgba(42,122,75,0.04);
-  }
-
-  .upload-zone input {
-    position: absolute;
-    inset: 0;
-    opacity: 0;
-    cursor: pointer;
-    width: 100%;
-    height: 100%;
-  }
-
-  .upload-type {
-    font-family: 'DM Mono', monospace;
-    font-size: 9px;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    color: var(--green-light);
-    margin-bottom: 8px;
-  }
-
-  .upload-icon { font-size: 22px; margin-bottom: 10px; display: block; }
-
-  .upload-name {
-    font-size: 13px;
-    font-weight: 700;
-    margin-bottom: 4px;
-  }
-
-  .upload-hint {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    color: var(--muted);
-    line-height: 1.4;
-  }
-
-  .upload-zone.has-file {
-    border-color: var(--green);
-    background: rgba(42,122,75,0.05);
-  }
-
-  .upload-zone.has-file .upload-hint { color: var(--green-light); }
-
-  .brand-row {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-  }
-
-  .brand-btn {
-    padding: 6px 14px;
-    border: 1px solid var(--border2);
-    background: transparent;
-    color: #666;
-    font-family: 'Syne', sans-serif;
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: all 0.15s;
-  }
-
-  .brand-btn:hover { color: #999; border-color: #444; }
-  .brand-btn.active { border-color: var(--green); color: var(--white); background: rgba(42,122,75,0.1); }
-
-  .process-row {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-  }
-
-  .process-btn {
-    padding: 12px 28px;
-    background: var(--green);
-    border: none;
-    color: white;
-    font-family: 'Syne', sans-serif;
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: opacity 0.15s;
-  }
-
-  .process-btn:hover { opacity: 0.85; }
-  .process-btn:disabled { background: var(--border2); color: var(--muted); cursor: not-allowed; opacity: 1; }
-
-  .process-hint {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    color: var(--muted);
-  }
-
-  .stats-row {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 12px;
-    margin-bottom: 20px;
-  }
-
-  .stat-box {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    padding: 16px 20px;
-    position: relative;
-  }
-
-  .stat-box::after {
-    content: '';
-    position: absolute;
-    bottom: 0; left: 0; right: 0;
-    height: 2px;
-  }
-
-  .stat-box.s-red::after { background: var(--red); }
-  .stat-box.s-green::after { background: var(--green-light); }
-  .stat-box.s-amber::after { background: var(--amber); }
-  .stat-box.s-blue::after { background: var(--blue); }
-
-  .stat-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 9px;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 8px;
-  }
-
-  .stat-num {
-    font-size: 30px;
-    font-weight: 800;
-    line-height: 1;
-  }
-
-  .stat-num.c-red { color: var(--red); }
-  .stat-num.c-green { color: var(--green-light); }
-  .stat-num.c-amber { color: var(--amber); }
-  .stat-num.c-blue { color: var(--blue); }
-
-  .table-wrap { overflow-x: auto; }
-
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-  }
-
-  thead tr { border-bottom: 1px solid var(--border2); }
-
-  th {
-    text-align: left;
-    padding: 9px 14px;
-    font-size: 9px;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--muted);
-    font-weight: 500;
-    white-space: nowrap;
-  }
-
-  td {
-    padding: 11px 14px;
-    border-bottom: 1px solid #161616;
-    color: #bbb;
-    vertical-align: middle;
-  }
-
-  tr:last-child td { border-bottom: none; }
-  tbody tr:hover td { background: #161616; }
-
-  .td-site {
-    font-family: 'Syne', sans-serif;
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--white);
-  }
-
-  .pill {
-    display: inline-block;
-    padding: 3px 8px;
-    font-size: 9px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    font-weight: 600;
-    border: 1px solid;
-    white-space: nowrap;
-    font-family: 'DM Mono', monospace;
-  }
-
-  .pill-red { color: var(--red); border-color: rgba(214,60,47,0.35); background: rgba(214,60,47,0.07); }
-  .pill-green { color: var(--green-light); border-color: rgba(74,173,114,0.35); background: rgba(74,173,114,0.07); }
-  .pill-amber { color: var(--amber); border-color: rgba(201,124,26,0.35); background: rgba(201,124,26,0.07); }
-  .pill-blue { color: var(--blue); border-color: rgba(74,158,255,0.35); background: rgba(74,158,255,0.07); }
-  .pill-grey { color: #555; border-color: #333; background: transparent; }
-
-  .empty {
-    text-align: center;
-    padding: 56px 20px;
-    border: 1px dashed var(--border);
-    margin-bottom: 20px;
-  }
-
-  .empty-icon { font-size: 28px; margin-bottom: 12px; }
-  .empty-title { font-size: 13px; font-weight: 700; color: var(--muted); margin-bottom: 5px; }
-  .empty-sub { font-family: 'DM Mono', monospace; font-size: 10px; color: #444; }
-
-  .flags-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 14px;
-  }
-
-  .flag-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    padding: 20px 22px;
-    border-left: 3px solid var(--border2);
-  }
-
-  .flag-card.both { border-left-color: var(--amber); }
-  .flag-card.pkg-only { border-left-color: var(--red); }
-  .flag-card.stock-only { border-left-color: var(--blue); }
-
-  .flag-site {
-    font-size: 15px;
-    font-weight: 700;
-    margin-bottom: 3px;
-  }
-
-  .flag-brand {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    color: var(--muted);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    margin-bottom: 14px;
-  }
-
-  .flag-issues { display: flex; flex-direction: column; gap: 7px; }
-
-  .flag-issue {
-    display: flex;
-    align-items: flex-start;
-    gap: 8px;
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    color: #888;
-    line-height: 1.4;
-  }
-
-  .fdot {
-    width: 5px; height: 5px;
-    border-radius: 50%;
-    flex-shrink: 0;
-    margin-top: 4px;
-  }
-
-  .fdot.red { background: var(--red); }
-  .fdot.blue { background: var(--blue); }
-  .fdot.amber { background: var(--amber); }
-
-  .week-bar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 20px;
-  }
-
-  .week-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    color: var(--muted);
-  }
-
-  .week-label strong { color: var(--white); }
-
-  .notice {
-    padding: 10px 14px;
-    background: rgba(201,124,26,0.06);
-    border: 1px solid rgba(201,124,26,0.2);
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    color: var(--amber);
-    margin-bottom: 18px;
-    line-height: 1.7;
-  }
-
-  @media (max-width: 768px) {
-    .upload-grid, .stats-row { grid-template-columns: 1fr; }
-    main { padding: 24px 16px; }
-    header { padding: 0 16px; }
+  body { font-family: 'Syne', sans-serif; background: var(--black); color: var(--white); min-height: 100vh; }
+
+  /* LOGIN */
+  #login-screen { min-height:100vh; display:flex; align-items:center; justify-content:center; }
+  .login-box { background:var(--surface); border:1px solid var(--border); padding:48px; width:360px; position:relative; }
+  .login-box::before { content:''; position:absolute; top:0;left:0;right:0; height:2px; background:var(--green); }
+  .login-logo { font-family:'DM Mono',monospace; font-size:10px; letter-spacing:.25em; text-transform:uppercase; color:var(--gl); margin-bottom:28px; }
+  .login-title { font-size:30px; font-weight:800; line-height:1; margin-bottom:6px; }
+  .login-sub { font-family:'DM Mono',monospace; font-size:11px; color:var(--muted); margin-bottom:36px; }
+  .login-box label { display:block; font-family:'DM Mono',monospace; font-size:10px; letter-spacing:.18em; text-transform:uppercase; color:var(--muted); margin-bottom:8px; }
+  .login-box input { width:100%; padding:13px 15px; background:var(--surface2); border:1px solid var(--border2); color:var(--white); font-family:'DM Mono',monospace; font-size:14px; outline:none; margin-bottom:20px; transition:border-color .15s; }
+  .login-box input:focus { border-color:var(--green); }
+  .login-btn { width:100%; padding:13px; background:var(--green); border:none; color:white; font-family:'Syne',sans-serif; font-size:13px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; cursor:pointer; transition:opacity .15s; }
+  .login-btn:hover { opacity:.85; }
+  .login-error { margin-top:14px; font-family:'DM Mono',monospace; font-size:11px; color:var(--red); display:none; }
+
+  /* APP */
+  #app { display:none; }
+  header { background:var(--surface); border-bottom:1px solid var(--border); padding:0 32px; display:flex; align-items:center; justify-content:space-between; height:56px; position:sticky; top:0; z-index:100; }
+  .brand-mark { width:26px;height:26px; background:var(--green); display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:800; }
+  .brand-name { font-size:12px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:#888; margin-left:10px; }
+  .header-brand { display:flex; align-items:center; }
+  .header-nav { display:flex; gap:2px; }
+  .nav-btn { padding:7px 18px; background:transparent; border:1px solid transparent; color:var(--muted); font-family:'Syne',sans-serif; font-size:11px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; cursor:pointer; transition:all .15s; }
+  .nav-btn:hover { color:var(--white); }
+  .nav-btn.active { color:var(--white); border-color:var(--border2); background:var(--surface2); }
+  .nav-badge { display:inline-block; width:6px;height:6px; border-radius:50%; background:var(--red); margin-left:6px; vertical-align:middle; visibility:hidden; }
+  .nav-badge.show { visibility:visible; }
+  .header-right { display:flex; align-items:center; gap:14px; }
+  .header-date { font-family:'DM Mono',monospace; font-size:10px; color:#444; }
+  .logout-btn { background:none; border:1px solid var(--border2); color:#555; font-family:'DM Mono',monospace; font-size:10px; padding:5px 10px; cursor:pointer; transition:all .15s; }
+  .logout-btn:hover { border-color:var(--muted); color:#999; }
+
+  main { padding:40px 32px; max-width:1100px; margin:0 auto; }
+  .tab-content { display:none; }
+  .tab-content.active { display:block; }
+
+  .page-header { margin-bottom:32px; padding-bottom:20px; border-bottom:1px solid var(--border); }
+  .page-tag { font-family:'DM Mono',monospace; font-size:10px; letter-spacing:.22em; text-transform:uppercase; color:var(--gl); margin-bottom:8px; }
+  .page-title { font-size:28px; font-weight:800; line-height:1; margin-bottom:6px; }
+  .page-desc { font-family:'DM Mono',monospace; font-size:11px; color:var(--muted); }
+
+  .card { background:var(--surface); border:1px solid var(--border); padding:24px 28px; margin-bottom:18px; }
+  .card-label { font-family:'DM Mono',monospace; font-size:10px; letter-spacing:.18em; text-transform:uppercase; color:var(--muted); margin-bottom:16px; display:flex; align-items:center; gap:10px; }
+  .card-label::after { content:''; flex:1; height:1px; background:var(--border); }
+
+  .upload-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-bottom:22px; }
+  .upload-zone { border:1px dashed var(--border2); padding:28px 20px; text-align:center; cursor:pointer; transition:all .2s; position:relative; }
+  .upload-zone:hover { border-color:var(--green); background:rgba(42,122,75,.04); }
+  .upload-zone input { position:absolute; inset:0; opacity:0; cursor:pointer; width:100%; height:100%; }
+  .upload-type { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:.22em; text-transform:uppercase; color:var(--gl); margin-bottom:8px; }
+  .upload-icon { font-size:22px; margin-bottom:10px; display:block; }
+  .upload-name { font-size:13px; font-weight:700; margin-bottom:4px; }
+  .upload-hint { font-family:'DM Mono',monospace; font-size:10px; color:var(--muted); line-height:1.4; }
+  .upload-zone.has-file { border-color:var(--green); background:rgba(42,122,75,.05); }
+  .upload-zone.has-file .upload-hint { color:var(--gl); }
+
+  .brand-row { display:flex; gap:8px; flex-wrap:wrap; }
+  .brand-btn { padding:6px 14px; border:1px solid var(--border2); background:transparent; color:#666; font-family:'Syne',sans-serif; font-size:11px; font-weight:600; letter-spacing:.06em; text-transform:uppercase; cursor:pointer; transition:all .15s; }
+  .brand-btn:hover { color:#999; border-color:#444; }
+  .brand-btn.active { border-color:var(--green); color:var(--white); background:rgba(42,122,75,.1); }
+
+  .process-row { display:flex; align-items:center; gap:16px; }
+  .process-btn { padding:12px 28px; background:var(--green); border:none; color:white; font-family:'Syne',sans-serif; font-size:12px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; cursor:pointer; transition:opacity .15s; }
+  .process-btn:hover { opacity:.85; }
+  .process-btn:disabled { background:var(--border2); color:var(--muted); cursor:not-allowed; opacity:1; }
+  .process-hint { font-family:'DM Mono',monospace; font-size:10px; color:var(--muted); }
+
+  .stats-row { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:20px; }
+  .stat-box { background:var(--surface); border:1px solid var(--border); padding:16px 20px; position:relative; }
+  .stat-box::after { content:''; position:absolute; bottom:0;left:0;right:0; height:2px; }
+  .stat-box.s-red::after { background:var(--red); }
+  .stat-box.s-green::after { background:var(--gl); }
+  .stat-box.s-amber::after { background:var(--amber); }
+  .stat-box.s-blue::after { background:var(--blue); }
+  .stat-label { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:.18em; text-transform:uppercase; color:var(--muted); margin-bottom:8px; }
+  .stat-num { font-size:30px; font-weight:800; line-height:1; }
+  .stat-num.c-red { color:var(--red); } .stat-num.c-green { color:var(--gl); }
+  .stat-num.c-amber { color:var(--amber); } .stat-num.c-blue { color:var(--blue); }
+
+  .table-wrap { overflow-x:auto; }
+  table { width:100%; border-collapse:collapse; font-family:'DM Mono',monospace; font-size:11px; }
+  thead tr { border-bottom:1px solid var(--border2); }
+  th { text-align:left; padding:9px 14px; font-size:9px; letter-spacing:.18em; text-transform:uppercase; color:var(--muted); font-weight:500; white-space:nowrap; }
+  td { padding:11px 14px; border-bottom:1px solid #161616; color:#bbb; vertical-align:middle; }
+  tr:last-child td { border-bottom:none; }
+  tbody tr:hover td { background:#161616; }
+  .td-site { font-family:'Syne',sans-serif; font-size:13px; font-weight:600; color:var(--white); }
+
+  .pill { display:inline-block; padding:3px 8px; font-size:9px; letter-spacing:.1em; text-transform:uppercase; font-weight:600; border:1px solid; white-space:nowrap; font-family:'DM Mono',monospace; }
+  .pill-red { color:var(--red); border-color:rgba(214,60,47,.35); background:rgba(214,60,47,.07); }
+  .pill-green { color:var(--gl); border-color:rgba(74,173,114,.35); background:rgba(74,173,114,.07); }
+  .pill-amber { color:var(--amber); border-color:rgba(201,124,26,.35); background:rgba(201,124,26,.07); }
+  .pill-grey { color:#555; border-color:#333; background:transparent; }
+
+  .empty { text-align:center; padding:56px 20px; border:1px dashed var(--border); margin-bottom:20px; }
+  .empty-icon { font-size:28px; margin-bottom:12px; }
+  .empty-title { font-size:13px; font-weight:700; color:var(--muted); margin-bottom:5px; }
+  .empty-sub { font-family:'DM Mono',monospace; font-size:10px; color:#444; }
+
+  .flags-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:14px; }
+  .flag-card { background:var(--surface); border:1px solid var(--border); padding:20px 22px; border-left:3px solid var(--border2); }
+  .flag-card.both { border-left-color:var(--amber); }
+  .flag-card.pkg-only { border-left-color:var(--red); }
+  .flag-card.stock-only { border-left-color:var(--blue); }
+  .flag-site { font-size:15px; font-weight:700; margin-bottom:3px; }
+  .flag-brand { font-family:'DM Mono',monospace; font-size:10px; color:var(--muted); letter-spacing:.08em; text-transform:uppercase; margin-bottom:14px; }
+  .flag-issues { display:flex; flex-direction:column; gap:7px; }
+  .flag-issue { display:flex; align-items:flex-start; gap:8px; font-family:'DM Mono',monospace; font-size:10px; color:#888; line-height:1.4; }
+  .fdot { width:5px;height:5px; border-radius:50%; flex-shrink:0; margin-top:4px; }
+  .fdot.red { background:var(--red); } .fdot.blue { background:var(--blue); } .fdot.amber { background:var(--amber); }
+
+  .week-bar { display:flex; align-items:center; justify-content:space-between; margin-bottom:20px; }
+  .week-label { font-family:'DM Mono',monospace; font-size:11px; color:var(--muted); }
+  .week-label strong { color:var(--white); }
+
+  .notice { padding:10px 14px; background:rgba(201,124,26,.06); border:1px solid rgba(201,124,26,.2); font-family:'DM Mono',monospace; font-size:10px; color:var(--amber); margin-bottom:18px; line-height:1.7; }
+  .info { padding:10px 14px; background:rgba(74,158,255,.05); border:1px solid rgba(74,158,255,.2); font-family:'DM Mono',monospace; font-size:10px; color:var(--blue); margin-bottom:18px; line-height:1.7; }
+
+  .core-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:10px; margin-top:4px; }
+  .core-item { background:var(--surface2); border:1px solid var(--border2); padding:12px 14px; }
+  .core-item-name { font-size:12px; font-weight:600; margin-bottom:4px; }
+  .core-item-meta { font-family:'DM Mono',monospace; font-size:10px; color:var(--muted); }
+
+  @media(max-width:768px) {
+    .upload-grid,.stats-row { grid-template-columns:1fr; }
+    main { padding:24px 16px; }
+    header { padding:0 16px; }
   }
 </style>
 </head>
 <body>
 
-<!-- LOGIN -->
 <div id="login-screen">
   <div class="login-box">
     <div class="login-logo">Growth Kitchen</div>
@@ -620,7 +158,6 @@
   </div>
 </div>
 
-<!-- APP -->
 <div id="app">
   <header>
     <div class="header-brand">
@@ -628,11 +165,10 @@
       <div class="brand-name">Compliance</div>
     </div>
     <nav class="header-nav">
-      <button class="nav-btn active" onclick="goTab('upload', this)">Upload</button>
-      <button class="nav-btn" onclick="goTab('database', this)">Database</button>
-      <button class="nav-btn" onclick="goTab('flags', this)">
-        Weekly Flags <span class="nav-badge" id="flags-badge"></span>
-      </button>
+      <button class="nav-btn active" onclick="goTab('upload',this)">Upload</button>
+      <button class="nav-btn" onclick="goTab('database',this)">Database</button>
+      <button class="nav-btn" onclick="goTab('flags',this)">Weekly Flags <span class="nav-badge" id="flags-badge"></span></button>
+      <button class="nav-btn" onclick="goTab('reference',this)">Core Items</button>
     </nav>
     <div class="header-right">
       <span class="header-date" id="hdr-date"></span>
@@ -642,25 +178,25 @@
 
   <main>
 
-    <!-- UPLOAD TAB -->
+    <!-- UPLOAD -->
     <div class="tab-content active" id="tab-upload">
       <div class="page-header">
         <div class="page-tag">01 — Upload</div>
         <div class="page-title">Import Reports</div>
-        <div class="page-desc">// upload stock, sales and mystery diner CSVs to process</div>
+        <div class="page-desc">// upload bidfood history (.xlsx), gmv export (.csv), and mystery diner audit (.csv)</div>
       </div>
 
       <div class="notice">
-        Expected columns — <strong>Stock:</strong> site_name, item, quantity &nbsp;·&nbsp;
-        <strong>Sales:</strong> site_name, item, units_sold &nbsp;·&nbsp;
-        <strong>Mystery Diner:</strong> site_name, visit_date, brand, grab_bag, box, greaseproof_paper, wrap_tube, overall &nbsp;(values: pass / fail / n/a)
+        <strong>Bidfood History Report</strong> — download the weekly "Previous Purchases – History Report" from Bidfood as .xlsx. No changes needed.<br>
+        <strong>GMV Export</strong> — download the week-on-week GMV CSV from the GK dashboard.<br>
+        <strong>Mystery Diner CSV</strong> — export from the Gemini Gem after auditing mystery diner reports.
       </div>
 
       <div class="card">
-        <div class="card-label">Brand (applies to stock &amp; sales)</div>
+        <div class="card-label">Brand</div>
         <div class="brand-row">
-          <button class="brand-btn active" onclick="setBrand('Coqfighter',this)">Coqfighter</button>
-          <button class="brand-btn" onclick="setBrand('The Athenian',this)">The Athenian</button>
+          <button class="brand-btn active" onclick="setBrand('The Athenian',this)">The Athenian</button>
+          <button class="brand-btn" onclick="setBrand('Coqfighter',this)">Coqfighter</button>
           <button class="brand-btn" onclick="setBrand('GBK',this)">GBK</button>
           <button class="brand-btn" onclick="setBrand('Tortilla',this)">Tortilla</button>
         </div>
@@ -669,26 +205,26 @@
       <div class="card">
         <div class="card-label">Upload Files</div>
         <div class="upload-grid">
-          <div class="upload-zone" id="zone-stock">
-            <input type="file" accept=".csv" onchange="loadFile(this,'stock')">
-            <div class="upload-type">Stock</div>
+          <div class="upload-zone" id="zone-bidfood">
+            <input type="file" accept=".xlsx,.xls" onchange="loadFile(this,'bidfood')">
+            <div class="upload-type">Stock Orders</div>
             <span class="upload-icon">📦</span>
-            <div class="upload-name">Ordering Report</div>
-            <div class="upload-hint" id="hint-stock">Drop CSV or click to browse</div>
+            <div class="upload-name">Bidfood History Report</div>
+            <div class="upload-hint" id="hint-bidfood">Drop .xlsx or click to browse</div>
           </div>
-          <div class="upload-zone" id="zone-sales">
-            <input type="file" accept=".csv" onchange="loadFile(this,'sales')">
-            <div class="upload-type">Sales</div>
+          <div class="upload-zone" id="zone-gmv">
+            <input type="file" accept=".csv" onchange="loadFile(this,'gmv')">
+            <div class="upload-type">Sales / GMV</div>
             <span class="upload-icon">📊</span>
-            <div class="upload-name">Sales Report</div>
-            <div class="upload-hint" id="hint-sales">Drop CSV or click to browse</div>
+            <div class="upload-name">GMV Week-on-Week</div>
+            <div class="upload-hint" id="hint-gmv">Drop .csv or click to browse</div>
           </div>
           <div class="upload-zone" id="zone-mystery">
             <input type="file" accept=".csv" onchange="loadFile(this,'mystery')">
             <div class="upload-type">Mystery Diner</div>
             <span class="upload-icon">🔍</span>
             <div class="upload-name">Gemini Audit CSV</div>
-            <div class="upload-hint" id="hint-mystery">Drop CSV or click to browse</div>
+            <div class="upload-hint" id="hint-mystery">Drop .csv or click to browse</div>
           </div>
         </div>
         <div class="process-row">
@@ -702,20 +238,18 @@
       </div>
     </div>
 
-    <!-- DATABASE TAB -->
+    <!-- DATABASE -->
     <div class="tab-content" id="tab-database">
       <div class="page-header">
         <div class="page-tag">02 — Database</div>
         <div class="page-title">Site Summary</div>
-        <div class="page-desc">// combined view — one row per site across all data sources</div>
+        <div class="page-desc">// one row per site — stock compliance, missing core items, packaging, gmv</div>
       </div>
-
       <div id="db-empty" class="empty">
         <div class="empty-icon">🗄</div>
         <div class="empty-title">No data loaded</div>
         <div class="empty-sub">Upload and process reports first</div>
       </div>
-
       <div id="db-content" style="display:none">
         <div class="stats-row" id="db-stats"></div>
         <div class="card" style="padding:0">
@@ -724,10 +258,9 @@
               <thead>
                 <tr>
                   <th>Site</th>
-                  <th>Brand</th>
+                  <th>GMV (last week)</th>
                   <th>Stock</th>
-                  <th>Over lines</th>
-                  <th>Under lines</th>
+                  <th>Missing core items</th>
                   <th>Packaging</th>
                   <th>Failed items</th>
                   <th>MD visit date</th>
@@ -740,20 +273,18 @@
       </div>
     </div>
 
-    <!-- FLAGS TAB -->
+    <!-- FLAGS -->
     <div class="tab-content" id="tab-flags">
       <div class="page-header">
         <div class="page-tag">03 — Weekly Flags</div>
         <div class="page-title">Sites Needing Attention</div>
-        <div class="page-desc">// every site with any failure in the current dataset</div>
+        <div class="page-desc">// active sites with missing core items or packaging failures</div>
       </div>
-
       <div id="flags-empty" class="empty">
         <div class="empty-icon">✅</div>
         <div class="empty-title">No flags</div>
         <div class="empty-sub">No failures detected — or no data loaded yet</div>
       </div>
-
       <div id="flags-content" style="display:none">
         <div class="week-bar">
           <div class="week-label">Week commencing: <strong id="flags-wc"></strong></div>
@@ -763,36 +294,66 @@
       </div>
     </div>
 
+    <!-- REFERENCE -->
+    <div class="tab-content" id="tab-reference">
+      <div class="page-header">
+        <div class="page-tag">04 — Core Items</div>
+        <div class="page-title">Athenian Core Item Dictionary</div>
+        <div class="page-desc">// items flagged if not ordered by an active site in the weekly report</div>
+      </div>
+      <div class="info">
+        A site is considered <strong>active</strong> if it has £100+ GMV in the most recent week of the GMV export. Inactive or paused sites are excluded from stock flags.
+      </div>
+      <div class="card">
+        <div class="card-label">Athenian — Core Items (9)</div>
+        <div class="core-grid" id="core-grid"></div>
+      </div>
+    </div>
+
   </main>
 </div>
 
 <script>
+// ── CORE ITEM DICTIONARY ──
+// Each entry: label, bidfood product codes that satisfy it, shelf life note
+const CORE_ITEMS = {
+  'The Athenian': [
+    { label: 'Chicken Gyros',        codes: ['32757','23609','32294'], note: 'Any variant (frozen/halal/vegan)' },
+    { label: 'Pitta Bread',          codes: ['83896'],                 note: 'Choriatiki pitta' },
+    { label: 'Athenian Sauce',       codes: ['04221'],                 note: '2.5kg tub' },
+    { label: 'Chilli Mayo',          codes: ['26253'],                 note: 'Athenian branded' },
+    { label: 'Tzatziki Sauce',       codes: ['04229'],                 note: '~2 month shelf life — may skip weeks' },
+    { label: 'Gyros Sauce',          codes: ['28907'],                 note: 'Athenian branded' },
+    { label: 'Salted Caramel Brownie', codes: ['61122'],               note: 'Vegan dessert' },
+    { label: 'Courgette Fritters',   codes: ['99998'],                 note: 'The Athenian branded' },
+    { label: 'Tomato Fritters',      codes: ['99997'],                 note: 'The Athenian branded' },
+  ]
+};
+
 const PASSWORD = 'kitchen2026';
 
 const S = {
-  brand: 'Coqfighter',
-  raw: { stock: null, sales: null, mystery: null },
+  brand: 'The Athenian',
+  raw: { bidfood: null, gmv: null, mystery: null },
   sites: {},
+  bidfoodWeekLabel: ''
 };
 
-// LOGIN
+// ── LOGIN ──
 function doLogin() {
   if (document.getElementById('pw-input').value === PASSWORD) {
     document.getElementById('login-screen').style.display = 'none';
     document.getElementById('app').style.display = 'block';
     document.getElementById('hdr-date').textContent =
-      new Date().toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' });
+      new Date().toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
+    renderCoreItems();
   } else {
     document.getElementById('login-err').style.display = 'block';
     document.getElementById('pw-input').value = '';
     document.getElementById('pw-input').focus();
   }
 }
-
-document.getElementById('pw-input').addEventListener('keydown', e => {
-  if (e.key === 'Enter') doLogin();
-});
-
+document.getElementById('pw-input').addEventListener('keydown', e => { if(e.key==='Enter') doLogin(); });
 function doLogout() {
   document.getElementById('login-screen').style.display = 'flex';
   document.getElementById('app').style.display = 'none';
@@ -800,203 +361,305 @@ function doLogout() {
   document.getElementById('login-err').style.display = 'none';
 }
 
-// TABS
+// ── TABS ──
 function goTab(id, btn) {
   document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
   document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById('tab-' + id).classList.add('active');
+  document.getElementById('tab-'+id).classList.add('active');
   btn.classList.add('active');
-  if (id === 'database') renderDatabase();
-  if (id === 'flags') renderFlags();
+  if (id==='database') renderDatabase();
+  if (id==='flags') renderFlags();
 }
 
-// BRAND
 function setBrand(brand, btn) {
   S.brand = brand;
   document.querySelectorAll('.brand-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
 }
 
-// FILE LOAD
+// ── FILE LOADING ──
 function loadFile(input, type) {
   const file = input.files[0];
   if (!file) return;
-  const reader = new FileReader();
-  reader.onload = e => {
-    S.raw[type] = parseCSV(e.target.result);
-    document.getElementById('zone-' + type).classList.add('has-file');
-    document.getElementById('hint-' + type).textContent = '✓ ' + file.name;
-    updateProcessBtn();
-  };
-  reader.readAsText(file);
-}
-
-function updateProcessBtn() {
-  const any = S.raw.stock || S.raw.sales || S.raw.mystery;
-  document.getElementById('process-btn').disabled = !any;
-  if (any) {
-    const parts = [];
-    if (S.raw.stock) parts.push('stock');
-    if (S.raw.sales) parts.push('sales');
-    if (S.raw.mystery) parts.push('mystery diner');
-    document.getElementById('process-hint').textContent = 'Ready: ' + parts.join(', ');
+  if (type === 'bidfood') {
+    // Parse .xlsx in browser using SheetJS CDN
+    const reader = new FileReader();
+    reader.onload = e => {
+      try {
+        const data = new Uint8Array(e.target.result);
+        const wb = XLSX.read(data, {type:'array'});
+        const ws = wb.Sheets[wb.SheetNames[0]];
+        const raw = XLSX.utils.sheet_to_json(ws, {header:1, defval:''});
+        S.raw.bidfood = raw;
+        // Extract date range from rows 1-2
+        const r1 = String(raw[1]?.[0]||'');
+        const r2 = String(raw[2]?.[0]||'');
+        const startMatch = r1.match(/(\d{2}\/\d{2}\/\d{4})/);
+        const endMatch = r2.match(/(\d{2}\/\d{2}\/\d{4})/);
+        S.bidfoodWeekLabel = (startMatch?startMatch[1]:'?') + ' – ' + (endMatch?endMatch[1]:'?');
+        document.getElementById('zone-bidfood').classList.add('has-file');
+        document.getElementById('hint-bidfood').textContent = '✓ '+file.name+' ('+S.bidfoodWeekLabel+')';
+      } catch(err) {
+        document.getElementById('hint-bidfood').textContent = '⚠ Error reading file: '+err.message;
+      }
+      updateProcessBtn();
+    };
+    reader.readAsArrayBuffer(file);
+  } else {
+    const reader = new FileReader();
+    reader.onload = e => {
+      S.raw[type] = parseCSV(e.target.result);
+      document.getElementById('zone-'+type).classList.add('has-file');
+      document.getElementById('hint-'+type).textContent = '✓ '+file.name;
+      updateProcessBtn();
+    };
+    reader.readAsText(file);
   }
 }
 
-// CSV PARSER
+function updateProcessBtn() {
+  const any = S.raw.bidfood || S.raw.gmv || S.raw.mystery;
+  document.getElementById('process-btn').disabled = !any;
+  if (any) {
+    const parts = [];
+    if (S.raw.bidfood) parts.push('bidfood');
+    if (S.raw.gmv) parts.push('gmv');
+    if (S.raw.mystery) parts.push('mystery diner');
+    document.getElementById('process-hint').textContent = 'Ready: '+parts.join(', ');
+  }
+}
+
+// ── CSV PARSER ──
 function parseCSV(text) {
   const lines = text.trim().split('\n').filter(l => l.trim());
   if (lines.length < 2) return [];
   const headers = lines[0].split(',').map(h => h.trim().toLowerCase().replace(/"/g,'').replace(/\s+/g,'_'));
   return lines.slice(1).map(line => {
-    const vals = []; let cur = '', inQ = false;
+    const vals=[]; let cur='', inQ=false;
     for (const ch of line) {
-      if (ch === '"') { inQ = !inQ; continue; }
-      if (ch === ',' && !inQ) { vals.push(cur.trim()); cur = ''; continue; }
-      cur += ch;
+      if (ch==='"'){inQ=!inQ;continue;}
+      if (ch===','&&!inQ){vals.push(cur.trim());cur='';continue;}
+      cur+=ch;
     }
     vals.push(cur.trim());
-    const obj = {};
-    headers.forEach((h, i) => obj[h] = vals[i] || '');
+    const obj={};
+    headers.forEach((h,i)=>obj[h]=vals[i]||'');
     return obj;
-  }).filter(r => Object.values(r).some(v => v));
+  }).filter(r=>Object.values(r).some(v=>v));
 }
 
-function get(row, ...aliases) {
-  for (const a of aliases) if (row[a] !== undefined && row[a] !== '') return row[a];
+function get(row,...aliases) {
+  for (const a of aliases) if (row[a]!==undefined&&row[a]!=='') return row[a];
   return '';
 }
 
-// PROCESS
+// ── PROCESS ──
 function processAll() {
   S.sites = {};
-  if (S.raw.stock || S.raw.sales) processStock();
+  if (S.raw.gmv) processGMV();
+  if (S.raw.bidfood) processBidfood();
   if (S.raw.mystery) processMystery();
   renderUploadSummary();
   updateFlagsBadge();
 }
 
-function processStock() {
-  const orders = S.raw.stock || [];
-  const sales = S.raw.sales || [];
+// Build GMV lookup: store name → last week GMV
+function processGMV() {
+  const rows = S.raw.gmv;
+  if (!rows || !rows.length) return;
+  // Find brand prefix to filter
+  const brandPrefix = S.brand === 'The Athenian' ? 'athenian' : S.brand.toLowerCase();
+  rows.forEach(row => {
+    const store = get(row,'store','site','site_name','location').trim();
+    if (!store) return;
+    if (!store.toLowerCase().includes(brandPrefix)) return;
+    // Get the most recent week column (last column with a date header)
+    const keys = Object.keys(row).filter(k => k !== 'store' && k !== 'account_manager');
+    const lastKey = keys[keys.length - 1];
+    const gmvRaw = get(row, lastKey);
+    const gmv = parseFloat(String(gmvRaw).replace(/,/g,'')) || 0;
+    // Extract clean site name: "The Athenian - Derby" → "Derby"
+    const nameParts = store.split(' - ');
+    const siteName = nameParts.length > 1 ? nameParts.slice(1).join(' - ').trim() : store;
+    if (!S.sites[siteName]) S.sites[siteName] = { brand: S.brand, gmv: 0, missingCore: [], orderedCodes: new Set(), pkgResult: null, pkgFailed: [], mdDate: null };
+    S.sites[siteName].gmv = gmv;
+    S.sites[siteName].fullStoreName = store;
+  });
+}
 
-  const oMap = {};
-  orders.forEach(r => {
-    const site = get(r,'site_name','site','location');
-    const item = get(r,'item','product','sku');
-    const qty = parseFloat(get(r,'quantity','qty','ordered','amount') || 0);
-    if (site && item) oMap[site+'||'+item] = qty;
+// Process Bidfood .xlsx: map accounts to sites, collect ordered product codes
+function processBidfood() {
+  const raw = S.raw.bidfood;
+  if (!raw) return;
+
+  // Build compliance master lookup from the embedded data
+  // Row 3 (index 3) is the header row: Product Code, Brand, Description, Pack Size, Ctn Qty, UOM, Qty, Last Price Paid, Total ex VAT, Account
+  const dataRows = raw.slice(4); // skip 3 header rows + column header row
+
+  // Collect what each account ordered
+  const accountOrders = {}; // account string → Set of product codes
+  dataRows.forEach(row => {
+    const code = String(row[0]||'').trim();
+    const account = String(row[9]||'').trim();
+    if (!code || !account) return;
+    if (!accountOrders[account]) accountOrders[account] = new Set();
+    accountOrders[account].add(code);
   });
 
-  const sMap = {};
-  sales.forEach(r => {
-    const site = get(r,'site_name','site','location');
-    const item = get(r,'item','product','sku');
-    const sold = parseFloat(get(r,'units_sold','sales','sold','qty_sold') || 0);
-    if (site && item) sMap[site+'||'+item] = sold;
+  // Now we need to match account names → site names
+  // We use a fuzzy match: look for the brand name in the account string
+  // For Athenian: match accounts that contain 'ATHENIAN' or are known Athenian partners
+  // We'll do this by cross-referencing with existing GMV sites, plus direct matching
+  const brandKey = S.brand === 'The Athenian' ? 'athenian' : S.brand.toLowerCase();
+
+  Object.entries(accountOrders).forEach(([account, codes]) => {
+    // Try to find a matching site from GMV data
+    let matchedSite = null;
+
+    // First: check if any existing GMV site's full store name contains this account's number
+    const accountNum = account.match(/\d{5,}/)?.[0];
+    if (accountNum) {
+      // Try to match against known account-to-site mappings
+      // We embed a subset of the compliance master here
+      matchedSite = COMPLIANCE_MASTER[account] || null;
+    }
+
+    // If no compliance master match, try fuzzy name match against GMV sites
+    if (!matchedSite) {
+      const accountClean = account.replace(/\s*-\s*\d+$/, '').toLowerCase().trim();
+      for (const siteName of Object.keys(S.sites)) {
+        const siteClean = siteName.toLowerCase();
+        // Check if the account name contains meaningful words from the site name
+        const siteWords = siteClean.split(/\s+/).filter(w => w.length > 3);
+        const matches = siteWords.filter(w => accountClean.includes(w));
+        if (matches.length >= 1 && accountClean.includes(brandKey)) {
+          matchedSite = siteName;
+          break;
+        }
+      }
+    }
+
+    // If still no match but account contains the brand name, create a new site entry
+    if (!matchedSite && account.toLowerCase().includes(brandKey)) {
+      const cleanName = account.replace(/\s*-\s*\d+$/, '').replace(/ATHENIAN\s*(THE\s*)?[-–]?\s*/i, '').trim();
+      matchedSite = cleanName || account;
+      if (!S.sites[matchedSite]) S.sites[matchedSite] = { brand: S.brand, gmv: 0, missingCore: [], orderedCodes: new Set(), pkgResult: null, pkgFailed: [], mdDate: null };
+    }
+
+    if (matchedSite && S.sites[matchedSite]) {
+      codes.forEach(c => S.sites[matchedSite].orderedCodes.add(c));
+    }
   });
 
-  const keys = new Set([...Object.keys(oMap), ...Object.keys(sMap)]);
-  keys.forEach(k => {
-    const [site, item] = k.split('||');
-    if (!site || !item) return;
-    const ordered = oMap[k] || 0;
-    const sold = sMap[k] || 0;
-    const expected = Math.round(sold * 1.1);
-    const variance = ordered - expected;
-    const pct = expected > 0 ? Math.round((variance / expected) * 100) : 0;
-    const status = Math.abs(pct) <= 10 ? 'ok' : variance > 0 ? 'over' : 'under';
-    if (!S.sites[site]) S.sites[site] = { brand: S.brand, stockLines: [], pkgResult: null, pkgFailed: [], mdDate: null };
-    S.sites[site].stockLines.push({ item, ordered, expected, variance, pct, status });
+  // Now compute missing core items for each site
+  const coreItems = CORE_ITEMS[S.brand] || [];
+  Object.entries(S.sites).forEach(([site, data]) => {
+    if (data.gmv < 100) return; // skip inactive sites
+    data.missingCore = coreItems
+      .filter(item => !item.codes.some(c => data.orderedCodes.has(c)))
+      .map(item => item.label);
   });
 }
 
 function processMystery() {
-  (S.raw.mystery || []).forEach(r => {
-    const site = get(r,'site_name','site','location');
+  (S.raw.mystery||[]).forEach(r => {
+    const site = get(r,'site_name','site','location').trim();
     if (!site) return;
     const brand = get(r,'brand') || S.brand;
-    const date = get(r,'visit_date','date','visit date');
+    const date = get(r,'visit_date','date');
     const overall = get(r,'overall','result','status').toLowerCase().trim();
     const cols = ['grab_bag','box','greaseproof_paper','wrap_tube'];
-    const failed = cols.filter(c => {
-      const v = get(r, c, c.replace('_',' ')).toLowerCase().trim();
-      return v === 'fail';
-    }).map(c => c.replace(/_/g,' '));
-    if (!S.sites[site]) S.sites[site] = { brand, stockLines: [], pkgResult: null, pkgFailed: [], mdDate: null };
+    const failed = cols.filter(c => get(r,c,c.replace('_',' ')).toLowerCase().trim()==='fail').map(c=>c.replace(/_/g,' '));
+    if (!S.sites[site]) S.sites[site] = {brand,gmv:0,missingCore:[],orderedCodes:new Set(),pkgResult:null,pkgFailed:[],mdDate:null};
     S.sites[site].brand = brand;
-    S.sites[site].pkgResult = overall === 'fail' ? 'fail' : 'pass';
+    S.sites[site].pkgResult = overall==='fail'?'fail':'pass';
     S.sites[site].pkgFailed = failed;
     S.sites[site].mdDate = date;
   });
 }
 
+// ── COMPLIANCE MASTER (embedded subset — Athenian sites with GMV data) ──
+// Format: "BIDFOOD ACCOUNT NAME - NUMBER" → "Clean Site Name"
+// This covers the named Athenian accounts from the Bidfood export
+const COMPLIANCE_MASTER = {
+  'ATHENIAN - CARGO BRISTOL - 67900435': 'Cargo Bristol',
+  'ATHENIAN - VICTORIA - 30147528': 'Victoria',
+  'ATHENIAN - WHITE CITY - 30147527': 'White City',
+  'ATHENIAN EASTLEIGH - 5114168': 'Eastleigh',
+  'ATHENIAN LANCASTER - 25126641': 'Lancaster',
+  'ATHENIAN THE - 24119789': 'Derby',
+  'ATHENIAN THE - 24122588': 'Sheffield',
+  'ATHENIAN THE - 29515898': 'Nottingham',
+  'ATHENIAN WEMBLEY - 68120696': 'Wembley',
+};
+
 function renderUploadSummary() {
-  const el = document.getElementById('upload-result');
-  el.style.display = 'block';
+  document.getElementById('upload-result').style.display = 'block';
   const sites = Object.values(S.sites);
-  const stockFails = sites.filter(s => s.stockLines.some(l => l.status !== 'ok')).length;
-  const pkgFails = sites.filter(s => s.pkgResult === 'fail').length;
-  const totalLines = sites.reduce((a, s) => a + s.stockLines.length, 0);
+  const active = sites.filter(s=>s.gmv>=100).length;
+  const stockFlags = sites.filter(s=>s.gmv>=100&&s.missingCore.length>0).length;
+  const pkgFlags = sites.filter(s=>s.pkgResult==='fail').length;
+  const clean = sites.filter(s=>s.gmv>=100&&s.missingCore.length===0&&s.pkgResult!=='fail').length;
   document.getElementById('upload-stats').innerHTML = `
-    <div class="stat-box s-blue"><div class="stat-label">Sites loaded</div><div class="stat-num c-blue">${Object.keys(S.sites).length}</div></div>
-    <div class="stat-box s-amber"><div class="stat-label">Stock lines</div><div class="stat-num c-amber">${totalLines}</div></div>
-    <div class="stat-box s-red"><div class="stat-label">Stock failures</div><div class="stat-num c-red">${stockFails}</div></div>
-    <div class="stat-box s-red"><div class="stat-label">Pkg fails</div><div class="stat-num c-red">${pkgFails}</div></div>
+    <div class="stat-box s-blue"><div class="stat-label">Active sites</div><div class="stat-num c-blue">${active}</div></div>
+    <div class="stat-box s-red"><div class="stat-label">Missing core items</div><div class="stat-num c-red">${stockFlags}</div></div>
+    <div class="stat-box s-red"><div class="stat-label">Pkg failures</div><div class="stat-num c-red">${pkgFlags}</div></div>
+    <div class="stat-box s-green"><div class="stat-label">Fully clean</div><div class="stat-num c-green">${clean}</div></div>
   `;
 }
 
-// DATABASE
+// ── DATABASE ──
 function renderDatabase() {
   const entries = Object.entries(S.sites);
   if (!entries.length) {
-    document.getElementById('db-empty').style.display = 'block';
-    document.getElementById('db-content').style.display = 'none';
+    document.getElementById('db-empty').style.display='block';
+    document.getElementById('db-content').style.display='none';
     return;
   }
-  document.getElementById('db-empty').style.display = 'none';
-  document.getElementById('db-content').style.display = 'block';
+  document.getElementById('db-empty').style.display='none';
+  document.getElementById('db-content').style.display='block';
 
   const total = entries.length;
-  const stockIssues = entries.filter(([,s]) => s.stockLines.some(l => l.status !== 'ok')).length;
-  const pkgFails = entries.filter(([,s]) => s.pkgResult === 'fail').length;
-  const clean = entries.filter(([,s]) => !s.stockLines.some(l => l.status !== 'ok') && s.pkgResult !== 'fail').length;
-
+  const stockIssues = entries.filter(([,s])=>s.gmv>=100&&s.missingCore.length>0).length;
+  const pkgFails = entries.filter(([,s])=>s.pkgResult==='fail').length;
+  const clean = entries.filter(([,s])=>s.gmv>=100&&s.missingCore.length===0&&s.pkgResult!=='fail').length;
   document.getElementById('db-stats').innerHTML = `
     <div class="stat-box s-blue"><div class="stat-label">Total sites</div><div class="stat-num c-blue">${total}</div></div>
     <div class="stat-box s-red"><div class="stat-label">Stock issues</div><div class="stat-num c-red">${stockIssues}</div></div>
-    <div class="stat-box s-red"><div class="stat-label">Pkg non-compliant</div><div class="stat-num c-red">${pkgFails}</div></div>
+    <div class="stat-box s-red"><div class="stat-label">Pkg failures</div><div class="stat-num c-red">${pkgFails}</div></div>
     <div class="stat-box s-green"><div class="stat-label">Fully clean</div><div class="stat-num c-green">${clean}</div></div>
   `;
 
   document.getElementById('db-tbody').innerHTML = entries
     .sort(([,a],[,b]) => {
-      const sa = (a.stockLines.filter(l=>l.status!=='ok').length) + (a.pkgResult==='fail'?5:0);
-      const sb = (b.stockLines.filter(l=>l.status!=='ok').length) + (b.pkgResult==='fail'?5:0);
-      return sb - sa;
+      const sa=(a.missingCore.length)+(a.pkgResult==='fail'?5:0);
+      const sb=(b.missingCore.length)+(b.pkgResult==='fail'?5:0);
+      return sb-sa;
     })
-    .map(([site, s]) => {
-      const over = s.stockLines.filter(l => l.status === 'over');
-      const under = s.stockLines.filter(l => l.status === 'under');
-      const stockBadge = s.stockLines.length === 0
-        ? '<span class="pill pill-grey">No data</span>'
-        : (over.length || under.length)
-          ? '<span class="pill pill-red">Issues</span>'
-          : '<span class="pill pill-green">OK</span>';
+    .map(([site,s]) => {
+      const inactive = s.gmv < 100;
+      const stockBadge = inactive
+        ? '<span class="pill pill-grey">Inactive</span>'
+        : s.missingCore.length===0
+          ? '<span class="pill pill-green">OK</span>'
+          : '<span class="pill pill-red">Missing items</span>';
       const pkgBadge = !s.pkgResult
         ? '<span class="pill pill-grey">No data</span>'
-        : s.pkgResult === 'pass'
+        : s.pkgResult==='pass'
           ? '<span class="pill pill-green">Pass</span>'
           : '<span class="pill pill-red">Fail</span>';
-      const failStr = s.pkgFailed.length
-        ? s.pkgFailed.map(f=>`<span style="color:#777;font-size:10px;margin-right:3px">${f}</span>`).join('')
+      const missingStr = s.missingCore.length
+        ? s.missingCore.map(m=>`<span style="color:#d63c2f;font-size:10px;margin-right:4px">${m}</span>`).join('')
         : '<span style="color:#444">—</span>';
+      const failStr = s.pkgFailed.length
+        ? s.pkgFailed.map(f=>`<span style="color:#888;font-size:10px;margin-right:3px">${f}</span>`).join('')
+        : '<span style="color:#444">—</span>';
+      const gmvFmt = s.gmv>0 ? '£'+s.gmv.toLocaleString('en-GB',{minimumFractionDigits:0,maximumFractionDigits:0}) : '—';
       return `<tr>
         <td class="td-site">${site}</td>
-        <td style="color:#666">${s.brand}</td>
+        <td style="color:${s.gmv>=100?'var(--gl)':'#555'}">${gmvFmt}</td>
         <td>${stockBadge}</td>
-        <td style="color:${over.length?'var(--red)':'#555'}">${over.length||'—'}</td>
-        <td style="color:${under.length?'var(--blue)':'#555'}">${under.length||'—'}</td>
+        <td>${missingStr}</td>
         <td>${pkgBadge}</td>
         <td>${failStr}</td>
         <td style="color:#666">${s.mdDate||'—'}</td>
@@ -1004,74 +667,68 @@ function renderDatabase() {
     }).join('');
 }
 
-// FLAGS
+// ── FLAGS ──
 function renderFlags() {
   const flagged = Object.entries(S.sites).filter(([,s]) =>
-    s.stockLines.some(l => l.status !== 'ok') || s.pkgResult === 'fail'
+    s.gmv >= 100 && (s.missingCore.length > 0 || s.pkgResult === 'fail')
   );
-
   if (!flagged.length) {
-    document.getElementById('flags-empty').style.display = 'block';
-    document.getElementById('flags-content').style.display = 'none';
+    document.getElementById('flags-empty').style.display='block';
+    document.getElementById('flags-content').style.display='none';
     return;
   }
-
-  document.getElementById('flags-empty').style.display = 'none';
-  document.getElementById('flags-content').style.display = 'block';
+  document.getElementById('flags-empty').style.display='none';
+  document.getElementById('flags-content').style.display='block';
 
   const today = new Date();
   const wc = new Date(today);
-  wc.setDate(today.getDate() - ((today.getDay() + 6) % 7));
-  document.getElementById('flags-wc').textContent =
-    wc.toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' });
-  document.getElementById('flags-count').textContent =
-    flagged.length + ' site' + (flagged.length !== 1 ? 's' : '') + ' flagged';
+  wc.setDate(today.getDate()-((today.getDay()+6)%7));
+  document.getElementById('flags-wc').textContent = wc.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
+  document.getElementById('flags-count').textContent = flagged.length+' site'+(flagged.length!==1?'s':'')+' flagged';
 
   document.getElementById('flags-grid').innerHTML = flagged
-    .sort(([,a],[,b]) => {
-      const sa = (a.stockLines.filter(l=>l.status!=='ok').length) + (a.pkgResult==='fail'?10:0);
-      const sb = (b.stockLines.filter(l=>l.status!=='ok').length) + (b.pkgResult==='fail'?10:0);
-      return sb - sa;
-    })
-    .map(([site, s]) => {
-      const over = s.stockLines.filter(l => l.status === 'over');
-      const under = s.stockLines.filter(l => l.status === 'under');
-      const hasPkg = s.pkgResult === 'fail';
-      const hasStock = over.length || under.length;
-      const cls = hasStock && hasPkg ? 'both' : hasPkg ? 'pkg-only' : 'stock-only';
-
+    .sort(([,a],[,b])=>(b.missingCore.length+(b.pkgResult==='fail'?10:0))-(a.missingCore.length+(a.pkgResult==='fail'?10:0)))
+    .map(([site,s]) => {
+      const hasPkg = s.pkgResult==='fail';
+      const hasStock = s.missingCore.length>0;
+      const cls = hasStock&&hasPkg?'both':hasPkg?'pkg-only':'stock-only';
       const issues = [];
-
-      over.sort((a,b)=>Math.abs(b.pct)-Math.abs(a.pct)).slice(0,2).forEach(l =>
-        issues.push(`<div class="flag-issue"><div class="fdot blue"></div><span>Over-ordered: <strong style="color:#ddd">${l.item}</strong> (+${l.pct}%)</span></div>`)
+      s.missingCore.forEach(item =>
+        issues.push(`<div class="flag-issue"><div class="fdot blue"></div><span>Not ordered this week: <strong style="color:#ddd">${item}</strong></span></div>`)
       );
-      if (over.length > 2)
-        issues.push(`<div class="flag-issue"><div class="fdot blue"></div><span>+${over.length-2} more over-ordering lines</span></div>`);
-
-      under.sort((a,b)=>Math.abs(b.pct)-Math.abs(a.pct)).slice(0,2).forEach(l =>
-        issues.push(`<div class="flag-issue"><div class="fdot amber"></div><span>Under-ordered: <strong style="color:#ddd">${l.item}</strong> (${l.pct}%)</span></div>`)
-      );
-      if (under.length > 2)
-        issues.push(`<div class="flag-issue"><div class="fdot amber"></div><span>+${under.length-2} more under-ordering lines</span></div>`);
-
       if (hasPkg) {
-        const fs = s.pkgFailed.length ? s.pkgFailed.join(', ') : 'non-compliant packaging';
+        const fs = s.pkgFailed.length?s.pkgFailed.join(', '):'non-compliant packaging';
         issues.push(`<div class="flag-issue"><div class="fdot red"></div><span>Packaging fail: <strong style="color:#ddd">${fs}</strong>${s.mdDate?' ('+s.mdDate+')':''}</span></div>`);
       }
-
+      const gmvFmt = '£'+s.gmv.toLocaleString('en-GB',{minimumFractionDigits:0,maximumFractionDigits:0});
       return `<div class="flag-card ${cls}">
         <div class="flag-site">${site}</div>
-        <div class="flag-brand">${s.brand}</div>
+        <div class="flag-brand">${s.brand} · GMV ${gmvFmt}</div>
         <div class="flag-issues">${issues.join('')}</div>
       </div>`;
     }).join('');
 }
 
 function updateFlagsBadge() {
-  const n = Object.values(S.sites).filter(s =>
-    s.stockLines.some(l => l.status !== 'ok') || s.pkgResult === 'fail').length;
-  document.getElementById('flags-badge').classList.toggle('show', n > 0);
+  const n = Object.values(S.sites).filter(s=>s.gmv>=100&&(s.missingCore.length>0||s.pkgResult==='fail')).length;
+  document.getElementById('flags-badge').classList.toggle('show',n>0);
+}
+
+// ── REFERENCE TAB ──
+function renderCoreItems() {
+  const brand = 'The Athenian';
+  const items = CORE_ITEMS[brand] || [];
+  document.getElementById('core-grid').innerHTML = items.map(item => `
+    <div class="core-item">
+      <div class="core-item-name">${item.label}</div>
+      <div class="core-item-meta">Codes: ${item.codes.join(', ')}</div>
+      <div class="core-item-meta" style="margin-top:3px;color:#666">${item.note}</div>
+    </div>
+  `).join('');
 }
 </script>
+
+<!-- SheetJS for reading .xlsx in the browser -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 </body>
 </html>
