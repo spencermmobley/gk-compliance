@@ -7,140 +7,164 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root {
-    --black: #0a0a0a; --surface: #111111; --surface2: #181818;
-    --border: #222222; --border2: #2e2e2e; --white: #f0ece6;
-    --muted: #555; --green: #2a7a4b; --gl: #4aad72;
-    --red: #d63c2f; --amber: #c97c1a; --blue: #4a9eff;
+    --black:#0a0a0a; --surface:#111111; --surface2:#181818;
+    --border:#222222; --border2:#2e2e2e; --white:#f0ece6;
+    --muted:#555; --green:#2a7a4b; --gl:#4aad72;
+    --red:#d63c2f; --amber:#c97c1a; --blue:#4a9eff;
   }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'Syne', sans-serif; background: var(--black); color: var(--white); min-height: 100vh; }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Syne',sans-serif;background:var(--black);color:var(--white);min-height:100vh;}
 
   /* LOGIN */
-  #login-screen { min-height:100vh; display:flex; align-items:center; justify-content:center; }
-  .login-box { background:var(--surface); border:1px solid var(--border); padding:48px; width:360px; position:relative; }
-  .login-box::before { content:''; position:absolute; top:0;left:0;right:0; height:2px; background:var(--green); }
-  .login-logo { font-family:'DM Mono',monospace; font-size:10px; letter-spacing:.25em; text-transform:uppercase; color:var(--gl); margin-bottom:28px; }
-  .login-title { font-size:30px; font-weight:800; line-height:1; margin-bottom:6px; }
-  .login-sub { font-family:'DM Mono',monospace; font-size:11px; color:var(--muted); margin-bottom:36px; }
-  .login-box label { display:block; font-family:'DM Mono',monospace; font-size:10px; letter-spacing:.18em; text-transform:uppercase; color:var(--muted); margin-bottom:8px; }
-  .login-box input { width:100%; padding:13px 15px; background:var(--surface2); border:1px solid var(--border2); color:var(--white); font-family:'DM Mono',monospace; font-size:14px; outline:none; margin-bottom:20px; transition:border-color .15s; }
-  .login-box input:focus { border-color:var(--green); }
-  .login-btn { width:100%; padding:13px; background:var(--green); border:none; color:white; font-family:'Syne',sans-serif; font-size:13px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; cursor:pointer; transition:opacity .15s; }
-  .login-btn:hover { opacity:.85; }
-  .login-error { margin-top:14px; font-family:'DM Mono',monospace; font-size:11px; color:var(--red); display:none; }
+  #login-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;}
+  .login-box{background:var(--surface);border:1px solid var(--border);padding:48px;width:360px;position:relative;}
+  .login-box::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--green);}
+  .login-logo{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.25em;text-transform:uppercase;color:var(--gl);margin-bottom:28px;}
+  .login-title{font-size:30px;font-weight:800;line-height:1;margin-bottom:6px;}
+  .login-sub{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);margin-bottom:36px;}
+  .login-box label{display:block;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;}
+  .login-box input{width:100%;padding:13px 15px;background:var(--surface2);border:1px solid var(--border2);color:var(--white);font-family:'DM Mono',monospace;font-size:14px;outline:none;margin-bottom:20px;transition:border-color .15s;}
+  .login-box input:focus{border-color:var(--green);}
+  .login-btn{width:100%;padding:13px;background:var(--green);border:none;color:white;font-family:'Syne',sans-serif;font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:opacity .15s;}
+  .login-btn:hover{opacity:.85;}
+  .login-error{margin-top:14px;font-family:'DM Mono',monospace;font-size:11px;color:var(--red);display:none;}
 
   /* APP */
-  #app { display:none; }
-  header { background:var(--surface); border-bottom:1px solid var(--border); padding:0 32px; display:flex; align-items:center; justify-content:space-between; height:56px; position:sticky; top:0; z-index:100; }
-  .brand-mark { width:26px;height:26px; background:var(--green); display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:800; }
-  .brand-name { font-size:12px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:#888; margin-left:10px; }
-  .header-brand { display:flex; align-items:center; }
-  .header-nav { display:flex; gap:2px; }
-  .nav-btn { padding:7px 18px; background:transparent; border:1px solid transparent; color:var(--muted); font-family:'Syne',sans-serif; font-size:11px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; cursor:pointer; transition:all .15s; }
-  .nav-btn:hover { color:var(--white); }
-  .nav-btn.active { color:var(--white); border-color:var(--border2); background:var(--surface2); }
-  .nav-badge { display:inline-block; width:6px;height:6px; border-radius:50%; background:var(--red); margin-left:6px; vertical-align:middle; visibility:hidden; }
-  .nav-badge.show { visibility:visible; }
-  .header-right { display:flex; align-items:center; gap:14px; }
-  .header-date { font-family:'DM Mono',monospace; font-size:10px; color:#444; }
-  .logout-btn { background:none; border:1px solid var(--border2); color:#555; font-family:'DM Mono',monospace; font-size:10px; padding:5px 10px; cursor:pointer; transition:all .15s; }
-  .logout-btn:hover { border-color:var(--muted); color:#999; }
+  #app{display:none;}
+  header{background:var(--surface);border-bottom:1px solid var(--border);padding:0 32px;display:flex;align-items:center;justify-content:space-between;height:56px;position:sticky;top:0;z-index:100;}
+  .brand-mark{width:26px;height:26px;background:var(--green);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;}
+  .brand-name{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#888;margin-left:10px;}
+  .header-brand{display:flex;align-items:center;}
+  .header-nav{display:flex;gap:2px;}
+  .nav-btn{padding:7px 16px;background:transparent;border:1px solid transparent;color:var(--muted);font-family:'Syne',sans-serif;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:all .15s;}
+  .nav-btn:hover{color:var(--white);}
+  .nav-btn.active{color:var(--white);border-color:var(--border2);background:var(--surface2);}
+  .nav-badge{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--red);margin-left:6px;vertical-align:middle;visibility:hidden;}
+  .nav-badge.show{visibility:visible;}
+  .header-right{display:flex;align-items:center;gap:14px;}
+  .header-date{font-family:'DM Mono',monospace;font-size:10px;color:#444;}
+  .logout-btn{background:none;border:1px solid var(--border2);color:#555;font-family:'DM Mono',monospace;font-size:10px;padding:5px 10px;cursor:pointer;transition:all .15s;}
+  .logout-btn:hover{border-color:var(--muted);color:#999;}
 
-  main { padding:40px 32px; max-width:1100px; margin:0 auto; }
-  .tab-content { display:none; }
-  .tab-content.active { display:block; }
+  main{padding:40px 32px;max-width:1200px;margin:0 auto;}
+  .tab-content{display:none;}
+  .tab-content.active{display:block;}
 
-  .page-header { margin-bottom:32px; padding-bottom:20px; border-bottom:1px solid var(--border); }
-  .page-tag { font-family:'DM Mono',monospace; font-size:10px; letter-spacing:.22em; text-transform:uppercase; color:var(--gl); margin-bottom:8px; }
-  .page-title { font-size:28px; font-weight:800; line-height:1; margin-bottom:6px; }
-  .page-desc { font-family:'DM Mono',monospace; font-size:11px; color:var(--muted); }
+  .page-header{margin-bottom:32px;padding-bottom:20px;border-bottom:1px solid var(--border);}
+  .page-tag{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--gl);margin-bottom:8px;}
+  .page-title{font-size:28px;font-weight:800;line-height:1;margin-bottom:6px;}
+  .page-desc{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);}
 
-  .card { background:var(--surface); border:1px solid var(--border); padding:24px 28px; margin-bottom:18px; }
-  .card-label { font-family:'DM Mono',monospace; font-size:10px; letter-spacing:.18em; text-transform:uppercase; color:var(--muted); margin-bottom:16px; display:flex; align-items:center; gap:10px; }
-  .card-label::after { content:''; flex:1; height:1px; background:var(--border); }
+  .card{background:var(--surface);border:1px solid var(--border);padding:24px 28px;margin-bottom:18px;}
+  .card-label{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:16px;display:flex;align-items:center;gap:10px;}
+  .card-label::after{content:'';flex:1;height:1px;background:var(--border);}
 
-  .upload-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-bottom:22px; }
-  .upload-zone { border:1px dashed var(--border2); padding:28px 20px; text-align:center; cursor:pointer; transition:all .2s; position:relative; }
-  .upload-zone:hover { border-color:var(--green); background:rgba(42,122,75,.04); }
-  .upload-zone input { position:absolute; inset:0; opacity:0; cursor:pointer; width:100%; height:100%; }
-  .upload-type { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:.22em; text-transform:uppercase; color:var(--gl); margin-bottom:8px; }
-  .upload-icon { font-size:22px; margin-bottom:10px; display:block; }
-  .upload-name { font-size:13px; font-weight:700; margin-bottom:4px; }
-  .upload-hint { font-family:'DM Mono',monospace; font-size:10px; color:var(--muted); line-height:1.4; }
-  .upload-zone.has-file { border-color:var(--green); background:rgba(42,122,75,.05); }
-  .upload-zone.has-file .upload-hint { color:var(--gl); }
+  /* ADD ROW FORM */
+  .dict-add-form{background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--gl);padding:20px 24px;margin-bottom:18px;}
+  .dict-form-title{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--gl);margin-bottom:16px;}
+  .dict-form-row{display:grid;grid-template-columns:1fr 1fr 160px auto;gap:10px;align-items:end;}
+  .dict-field label{display:block;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;}
+  .dict-field input,.dict-field select{width:100%;padding:10px 12px;background:var(--surface2);border:1px solid var(--border2);color:var(--white);font-family:'DM Mono',monospace;font-size:12px;outline:none;transition:border-color .15s;}
+  .dict-field input:focus,.dict-field select:focus{border-color:var(--green);}
+  .dict-field select option{background:var(--surface2);}
+  .btn-add{padding:10px 18px;background:var(--green);border:none;color:white;font-family:'Syne',sans-serif;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;white-space:nowrap;transition:opacity .15s;height:38px;}
+  .btn-add:hover{opacity:.85;}
+  .btn-save{padding:7px 14px;background:transparent;border:1px solid var(--gl);color:var(--gl);font-family:'DM Mono',monospace;font-size:10px;cursor:pointer;transition:all .15s;}
+  .btn-save:hover{background:rgba(74,173,114,.1);}
+  .btn-del{padding:7px 14px;background:transparent;border:1px solid #333;color:#666;font-family:'DM Mono',monospace;font-size:10px;cursor:pointer;transition:all .15s;}
+  .btn-del:hover{border-color:var(--red);color:var(--red);}
+  .btn-cancel{padding:7px 14px;background:transparent;border:1px solid #333;color:#666;font-family:'DM Mono',monospace;font-size:10px;cursor:pointer;transition:all .15s;}
+  .btn-cancel:hover{border-color:#555;color:#999;}
 
-  .brand-row { display:flex; gap:8px; flex-wrap:wrap; }
-  .brand-btn { padding:6px 14px; border:1px solid var(--border2); background:transparent; color:#666; font-family:'Syne',sans-serif; font-size:11px; font-weight:600; letter-spacing:.06em; text-transform:uppercase; cursor:pointer; transition:all .15s; }
-  .brand-btn:hover { color:#999; border-color:#444; }
-  .brand-btn.active { border-color:var(--green); color:var(--white); background:rgba(42,122,75,.1); }
+  /* DICT CONTROLS */
+  .dict-controls{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+  .dict-search{padding:9px 13px;background:var(--surface2);border:1px solid var(--border2);color:var(--white);font-family:'DM Mono',monospace;font-size:12px;outline:none;width:280px;transition:border-color .15s;}
+  .dict-search:focus{border-color:var(--green);}
+  .dict-search::placeholder{color:#444;}
+  .dict-meta{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);}
+  .dict-meta strong{color:#888;}
 
-  .process-row { display:flex; align-items:center; gap:16px; }
-  .process-btn { padding:12px 28px; background:var(--green); border:none; color:white; font-family:'Syne',sans-serif; font-size:12px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; cursor:pointer; transition:opacity .15s; }
-  .process-btn:hover { opacity:.85; }
-  .process-btn:disabled { background:var(--border2); color:var(--muted); cursor:not-allowed; opacity:1; }
-  .process-hint { font-family:'DM Mono',monospace; font-size:10px; color:var(--muted); }
+  /* TABLE */
+  .table-wrap{overflow-x:auto;}
+  table{width:100%;border-collapse:collapse;font-family:'DM Mono',monospace;font-size:11px;}
+  thead tr{border-bottom:1px solid var(--border2);}
+  th{text-align:left;padding:9px 14px;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);font-weight:500;white-space:nowrap;}
+  td{padding:10px 14px;border-bottom:1px solid #161616;color:#bbb;vertical-align:middle;}
+  tr:last-child td{border-bottom:none;}
+  tbody tr:hover td{background:#161616;}
+  .td-site{font-family:'Syne',sans-serif;font-size:13px;font-weight:600;color:var(--white);}
+  .td-edit input{width:100%;padding:5px 8px;background:var(--surface2);border:1px solid var(--green);color:var(--white);font-family:'DM Mono',monospace;font-size:11px;outline:none;}
+  .td-edit select{padding:5px 8px;background:var(--surface2);border:1px solid var(--green);color:var(--white);font-family:'DM Mono',monospace;font-size:11px;outline:none;}
+  .td-actions{white-space:nowrap;display:flex;gap:6px;}
 
-  .stats-row { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:20px; }
-  .stat-box { background:var(--surface); border:1px solid var(--border); padding:16px 20px; position:relative; }
-  .stat-box::after { content:''; position:absolute; bottom:0;left:0;right:0; height:2px; }
-  .stat-box.s-red::after { background:var(--red); }
-  .stat-box.s-green::after { background:var(--gl); }
-  .stat-box.s-amber::after { background:var(--amber); }
-  .stat-box.s-blue::after { background:var(--blue); }
-  .stat-label { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:.18em; text-transform:uppercase; color:var(--muted); margin-bottom:8px; }
-  .stat-num { font-size:30px; font-weight:800; line-height:1; }
-  .stat-num.c-red { color:var(--red); } .stat-num.c-green { color:var(--gl); }
-  .stat-num.c-amber { color:var(--amber); } .stat-num.c-blue { color:var(--blue); }
+  .pill{display:inline-block;padding:3px 8px;font-size:9px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;border:1px solid;white-space:nowrap;font-family:'DM Mono',monospace;}
+  .pill-ath{color:#a78bfa;border-color:rgba(167,139,250,.3);background:rgba(167,139,250,.06);}
+  .pill-coq{color:#fb923c;border-color:rgba(251,146,60,.3);background:rgba(251,146,60,.06);}
+  .pill-gbk{color:#60a5fa;border-color:rgba(96,165,250,.3);background:rgba(96,165,250,.06);}
+  .pill-tor{color:#34d399;border-color:rgba(52,211,153,.3);background:rgba(52,211,153,.06);}
+  .pill-green{color:var(--gl);border-color:rgba(74,173,114,.35);background:rgba(74,173,114,.07);}
+  .pill-red{color:var(--red);border-color:rgba(214,60,47,.35);background:rgba(214,60,47,.07);}
 
-  .table-wrap { overflow-x:auto; }
-  table { width:100%; border-collapse:collapse; font-family:'DM Mono',monospace; font-size:11px; }
-  thead tr { border-bottom:1px solid var(--border2); }
-  th { text-align:left; padding:9px 14px; font-size:9px; letter-spacing:.18em; text-transform:uppercase; color:var(--muted); font-weight:500; white-space:nowrap; }
-  td { padding:11px 14px; border-bottom:1px solid #161616; color:#bbb; vertical-align:middle; }
-  tr:last-child td { border-bottom:none; }
-  tbody tr:hover td { background:#161616; }
-  .td-site { font-family:'Syne',sans-serif; font-size:13px; font-weight:600; color:var(--white); }
+  /* UPLOAD / OTHER TABS */
+  .upload-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:22px;}
+  .upload-zone{border:1px dashed var(--border2);padding:28px 20px;text-align:center;cursor:pointer;transition:all .2s;position:relative;}
+  .upload-zone:hover{border-color:var(--green);background:rgba(42,122,75,.04);}
+  .upload-zone input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+  .upload-type{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--gl);margin-bottom:8px;}
+  .upload-icon{font-size:22px;margin-bottom:10px;display:block;}
+  .upload-name{font-size:13px;font-weight:700;margin-bottom:4px;}
+  .upload-hint{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);line-height:1.4;}
+  .upload-zone.has-file{border-color:var(--green);background:rgba(42,122,75,.05);}
+  .upload-zone.has-file .upload-hint{color:var(--gl);}
+  .brand-row{display:flex;gap:8px;flex-wrap:wrap;}
+  .brand-btn{padding:6px 14px;border:1px solid var(--border2);background:transparent;color:#666;font-family:'Syne',sans-serif;font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;transition:all .15s;}
+  .brand-btn:hover{color:#999;border-color:#444;}
+  .brand-btn.active{border-color:var(--green);color:var(--white);background:rgba(42,122,75,.1);}
+  .process-row{display:flex;align-items:center;gap:16px;}
+  .process-btn{padding:12px 28px;background:var(--green);border:none;color:white;font-family:'Syne',sans-serif;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:opacity .15s;}
+  .process-btn:hover{opacity:.85;}
+  .process-btn:disabled{background:var(--border2);color:var(--muted);cursor:not-allowed;opacity:1;}
+  .process-hint{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);}
+  .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;}
+  .stat-box{background:var(--surface);border:1px solid var(--border);padding:16px 20px;position:relative;}
+  .stat-box::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;}
+  .stat-box.s-red::after{background:var(--red);}
+  .stat-box.s-green::after{background:var(--gl);}
+  .stat-box.s-amber::after{background:var(--amber);}
+  .stat-box.s-blue::after{background:var(--blue);}
+  .stat-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;}
+  .stat-num{font-size:30px;font-weight:800;line-height:1;}
+  .stat-num.c-red{color:var(--red);}.stat-num.c-green{color:var(--gl);}
+  .stat-num.c-amber{color:var(--amber);}.stat-num.c-blue{color:var(--blue);}
+  .flags-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;}
+  .flag-card{background:var(--surface);border:1px solid var(--border);padding:20px 22px;border-left:3px solid var(--border2);}
+  .flag-card.both{border-left-color:var(--amber);}
+  .flag-card.pkg-only{border-left-color:var(--red);}
+  .flag-card.stock-only{border-left-color:var(--blue);}
+  .flag-site{font-size:15px;font-weight:700;margin-bottom:3px;}
+  .flag-brand{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px;}
+  .flag-issues{display:flex;flex-direction:column;gap:7px;}
+  .flag-issue{display:flex;align-items:flex-start;gap:8px;font-family:'DM Mono',monospace;font-size:10px;color:#888;line-height:1.4;}
+  .fdot{width:5px;height:5px;border-radius:50%;flex-shrink:0;margin-top:4px;}
+  .fdot.red{background:var(--red);}.fdot.blue{background:var(--blue);}.fdot.amber{background:var(--amber);}
+  .empty{text-align:center;padding:56px 20px;border:1px dashed var(--border);margin-bottom:20px;}
+  .empty-icon{font-size:28px;margin-bottom:12px;}
+  .empty-title{font-size:13px;font-weight:700;color:var(--muted);margin-bottom:5px;}
+  .empty-sub{font-family:'DM Mono',monospace;font-size:10px;color:#444;}
+  .notice{padding:10px 14px;background:rgba(201,124,26,.06);border:1px solid rgba(201,124,26,.2);font-family:'DM Mono',monospace;font-size:10px;color:var(--amber);margin-bottom:18px;line-height:1.7;}
+  .info{padding:10px 14px;background:rgba(74,158,255,.05);border:1px solid rgba(74,158,255,.2);font-family:'DM Mono',monospace;font-size:10px;color:var(--blue);margin-bottom:18px;line-height:1.7;}
+  .core-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;margin-top:4px;}
+  .core-item{background:var(--surface2);border:1px solid var(--border2);padding:12px 14px;}
+  .core-item-name{font-size:12px;font-weight:600;margin-bottom:4px;}
+  .core-item-meta{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);}
+  .save-toast{position:fixed;bottom:24px;right:24px;background:var(--green);color:white;padding:10px 18px;font-family:'DM Mono',monospace;font-size:11px;opacity:0;transition:opacity .3s;pointer-events:none;z-index:999;}
+  .save-toast.show{opacity:1;}
 
-  .pill { display:inline-block; padding:3px 8px; font-size:9px; letter-spacing:.1em; text-transform:uppercase; font-weight:600; border:1px solid; white-space:nowrap; font-family:'DM Mono',monospace; }
-  .pill-red { color:var(--red); border-color:rgba(214,60,47,.35); background:rgba(214,60,47,.07); }
-  .pill-green { color:var(--gl); border-color:rgba(74,173,114,.35); background:rgba(74,173,114,.07); }
-  .pill-amber { color:var(--amber); border-color:rgba(201,124,26,.35); background:rgba(201,124,26,.07); }
-  .pill-grey { color:#555; border-color:#333; background:transparent; }
-
-  .empty { text-align:center; padding:56px 20px; border:1px dashed var(--border); margin-bottom:20px; }
-  .empty-icon { font-size:28px; margin-bottom:12px; }
-  .empty-title { font-size:13px; font-weight:700; color:var(--muted); margin-bottom:5px; }
-  .empty-sub { font-family:'DM Mono',monospace; font-size:10px; color:#444; }
-
-  .flags-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:14px; }
-  .flag-card { background:var(--surface); border:1px solid var(--border); padding:20px 22px; border-left:3px solid var(--border2); }
-  .flag-card.both { border-left-color:var(--amber); }
-  .flag-card.pkg-only { border-left-color:var(--red); }
-  .flag-card.stock-only { border-left-color:var(--blue); }
-  .flag-site { font-size:15px; font-weight:700; margin-bottom:3px; }
-  .flag-brand { font-family:'DM Mono',monospace; font-size:10px; color:var(--muted); letter-spacing:.08em; text-transform:uppercase; margin-bottom:14px; }
-  .flag-issues { display:flex; flex-direction:column; gap:7px; }
-  .flag-issue { display:flex; align-items:flex-start; gap:8px; font-family:'DM Mono',monospace; font-size:10px; color:#888; line-height:1.4; }
-  .fdot { width:5px;height:5px; border-radius:50%; flex-shrink:0; margin-top:4px; }
-  .fdot.red { background:var(--red); } .fdot.blue { background:var(--blue); } .fdot.amber { background:var(--amber); }
-
-  .week-bar { display:flex; align-items:center; justify-content:space-between; margin-bottom:20px; }
-  .week-label { font-family:'DM Mono',monospace; font-size:11px; color:var(--muted); }
-  .week-label strong { color:var(--white); }
-
-  .notice { padding:10px 14px; background:rgba(201,124,26,.06); border:1px solid rgba(201,124,26,.2); font-family:'DM Mono',monospace; font-size:10px; color:var(--amber); margin-bottom:18px; line-height:1.7; }
-  .info { padding:10px 14px; background:rgba(74,158,255,.05); border:1px solid rgba(74,158,255,.2); font-family:'DM Mono',monospace; font-size:10px; color:var(--blue); margin-bottom:18px; line-height:1.7; }
-
-  .core-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:10px; margin-top:4px; }
-  .core-item { background:var(--surface2); border:1px solid var(--border2); padding:12px 14px; }
-  .core-item-name { font-size:12px; font-weight:600; margin-bottom:4px; }
-  .core-item-meta { font-family:'DM Mono',monospace; font-size:10px; color:var(--muted); }
-
-  @media(max-width:768px) {
-    .upload-grid,.stats-row { grid-template-columns:1fr; }
-    main { padding:24px 16px; }
-    header { padding:0 16px; }
+  @media(max-width:900px){
+    .dict-form-row{grid-template-columns:1fr 1fr;gap:10px;}
+    .upload-grid,.stats-row{grid-template-columns:1fr;}
+    main{padding:24px 16px;}
+    header{padding:0 16px;}
   }
 </style>
 </head>
@@ -167,7 +191,8 @@
     <nav class="header-nav">
       <button class="nav-btn active" onclick="goTab('upload',this)">Upload</button>
       <button class="nav-btn" onclick="goTab('database',this)">Database</button>
-      <button class="nav-btn" onclick="goTab('flags',this)">Weekly Flags <span class="nav-badge" id="flags-badge"></span></button>
+      <button class="nav-btn" onclick="goTab('flags',this)">Flags <span class="nav-badge" id="flags-badge"></span></button>
+      <button class="nav-btn" onclick="goTab('dictionary',this)">Dictionary</button>
       <button class="nav-btn" onclick="goTab('reference',this)">Core Items</button>
     </nav>
     <div class="header-right">
@@ -183,15 +208,13 @@
       <div class="page-header">
         <div class="page-tag">01 — Upload</div>
         <div class="page-title">Import Reports</div>
-        <div class="page-desc">// upload bidfood history (.xlsx), gmv export (.csv), and mystery diner audit (.csv)</div>
+        <div class="page-desc">// bidfood history (.xlsx) · gmv export (.csv) · mystery diner audit (.csv)</div>
       </div>
-
       <div class="notice">
-        <strong>Bidfood History Report</strong> — download the weekly "Previous Purchases – History Report" from Bidfood as .xlsx. No changes needed.<br>
+        <strong>Bidfood History Report</strong> — download weekly "Previous Purchases – History Report" from Bidfood as .xlsx.<br>
         <strong>GMV Export</strong> — download the week-on-week GMV CSV from the GK dashboard.<br>
-        <strong>Mystery Diner CSV</strong> — export from the Gemini Gem after auditing mystery diner reports.
+        <strong>Mystery Diner CSV</strong> — export from Gemini Gem after auditing mystery diner reports.
       </div>
-
       <div class="card">
         <div class="card-label">Brand</div>
         <div class="brand-row">
@@ -201,7 +224,6 @@
           <button class="brand-btn" onclick="setBrand('Tortilla',this)">Tortilla</button>
         </div>
       </div>
-
       <div class="card">
         <div class="card-label">Upload Files</div>
         <div class="upload-grid">
@@ -232,7 +254,6 @@
           <span class="process-hint" id="process-hint">Upload at least one file to continue</span>
         </div>
       </div>
-
       <div id="upload-result" style="display:none">
         <div class="stats-row" id="upload-stats"></div>
       </div>
@@ -255,17 +276,10 @@
         <div class="card" style="padding:0">
           <div class="table-wrap">
             <table>
-              <thead>
-                <tr>
-                  <th>Site</th>
-                  <th>GMV (last week)</th>
-                  <th>Stock</th>
-                  <th>Missing core items</th>
-                  <th>Packaging</th>
-                  <th>Failed items</th>
-                  <th>MD visit date</th>
-                </tr>
-              </thead>
+              <thead><tr>
+                <th>Site</th><th>GMV (last week)</th><th>Stock</th>
+                <th>Missing core items</th><th>Packaging</th><th>Failed items</th><th>MD visit</th>
+              </tr></thead>
               <tbody id="db-tbody"></tbody>
             </table>
           </div>
@@ -276,7 +290,7 @@
     <!-- FLAGS -->
     <div class="tab-content" id="tab-flags">
       <div class="page-header">
-        <div class="page-tag">03 — Weekly Flags</div>
+        <div class="page-tag">03 — Flags</div>
         <div class="page-title">Sites Needing Attention</div>
         <div class="page-desc">// active sites with missing core items or packaging failures</div>
       </div>
@@ -286,26 +300,93 @@
         <div class="empty-sub">No failures detected — or no data loaded yet</div>
       </div>
       <div id="flags-content" style="display:none">
-        <div class="week-bar">
-          <div class="week-label">Week commencing: <strong id="flags-wc"></strong></div>
-          <div class="week-label"><strong id="flags-count"></strong></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
+          <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);">Week commencing: <strong id="flags-wc" style="color:var(--white)"></strong></div>
+          <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);"><strong id="flags-count" style="color:var(--white)"></strong></div>
         </div>
         <div class="flags-grid" id="flags-grid"></div>
+      </div>
+    </div>
+
+    <!-- DICTIONARY -->
+    <div class="tab-content" id="tab-dictionary">
+      <div class="page-header">
+        <div class="page-tag">04 — Dictionary</div>
+        <div class="page-title">Site Name Mapping</div>
+        <div class="page-desc">// maps GK Metabase site names to supplier account names used in Bidfood and other ordering systems</div>
+      </div>
+
+      <div class="info">
+        This dictionary is how the dashboard links a Bidfood order (e.g. "GYRO FACTORY CO - 68120138") to a GK site name (e.g. "Balham"). Add or edit rows whenever a new partner launches or an account name changes. Changes are <strong>saved automatically</strong> in your browser.
+      </div>
+
+      <!-- ADD ROW FORM -->
+      <div class="dict-add-form">
+        <div class="dict-form-title">+ Add new mapping</div>
+        <div class="dict-form-row">
+          <div class="dict-field">
+            <label>GK Metabase Site Name</label>
+            <input type="text" id="new-gk-site" placeholder="e.g. Balham">
+          </div>
+          <div class="dict-field">
+            <label>Supplier Account Name</label>
+            <input type="text" id="new-supplier-acc" placeholder="e.g. GYRO FACTORY CO - 68120138">
+          </div>
+          <div class="dict-field">
+            <label>Brand</label>
+            <select id="new-brand">
+              <option value="The Athenian">The Athenian</option>
+              <option value="Coqfighter">Coqfighter</option>
+              <option value="GBK">GBK</option>
+              <option value="Tortilla">Tortilla</option>
+            </select>
+          </div>
+          <button class="btn-add" onclick="addDictRow()">Add Row</button>
+        </div>
+      </div>
+
+      <!-- SEARCH + META -->
+      <div class="dict-controls">
+        <input class="dict-search" type="text" id="dict-search" placeholder="Search sites or accounts…" oninput="renderDictTable()">
+        <div class="dict-meta" id="dict-meta"></div>
+      </div>
+
+      <!-- TABLE -->
+      <div class="card" style="padding:0">
+        <div class="table-wrap">
+          <table>
+            <thead><tr>
+              <th>#</th>
+              <th>GK Metabase Site Name</th>
+              <th>Supplier Account Name</th>
+              <th>Brand</th>
+              <th>Actions</th>
+            </tr></thead>
+            <tbody id="dict-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div style="margin-top:14px;display:flex;gap:10px;align-items:center;">
+        <button onclick="exportDictCSV()" style="padding:8px 16px;background:transparent;border:1px solid var(--border2);color:#888;font-family:'DM Mono',monospace;font-size:10px;cursor:pointer;transition:all .15s;" onmouseover="this.style.borderColor='#555';this.style.color='#ccc'" onmouseout="this.style.borderColor='var(--border2)';this.style.color='#888'">
+          ↓ Export as CSV
+        </button>
+        <span style="font-family:'DM Mono',monospace;font-size:10px;color:#444;">Download a copy of the full dictionary</span>
       </div>
     </div>
 
     <!-- REFERENCE -->
     <div class="tab-content" id="tab-reference">
       <div class="page-header">
-        <div class="page-tag">04 — Core Items</div>
+        <div class="page-tag">05 — Core Items</div>
         <div class="page-title">Athenian Core Item Dictionary</div>
-        <div class="page-desc">// items flagged if not ordered by an active site in the weekly report</div>
+        <div class="page-desc">// items flagged if not ordered by an active site in the weekly Bidfood report</div>
       </div>
       <div class="info">
-        A site is considered <strong>active</strong> if it has £100+ GMV in the most recent week of the GMV export. Inactive or paused sites are excluded from stock flags.
+        A site is <strong>active</strong> if it has £100+ GMV in the most recent week of the GMV export.
       </div>
       <div class="card">
-        <div class="card-label">Athenian — Core Items (9)</div>
+        <div class="card-label">The Athenian — Core Items (9)</div>
         <div class="core-grid" id="core-grid"></div>
       </div>
     </div>
@@ -313,39 +394,79 @@
   </main>
 </div>
 
+<div class="save-toast" id="save-toast">✓ Saved</div>
+
 <script>
-// ── CORE ITEM DICTIONARY ──
-// Each entry: label, bidfood product codes that satisfy it, shelf life note
+// ─── CONSTANTS ───────────────────────────────────────────────────
+const PASSWORD = 'kitchen2026';
+const STORAGE_KEY = 'gk_dict_v1';
+
 const CORE_ITEMS = {
   'The Athenian': [
-    { label: 'Chicken Gyros',        codes: ['32757','23609','32294'], note: 'Any variant (frozen/halal/vegan)' },
-    { label: 'Pitta Bread',          codes: ['83896'],                 note: 'Choriatiki pitta' },
-    { label: 'Athenian Sauce',       codes: ['04221'],                 note: '2.5kg tub' },
-    { label: 'Chilli Mayo',          codes: ['26253'],                 note: 'Athenian branded' },
-    { label: 'Tzatziki Sauce',       codes: ['04229'],                 note: '~2 month shelf life — may skip weeks' },
-    { label: 'Gyros Sauce',          codes: ['28907'],                 note: 'Athenian branded' },
-    { label: 'Salted Caramel Brownie', codes: ['61122'],               note: 'Vegan dessert' },
-    { label: 'Courgette Fritters',   codes: ['99998'],                 note: 'The Athenian branded' },
-    { label: 'Tomato Fritters',      codes: ['99997'],                 note: 'The Athenian branded' },
+    { label:'Chicken Gyros (Regular)',  codes:['32757','32294'], note:'Frozen/halal variants' },
+    { label:"Chicken Gyros (Vegan)",    codes:['23609'],          note:"Mighty Chick'n — separate menu item" },
+    { label:'Pitta Bread',              codes:['83896'],          note:'Choriatiki pitta' },
+    { label:'Athenian Sauce',           codes:['04221'],          note:'2.5kg tub' },
+    { label:'Chilli Mayo',              codes:['26253'],          note:'Athenian branded' },
+    { label:'Tzatziki Sauce',           codes:['04229'],          note:'~2 month shelf life — may skip weeks' },
+    { label:'Gyros Sauce',              codes:['28907'],          note:'Athenian branded' },
+    { label:'Salted Caramel Brownie',   codes:['61122'],          note:'Vegan dessert' },
+    { label:'Courgette Fritters',       codes:['99998'],          note:'The Athenian branded' },
+    { label:'Tomato Fritters',          codes:['99997'],          note:'The Athenian branded' },
   ]
 };
 
-const PASSWORD = 'kitchen2026';
+// Pre-populated seed data — 102 matched pairs from compliance master
+const SEED_DATA = [{"gk_site":"Aberdeen - Hutcheon Street","supplier_account":"PERI PERI ORIGINAL ABDERDEEN - 22143844","brand":"The Athenian"},{"gk_site":"Altrincham","supplier_account":"PITA BOX - 80123303","brand":"The Athenian"},{"gk_site":"Aylesbury","supplier_account":"KRAVE KEBAB& CURRY - 66140943","brand":"The Athenian"},{"gk_site":"Aylesbury","supplier_account":"DONER GYROS - 25124599","brand":"The Athenian"},{"gk_site":"Balham","supplier_account":"GYRO FACTORY CO - 68120138","brand":"The Athenian"},{"gk_site":"Beckenham","supplier_account":"BURGER GUYS - 33142796","brand":"The Athenian"},{"gk_site":"Beckenham","supplier_account":"PWB23 LTD - 33145769","brand":"The Athenian"},{"gk_site":"Bedford - Harpur","supplier_account":"PUTT PUTT SOCIAL - 66142678","brand":"The Athenian"},{"gk_site":"Bermondsey","supplier_account":"SEVEN ENTERPRISES LTD - 33144616","brand":"The Athenian"},{"gk_site":"Bexleyheath","supplier_account":"FOODLICIOUS& MORE LTD - 33142717","brand":"The Athenian"},{"gk_site":"Bolton","supplier_account":"YASMINE BEIRUT CAFE - 25123449","brand":"The Athenian"},{"gk_site":"Boxpark Wembley","supplier_account":"ATHENIAN WEMBLEY - 68120696","brand":"The Athenian"},{"gk_site":"Bromley","supplier_account":"MEDLEY MARKET - 33142611","brand":"The Athenian"},{"gk_site":"Cam","supplier_account":"PIZZA PLANET - 67123743","brand":"The Athenian"},{"gk_site":"Camberley","supplier_account":"CLUCK CLUCK PERI PERI - 29516374","brand":"The Athenian"},{"gk_site":"Canary Wharf","supplier_account":"LITTLE KEBAB HOUSE THE - 38131815","brand":"The Athenian"},{"gk_site":"Canning Town","supplier_account":"YUM YARD - 38131274","brand":"The Athenian"},{"gk_site":"Canterbury","supplier_account":"MAIDENS HEAD - 33143586","brand":"The Athenian"},{"gk_site":"Cardiff - City Road","supplier_account":"IFEED LTD - 67122043","brand":"The Athenian"},{"gk_site":"Cardiff - City Road","supplier_account":"VRG SH LTD - 67123398","brand":"The Athenian"},{"gk_site":"Catford","supplier_account":"PIZZA ROMA - 33143196","brand":"The Athenian"},{"gk_site":"Cheltenham - Bath Road","supplier_account":"BURGER& SHAKES - 66140782","brand":"The Athenian"},{"gk_site":"Cheltenham - Bath Road","supplier_account":"NSSR FRESH - 66143653","brand":"The Athenian"},{"gk_site":"Chester - Northgate Street","supplier_account":"CHIP'D - 80121713","brand":"The Athenian"},{"gk_site":"Cirencester","supplier_account":"PIZZA PLANET CIRENCESTER - 67124116","brand":"The Athenian"},{"gk_site":"Colchester","supplier_account":"GREEK OASIS - 37123490","brand":"The Athenian"},{"gk_site":"Corby","supplier_account":"DIXY CHICKEN - 19901029","brand":"The Athenian"},{"gk_site":"Crawley","supplier_account":"CARAMELLO COFFEE& GELATO - 70861201","brand":"The Athenian"},{"gk_site":"Crewe","supplier_account":"RIAS KITCHEN& CATERING - 80122837","brand":"The Athenian"},{"gk_site":"Croydon","supplier_account":"GALITO'S PIRI PIRI - 33143195","brand":"The Athenian"},{"gk_site":"Darlington","supplier_account":"A1 GOLDENFRY - 36116113","brand":"The Athenian"},{"gk_site":"Dartford","supplier_account":"TIME & PLAICE - 33142595","brand":"The Athenian"},{"gk_site":"Derby","supplier_account":"ATHENIAN THE - 24119789","brand":"The Athenian"},{"gk_site":"Didcot","supplier_account":"COURTYARD OXFORD SOUTH - 66143581","brand":"The Athenian"},{"gk_site":"Dover - Tower Hamlets Road","supplier_account":"KENT FISH BAR AND PIZZA KEBAB - 33144294","brand":"The Athenian"},{"gk_site":"Dover - Tower Hamlets Road","supplier_account":"RODYS BURGER - 33146736","brand":"The Athenian"},{"gk_site":"Dudley","supplier_account":"CASTLE PIZZA - 21860267","brand":"The Athenian"},{"gk_site":"Durrington","supplier_account":"STONEHENDGE INN - 5114779","brand":"The Athenian"},{"gk_site":"Earl Shilton","supplier_account":"DESSERT HOUSE - 24122821","brand":"The Athenian"},{"gk_site":"Eastleigh","supplier_account":"ATHENIAN EASTLEIGH - 5114168","brand":"The Athenian"},{"gk_site":"Evesham","supplier_account":"PIZZA PLANET THE - 21860568","brand":"The Athenian"},{"gk_site":"Fleet","supplier_account":"HART PERI PERI - 29514716","brand":"The Athenian"},{"gk_site":"Guildford","supplier_account":"K&M FLAVOURS - 29516551","brand":"The Athenian"},{"gk_site":"Hastings","supplier_account":"ATHENIAN HASTINGS - 33145315","brand":"The Athenian"},{"gk_site":"Haywards Heath","supplier_account":"CHIEFS CHICKEN - 70862360","brand":"The Athenian"},{"gk_site":"Hemel Hempstead - Duxons Turn","supplier_account":"50NINE - 66142985","brand":"The Athenian"},{"gk_site":"Herne Bay","supplier_account":"SALOON BAR& GRILL - 33145558","brand":"The Athenian"},{"gk_site":"High Wycombe","supplier_account":"PAPARIZZAA HIGH WYCOMBE - 66141901","brand":"The Athenian"},{"gk_site":"Hove","supplier_account":"ORIGINAL CHIP BASKET THE - 70862415","brand":"The Athenian"},{"gk_site":"Huddersfield","supplier_account":"SHOWTIME - 25123707","brand":"The Athenian"},{"gk_site":"Huddersfield","supplier_account":"HUDDS BARS LTD - 25125401","brand":"The Athenian"},{"gk_site":"Jewellery Quarter","supplier_account":"NEWHALL ASSOCIATES LTD - 21858522","brand":"The Athenian"},{"gk_site":"Kenilworth","supplier_account":"PEACOCK HOTEL - 24121790","brand":"The Athenian"},{"gk_site":"Kingston","supplier_account":"DOUBLE TREE BY HILTON KINGSTON - 33143670","brand":"The Athenian"},{"gk_site":"Lancaster","supplier_account":"ATHENIAN LANCASTER - 25126641","brand":"The Athenian"},{"gk_site":"Leamington Spa","supplier_account":"LEAMINGTON SPA - 66141439","brand":"The Athenian"},{"gk_site":"Leatherhead","supplier_account":"K&M FLAVOURS - 29514941","brand":"The Athenian"},{"gk_site":"Lincoln - High Street","supplier_account":"SNACC LINCOLN - 24120579","brand":"The Athenian"},{"gk_site":"Lincoln - High Street","supplier_account":"BANGERS CAFE - 24123387","brand":"The Athenian"},{"gk_site":"Litherland","supplier_account":"JSS FOOD HUB UK LTD - 80121668","brand":"The Athenian"},{"gk_site":"Liverpool","supplier_account":"SOUTH INDIAN - 80121439","brand":"The Athenian"},{"gk_site":"Milton Keynes","supplier_account":"ASHS FISH AND CHICKEN - 66140675","brand":"The Athenian"},{"gk_site":"Minster","supplier_account":"MINSTER FISH& CHIPS - 33145147","brand":"The Athenian"},{"gk_site":"Motherwell","supplier_account":"MR BUNS - 22142141","brand":"The Athenian"},{"gk_site":"Newcastle - Fenkle Street","supplier_account":"MASH BURGER LTD - 36115767","brand":"The Athenian"},{"gk_site":"Nottingham - Goldsmith Street","supplier_account":"NA RESTAURANTS LTD - 24121002","brand":"The Athenian"},{"gk_site":"Nottingham - Goldsmith Street","supplier_account":"RKM KITCHEN LTD - 24122660","brand":"The Athenian"},{"gk_site":"Nuneaton","supplier_account":"NUM NUM MUNCHIES - 24121587","brand":"The Athenian"},{"gk_site":"Paisley","supplier_account":"LOVE DESSERTS - 85902087","brand":"The Athenian"},{"gk_site":"Peterborough","supplier_account":"SPUDYS - 24121233","brand":"The Athenian"},{"gk_site":"Pinner","supplier_account":"FINE BURGER CATERING CO LTD - 68118545","brand":"The Athenian"},{"gk_site":"Plymouth","supplier_account":"UNO STREET FOODS CO - 20114137","brand":"The Athenian"},{"gk_site":"Portsmouth","supplier_account":"SHAHSUB - 5114874","brand":"The Athenian"},{"gk_site":"Reading","supplier_account":"DEVILS KITCHEN - 29514656","brand":"The Athenian"},{"gk_site":"Redditch","supplier_account":"PICCOLO PIZZA - 21859384","brand":"The Athenian"},{"gk_site":"Redditch","supplier_account":"PICCOLO PIZZA - 21859936","brand":"The Athenian"},{"gk_site":"Rugby - Church Street","supplier_account":"PB FLAMING GRILL - 24120889","brand":"The Athenian"},{"gk_site":"Scunthorpe","supplier_account":"PRITAMS - 58132624","brand":"The Athenian"},{"gk_site":"Sheffield - Orchard Square","supplier_account":"HORSE& JOCKEY - 58131195","brand":"The Athenian"},{"gk_site":"Shoreditch","supplier_account":"SALAD& POKE BOWL - 38133509","brand":"The Athenian"},{"gk_site":"Slough","supplier_account":"MUSAS DONER - 68120234","brand":"The Athenian"},{"gk_site":"Southend","supplier_account":"PIZZA STATION - 38133476","brand":"The Athenian"},{"gk_site":"Stafford","supplier_account":"SPICE ISLAND - 21859190","brand":"The Athenian"},{"gk_site":"Stapleford","supplier_account":"WRAP N BOWL CO - 24122966","brand":"The Athenian"},{"gk_site":"Stockport","supplier_account":"GHOST KITCHEN - 25122511","brand":"The Athenian"},{"gk_site":"Sutton Coldfield","supplier_account":"RILAND SPORTS CAFE - 21860120","brand":"The Athenian"},{"gk_site":"Swindon - Brunel Plaza","supplier_account":"PEPPER KITCHEN FAST FOOD LTD - 67122312","brand":"The Athenian"},{"gk_site":"Swindon - Brunel Plaza","supplier_account":"ATHENIAN THE - 29515898","brand":"The Athenian"},{"gk_site":"Tunbridge Wells","supplier_account":"GALITOS - 33142900","brand":"The Athenian"},{"gk_site":"Uxbridge - Marlborough Parade","supplier_account":"HILLINGDON FISH BAR - 68119428","brand":"The Athenian"},{"gk_site":"Walthamstow - James Street","supplier_account":"FRANZOS - 24120322","brand":"The Athenian"},{"gk_site":"Walthamstow - James Street","supplier_account":"DONER BASE - 38131258","brand":"The Athenian"},{"gk_site":"Warrington","supplier_account":"ZEUS KITCHEN - 80121158","brand":"The Athenian"},{"gk_site":"Watford - Market Street","supplier_account":"FAT PIZZA WATFORD - 66140007","brand":"The Athenian"},{"gk_site":"West Bromwich","supplier_account":"PIZZARIOO - 21859425","brand":"The Athenian"},{"gk_site":"West Bromwich","supplier_account":"PIZZARIOO - 21859948","brand":"The Athenian"},{"gk_site":"Weston-super-Mare","supplier_account":"TOPPINZ WSM LTD - 20115242","brand":"The Athenian"},{"gk_site":"Wimbledon - Merton High Street","supplier_account":"FIRE ON - 68118176","brand":"The Athenian"},{"gk_site":"Winchester","supplier_account":"BFG KITCHEN - 5113946","brand":"The Athenian"},{"gk_site":"Wolverhampton","supplier_account":"GO ATHENIAN - 21859499","brand":"The Athenian"},{"gk_site":"Wood Green - Clarendon Road","supplier_account":"JAPANIKA - 38132843","brand":"The Athenian"},{"gk_site":"Worcester","supplier_account":"ROYAL KEBAB - 21859562","brand":"The Athenian"}];
 
+// ─── STATE ───────────────────────────────────────────────────────
 const S = {
   brand: 'The Athenian',
   raw: { bidfood: null, gmv: null, mystery: null },
   sites: {},
-  bidfoodWeekLabel: ''
+  bidfoodWeekLabel: '',
+  editingId: null
 };
 
-// ── LOGIN ──
+// ─── DICTIONARY STORAGE ──────────────────────────────────────────
+function loadDict() {
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (stored) return JSON.parse(stored);
+  } catch(e) {}
+  // First time: seed with the 102 known pairs
+  saveDict(SEED_DATA);
+  return JSON.parse(JSON.stringify(SEED_DATA));
+}
+
+function saveDict(data) {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    showToast();
+  } catch(e) {}
+}
+
+function getDict() {
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    return stored ? JSON.parse(stored) : [];
+  } catch(e) { return []; }
+}
+
+function showToast() {
+  const t = document.getElementById('save-toast');
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 1800);
+}
+
+// ─── LOGIN ───────────────────────────────────────────────────────
 function doLogin() {
   if (document.getElementById('pw-input').value === PASSWORD) {
     document.getElementById('login-screen').style.display = 'none';
     document.getElementById('app').style.display = 'block';
     document.getElementById('hdr-date').textContent =
       new Date().toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
+    loadDict(); // initialise if first time
     renderCoreItems();
   } else {
     document.getElementById('login-err').style.display = 'block';
@@ -361,14 +482,15 @@ function doLogout() {
   document.getElementById('login-err').style.display = 'none';
 }
 
-// ── TABS ──
+// ─── TABS ────────────────────────────────────────────────────────
 function goTab(id, btn) {
   document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
   document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
   document.getElementById('tab-'+id).classList.add('active');
   btn.classList.add('active');
-  if (id==='database') renderDatabase();
-  if (id==='flags') renderFlags();
+  if (id === 'database') renderDatabase();
+  if (id === 'flags') renderFlags();
+  if (id === 'dictionary') renderDictTable();
 }
 
 function setBrand(brand, btn) {
@@ -377,12 +499,124 @@ function setBrand(brand, btn) {
   btn.classList.add('active');
 }
 
-// ── FILE LOADING ──
+// ─── DICTIONARY CRUD ─────────────────────────────────────────────
+function brandPill(brand) {
+  const map = {'The Athenian':'pill-ath','Coqfighter':'pill-coq','GBK':'pill-gbk','Tortilla':'pill-tor'};
+  return `<span class="pill ${map[brand]||'pill-green'}">${brand}</span>`;
+}
+
+function addDictRow() {
+  const gk = document.getElementById('new-gk-site').value.trim();
+  const acc = document.getElementById('new-supplier-acc').value.trim();
+  const brand = document.getElementById('new-brand').value;
+  if (!gk || !acc) { alert('Please fill in both site name and supplier account.'); return; }
+  const dict = getDict();
+  dict.push({ gk_site: gk, supplier_account: acc, brand });
+  saveDict(dict);
+  document.getElementById('new-gk-site').value = '';
+  document.getElementById('new-supplier-acc').value = '';
+  renderDictTable();
+}
+
+function deleteRow(idx) {
+  if (!confirm('Delete this mapping?')) return;
+  const dict = getDict();
+  dict.splice(idx, 1);
+  saveDict(dict);
+  renderDictTable();
+}
+
+function startEdit(idx) {
+  S.editingId = idx;
+  renderDictTable();
+}
+
+function cancelEdit() {
+  S.editingId = null;
+  renderDictTable();
+}
+
+function saveEdit(idx) {
+  const dict = getDict();
+  const gk = document.getElementById(`edit-gk-${idx}`).value.trim();
+  const acc = document.getElementById(`edit-acc-${idx}`).value.trim();
+  const brand = document.getElementById(`edit-brand-${idx}`).value;
+  if (!gk || !acc) { alert('Both fields are required.'); return; }
+  dict[idx] = { gk_site: gk, supplier_account: acc, brand };
+  saveDict(dict);
+  S.editingId = null;
+  renderDictTable();
+}
+
+function renderDictTable() {
+  const dict = getDict();
+  const q = (document.getElementById('dict-search')?.value || '').toLowerCase();
+  const filtered = dict.map((r, i) => ({...r, _idx: i}))
+    .filter(r => !q ||
+      r.gk_site.toLowerCase().includes(q) ||
+      r.supplier_account.toLowerCase().includes(q) ||
+      r.brand.toLowerCase().includes(q)
+    );
+
+  document.getElementById('dict-meta').innerHTML =
+    `<strong>${filtered.length}</strong> of <strong>${dict.length}</strong> rows`;
+
+  document.getElementById('dict-tbody').innerHTML = filtered.map((r, fi) => {
+    const idx = r._idx;
+    if (S.editingId === idx) {
+      // Edit mode row
+      return `<tr style="background:#161616">
+        <td style="color:#444">${idx+1}</td>
+        <td class="td-edit"><input id="edit-gk-${idx}" value="${escHtml(r.gk_site)}"></td>
+        <td class="td-edit"><input id="edit-acc-${idx}" value="${escHtml(r.supplier_account)}"></td>
+        <td class="td-edit">
+          <select id="edit-brand-${idx}">
+            ${['The Athenian','Coqfighter','GBK','Tortilla'].map(b =>
+              `<option value="${b}" ${r.brand===b?'selected':''}>${b}</option>`
+            ).join('')}
+          </select>
+        </td>
+        <td><div class="td-actions">
+          <button class="btn-save" onclick="saveEdit(${idx})">Save</button>
+          <button class="btn-cancel" onclick="cancelEdit()">Cancel</button>
+        </div></td>
+      </tr>`;
+    }
+    return `<tr>
+      <td style="color:#444;font-family:'DM Mono',monospace;font-size:10px">${idx+1}</td>
+      <td class="td-site">${escHtml(r.gk_site)}</td>
+      <td style="color:#999">${escHtml(r.supplier_account)}</td>
+      <td>${brandPill(r.brand)}</td>
+      <td><div class="td-actions">
+        <button class="btn-save" onclick="startEdit(${idx})">Edit</button>
+        <button class="btn-del" onclick="deleteRow(${idx})">Delete</button>
+      </div></td>
+    </tr>`;
+  }).join('');
+}
+
+function exportDictCSV() {
+  const dict = getDict();
+  const header = 'GK Metabase Site Name,Supplier Account Name,Brand\n';
+  const rows = dict.map(r =>
+    `"${r.gk_site.replace(/"/g,'""')}","${r.supplier_account.replace(/"/g,'""')}","${r.brand}"`
+  ).join('\n');
+  const blob = new Blob([header+rows], {type:'text/csv'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'gk_site_dictionary.csv';
+  a.click();
+}
+
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ─── FILE LOADING ────────────────────────────────────────────────
 function loadFile(input, type) {
   const file = input.files[0];
   if (!file) return;
   if (type === 'bidfood') {
-    // Parse .xlsx in browser using SheetJS CDN
     const reader = new FileReader();
     reader.onload = e => {
       try {
@@ -391,16 +625,15 @@ function loadFile(input, type) {
         const ws = wb.Sheets[wb.SheetNames[0]];
         const raw = XLSX.utils.sheet_to_json(ws, {header:1, defval:''});
         S.raw.bidfood = raw;
-        // Extract date range from rows 1-2
         const r1 = String(raw[1]?.[0]||'');
         const r2 = String(raw[2]?.[0]||'');
-        const startMatch = r1.match(/(\d{2}\/\d{2}\/\d{4})/);
-        const endMatch = r2.match(/(\d{2}\/\d{2}\/\d{4})/);
-        S.bidfoodWeekLabel = (startMatch?startMatch[1]:'?') + ' – ' + (endMatch?endMatch[1]:'?');
+        const s = r1.match(/(\d{2}\/\d{2}\/\d{4})/);
+        const e2 = r2.match(/(\d{2}\/\d{2}\/\d{4})/);
+        S.bidfoodWeekLabel = (s?s[1]:'?')+' – '+(e2?e2[1]:'?');
         document.getElementById('zone-bidfood').classList.add('has-file');
         document.getElementById('hint-bidfood').textContent = '✓ '+file.name+' ('+S.bidfoodWeekLabel+')';
       } catch(err) {
-        document.getElementById('hint-bidfood').textContent = '⚠ Error reading file: '+err.message;
+        document.getElementById('hint-bidfood').textContent = '⚠ Error: '+err.message;
       }
       updateProcessBtn();
     };
@@ -429,7 +662,6 @@ function updateProcessBtn() {
   }
 }
 
-// ── CSV PARSER ──
 function parseCSV(text) {
   const lines = text.trim().split('\n').filter(l => l.trim());
   if (lines.length < 2) return [];
@@ -443,7 +675,7 @@ function parseCSV(text) {
     }
     vals.push(cur.trim());
     const obj={};
-    headers.forEach((h,i)=>obj[h]=vals[i]||'');
+    headers.forEach((h,i)=>obj[h]=(vals[i]||'').replace(/^"|"$/g,''));
     return obj;
   }).filter(r=>Object.values(r).some(v=>v));
 }
@@ -453,7 +685,7 @@ function get(row,...aliases) {
   return '';
 }
 
-// ── PROCESS ──
+// ─── PROCESS ─────────────────────────────────────────────────────
 function processAll() {
   S.sites = {};
   if (S.raw.gmv) processGMV();
@@ -463,42 +695,37 @@ function processAll() {
   updateFlagsBadge();
 }
 
-// Build GMV lookup: store name → last week GMV
 function processGMV() {
-  const rows = S.raw.gmv;
-  if (!rows || !rows.length) return;
-  // Find brand prefix to filter
   const brandPrefix = S.brand === 'The Athenian' ? 'athenian' : S.brand.toLowerCase();
-  rows.forEach(row => {
+  (S.raw.gmv||[]).forEach(row => {
     const store = get(row,'store','site','site_name','location').trim();
-    if (!store) return;
-    if (!store.toLowerCase().includes(brandPrefix)) return;
-    // Get the most recent week column (last column with a date header)
+    if (!store || !store.toLowerCase().includes(brandPrefix)) return;
     const keys = Object.keys(row).filter(k => k !== 'store' && k !== 'account_manager');
     const lastKey = keys[keys.length - 1];
-    const gmvRaw = get(row, lastKey);
-    const gmv = parseFloat(String(gmvRaw).replace(/,/g,'')) || 0;
-    // Extract clean site name: "The Athenian - Derby" → "Derby"
+    const gmv = parseFloat(String(get(row,lastKey)).replace(/,/g,'')) || 0;
     const nameParts = store.split(' - ');
     const siteName = nameParts.length > 1 ? nameParts.slice(1).join(' - ').trim() : store;
-    if (!S.sites[siteName]) S.sites[siteName] = { brand: S.brand, gmv: 0, missingCore: [], orderedCodes: new Set(), pkgResult: null, pkgFailed: [], mdDate: null };
+    if (!S.sites[siteName]) S.sites[siteName] = {brand:S.brand,gmv:0,missingCore:[],orderedCodes:new Set(),pkgResult:null,pkgFailed:[],mdDate:null};
     S.sites[siteName].gmv = gmv;
-    S.sites[siteName].fullStoreName = store;
   });
 }
 
-// Process Bidfood .xlsx: map accounts to sites, collect ordered product codes
 function processBidfood() {
   const raw = S.raw.bidfood;
   if (!raw) return;
+  const dict = getDict();
 
-  // Build compliance master lookup from the embedded data
-  // Row 3 (index 3) is the header row: Product Code, Brand, Description, Pack Size, Ctn Qty, UOM, Qty, Last Price Paid, Total ex VAT, Account
-  const dataRows = raw.slice(4); // skip 3 header rows + column header row
+  // Build account → GK site lookup from dictionary
+  const accToSite = {};
+  dict.forEach(r => {
+    if (r.brand === S.brand) {
+      accToSite[r.supplier_account.toLowerCase().trim()] = r.gk_site;
+    }
+  });
 
-  // Collect what each account ordered
-  const accountOrders = {}; // account string → Set of product codes
-  dataRows.forEach(row => {
+  // Collect orders per account
+  const accountOrders = {};
+  raw.slice(4).forEach(row => {
     const code = String(row[0]||'').trim();
     const account = String(row[9]||'').trim();
     if (!code || !account) return;
@@ -506,55 +733,19 @@ function processBidfood() {
     accountOrders[account].add(code);
   });
 
-  // Now we need to match account names → site names
-  // We use a fuzzy match: look for the brand name in the account string
-  // For Athenian: match accounts that contain 'ATHENIAN' or are known Athenian partners
-  // We'll do this by cross-referencing with existing GMV sites, plus direct matching
-  const brandKey = S.brand === 'The Athenian' ? 'athenian' : S.brand.toLowerCase();
-
+  // Match accounts to sites via dictionary
   Object.entries(accountOrders).forEach(([account, codes]) => {
-    // Try to find a matching site from GMV data
-    let matchedSite = null;
-
-    // First: check if any existing GMV site's full store name contains this account's number
-    const accountNum = account.match(/\d{5,}/)?.[0];
-    if (accountNum) {
-      // Try to match against known account-to-site mappings
-      // We embed a subset of the compliance master here
-      matchedSite = COMPLIANCE_MASTER[account] || null;
-    }
-
-    // If no compliance master match, try fuzzy name match against GMV sites
-    if (!matchedSite) {
-      const accountClean = account.replace(/\s*-\s*\d+$/, '').toLowerCase().trim();
-      for (const siteName of Object.keys(S.sites)) {
-        const siteClean = siteName.toLowerCase();
-        // Check if the account name contains meaningful words from the site name
-        const siteWords = siteClean.split(/\s+/).filter(w => w.length > 3);
-        const matches = siteWords.filter(w => accountClean.includes(w));
-        if (matches.length >= 1 && accountClean.includes(brandKey)) {
-          matchedSite = siteName;
-          break;
-        }
-      }
-    }
-
-    // If still no match but account contains the brand name, create a new site entry
-    if (!matchedSite && account.toLowerCase().includes(brandKey)) {
-      const cleanName = account.replace(/\s*-\s*\d+$/, '').replace(/ATHENIAN\s*(THE\s*)?[-–]?\s*/i, '').trim();
-      matchedSite = cleanName || account;
-      if (!S.sites[matchedSite]) S.sites[matchedSite] = { brand: S.brand, gmv: 0, missingCore: [], orderedCodes: new Set(), pkgResult: null, pkgFailed: [], mdDate: null };
-    }
-
-    if (matchedSite && S.sites[matchedSite]) {
-      codes.forEach(c => S.sites[matchedSite].orderedCodes.add(c));
+    const siteFromDict = accToSite[account.toLowerCase().trim()];
+    if (siteFromDict) {
+      if (!S.sites[siteFromDict]) S.sites[siteFromDict] = {brand:S.brand,gmv:0,missingCore:[],orderedCodes:new Set(),pkgResult:null,pkgFailed:[],mdDate:null};
+      codes.forEach(c => S.sites[siteFromDict].orderedCodes.add(c));
     }
   });
 
-  // Now compute missing core items for each site
+  // Compute missing core items
   const coreItems = CORE_ITEMS[S.brand] || [];
   Object.entries(S.sites).forEach(([site, data]) => {
-    if (data.gmv < 100) return; // skip inactive sites
+    if (data.gmv < 100) return;
     data.missingCore = coreItems
       .filter(item => !item.codes.some(c => data.orderedCodes.has(c)))
       .map(item => item.label);
@@ -569,29 +760,13 @@ function processMystery() {
     const date = get(r,'visit_date','date');
     const overall = get(r,'overall','result','status').toLowerCase().trim();
     const cols = ['grab_bag','box','greaseproof_paper','wrap_tube'];
-    const failed = cols.filter(c => get(r,c,c.replace('_',' ')).toLowerCase().trim()==='fail').map(c=>c.replace(/_/g,' '));
+    const failed = cols.filter(c => get(r,c).toLowerCase().trim()==='fail').map(c=>c.replace(/_/g,' '));
     if (!S.sites[site]) S.sites[site] = {brand,gmv:0,missingCore:[],orderedCodes:new Set(),pkgResult:null,pkgFailed:[],mdDate:null};
-    S.sites[site].brand = brand;
     S.sites[site].pkgResult = overall==='fail'?'fail':'pass';
     S.sites[site].pkgFailed = failed;
     S.sites[site].mdDate = date;
   });
 }
-
-// ── COMPLIANCE MASTER (embedded subset — Athenian sites with GMV data) ──
-// Format: "BIDFOOD ACCOUNT NAME - NUMBER" → "Clean Site Name"
-// This covers the named Athenian accounts from the Bidfood export
-const COMPLIANCE_MASTER = {
-  'ATHENIAN - CARGO BRISTOL - 67900435': 'Cargo Bristol',
-  'ATHENIAN - VICTORIA - 30147528': 'Victoria',
-  'ATHENIAN - WHITE CITY - 30147527': 'White City',
-  'ATHENIAN EASTLEIGH - 5114168': 'Eastleigh',
-  'ATHENIAN LANCASTER - 25126641': 'Lancaster',
-  'ATHENIAN THE - 24119789': 'Derby',
-  'ATHENIAN THE - 24122588': 'Sheffield',
-  'ATHENIAN THE - 29515898': 'Nottingham',
-  'ATHENIAN WEMBLEY - 68120696': 'Wembley',
-};
 
 function renderUploadSummary() {
   document.getElementById('upload-result').style.display = 'block';
@@ -608,7 +783,7 @@ function renderUploadSummary() {
   `;
 }
 
-// ── DATABASE ──
+// ─── DATABASE ────────────────────────────────────────────────────
 function renderDatabase() {
   const entries = Object.entries(S.sites);
   if (!entries.length) {
@@ -618,36 +793,25 @@ function renderDatabase() {
   }
   document.getElementById('db-empty').style.display='none';
   document.getElementById('db-content').style.display='block';
-
-  const total = entries.length;
   const stockIssues = entries.filter(([,s])=>s.gmv>=100&&s.missingCore.length>0).length;
   const pkgFails = entries.filter(([,s])=>s.pkgResult==='fail').length;
   const clean = entries.filter(([,s])=>s.gmv>=100&&s.missingCore.length===0&&s.pkgResult!=='fail').length;
   document.getElementById('db-stats').innerHTML = `
-    <div class="stat-box s-blue"><div class="stat-label">Total sites</div><div class="stat-num c-blue">${total}</div></div>
+    <div class="stat-box s-blue"><div class="stat-label">Total sites</div><div class="stat-num c-blue">${entries.length}</div></div>
     <div class="stat-box s-red"><div class="stat-label">Stock issues</div><div class="stat-num c-red">${stockIssues}</div></div>
     <div class="stat-box s-red"><div class="stat-label">Pkg failures</div><div class="stat-num c-red">${pkgFails}</div></div>
     <div class="stat-box s-green"><div class="stat-label">Fully clean</div><div class="stat-num c-green">${clean}</div></div>
   `;
-
   document.getElementById('db-tbody').innerHTML = entries
-    .sort(([,a],[,b]) => {
-      const sa=(a.missingCore.length)+(a.pkgResult==='fail'?5:0);
-      const sb=(b.missingCore.length)+(b.pkgResult==='fail'?5:0);
-      return sb-sa;
-    })
+    .sort(([,a],[,b])=>(b.missingCore.length+(b.pkgResult==='fail'?5:0))-(a.missingCore.length+(a.pkgResult==='fail'?5:0)))
     .map(([site,s]) => {
       const inactive = s.gmv < 100;
-      const stockBadge = inactive
-        ? '<span class="pill pill-grey">Inactive</span>'
-        : s.missingCore.length===0
-          ? '<span class="pill pill-green">OK</span>'
-          : '<span class="pill pill-red">Missing items</span>';
-      const pkgBadge = !s.pkgResult
-        ? '<span class="pill pill-grey">No data</span>'
-        : s.pkgResult==='pass'
-          ? '<span class="pill pill-green">Pass</span>'
-          : '<span class="pill pill-red">Fail</span>';
+      const stockBadge = inactive ? '<span class="pill" style="color:#555;border-color:#333">Inactive</span>'
+        : s.missingCore.length===0 ? '<span class="pill pill-green">OK</span>'
+        : '<span class="pill pill-red">Missing items</span>';
+      const pkgBadge = !s.pkgResult ? '<span class="pill" style="color:#555;border-color:#333">No data</span>'
+        : s.pkgResult==='pass' ? '<span class="pill pill-green">Pass</span>'
+        : '<span class="pill pill-red">Fail</span>';
       const missingStr = s.missingCore.length
         ? s.missingCore.map(m=>`<span style="color:#d63c2f;font-size:10px;margin-right:4px">${m}</span>`).join('')
         : '<span style="color:#444">—</span>';
@@ -656,22 +820,18 @@ function renderDatabase() {
         : '<span style="color:#444">—</span>';
       const gmvFmt = s.gmv>0 ? '£'+s.gmv.toLocaleString('en-GB',{minimumFractionDigits:0,maximumFractionDigits:0}) : '—';
       return `<tr>
-        <td class="td-site">${site}</td>
-        <td style="color:${s.gmv>=100?'var(--gl)':'#555'}">${gmvFmt}</td>
-        <td>${stockBadge}</td>
-        <td>${missingStr}</td>
-        <td>${pkgBadge}</td>
+        <td class="td-site">${escHtml(site)}</td>
+        <td style="color:${s.gmv>=100?'var(--gl)':'#555'};font-family:'DM Mono',monospace">${gmvFmt}</td>
+        <td>${stockBadge}</td><td>${missingStr}</td><td>${pkgBadge}</td>
         <td>${failStr}</td>
-        <td style="color:#666">${s.mdDate||'—'}</td>
+        <td style="color:#666;font-family:'DM Mono',monospace">${s.mdDate||'—'}</td>
       </tr>`;
     }).join('');
 }
 
-// ── FLAGS ──
+// ─── FLAGS ───────────────────────────────────────────────────────
 function renderFlags() {
-  const flagged = Object.entries(S.sites).filter(([,s]) =>
-    s.gmv >= 100 && (s.missingCore.length > 0 || s.pkgResult === 'fail')
-  );
+  const flagged = Object.entries(S.sites).filter(([,s])=>s.gmv>=100&&(s.missingCore.length>0||s.pkgResult==='fail'));
   if (!flagged.length) {
     document.getElementById('flags-empty').style.display='block';
     document.getElementById('flags-content').style.display='none';
@@ -679,31 +839,23 @@ function renderFlags() {
   }
   document.getElementById('flags-empty').style.display='none';
   document.getElementById('flags-content').style.display='block';
-
   const today = new Date();
   const wc = new Date(today);
   wc.setDate(today.getDate()-((today.getDay()+6)%7));
   document.getElementById('flags-wc').textContent = wc.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
   document.getElementById('flags-count').textContent = flagged.length+' site'+(flagged.length!==1?'s':'')+' flagged';
-
   document.getElementById('flags-grid').innerHTML = flagged
     .sort(([,a],[,b])=>(b.missingCore.length+(b.pkgResult==='fail'?10:0))-(a.missingCore.length+(a.pkgResult==='fail'?10:0)))
     .map(([site,s]) => {
-      const hasPkg = s.pkgResult==='fail';
-      const hasStock = s.missingCore.length>0;
-      const cls = hasStock&&hasPkg?'both':hasPkg?'pkg-only':'stock-only';
-      const issues = [];
-      s.missingCore.forEach(item =>
-        issues.push(`<div class="flag-issue"><div class="fdot blue"></div><span>Not ordered this week: <strong style="color:#ddd">${item}</strong></span></div>`)
-      );
-      if (hasPkg) {
-        const fs = s.pkgFailed.length?s.pkgFailed.join(', '):'non-compliant packaging';
-        issues.push(`<div class="flag-issue"><div class="fdot red"></div><span>Packaging fail: <strong style="color:#ddd">${fs}</strong>${s.mdDate?' ('+s.mdDate+')':''}</span></div>`);
-      }
-      const gmvFmt = '£'+s.gmv.toLocaleString('en-GB',{minimumFractionDigits:0,maximumFractionDigits:0});
+      const hasPkg=s.pkgResult==='fail', hasStock=s.missingCore.length>0;
+      const cls=hasStock&&hasPkg?'both':hasPkg?'pkg-only':'stock-only';
+      const issues = [
+        ...s.missingCore.map(item=>`<div class="flag-issue"><div class="fdot blue"></div><span>Not ordered this week: <strong style="color:#ddd">${item}</strong></span></div>`),
+        ...(hasPkg?[`<div class="flag-issue"><div class="fdot red"></div><span>Packaging fail: <strong style="color:#ddd">${s.pkgFailed.length?s.pkgFailed.join(', '):'non-compliant'}</strong>${s.mdDate?' ('+s.mdDate+')':''}</span></div>`]:[])
+      ];
       return `<div class="flag-card ${cls}">
-        <div class="flag-site">${site}</div>
-        <div class="flag-brand">${s.brand} · GMV ${gmvFmt}</div>
+        <div class="flag-site">${escHtml(site)}</div>
+        <div class="flag-brand">${s.brand} · GMV £${s.gmv.toLocaleString('en-GB',{maximumFractionDigits:0})}</div>
         <div class="flag-issues">${issues.join('')}</div>
       </div>`;
     }).join('');
@@ -714,21 +866,17 @@ function updateFlagsBadge() {
   document.getElementById('flags-badge').classList.toggle('show',n>0);
 }
 
-// ── REFERENCE TAB ──
+// ─── REFERENCE ───────────────────────────────────────────────────
 function renderCoreItems() {
-  const brand = 'The Athenian';
-  const items = CORE_ITEMS[brand] || [];
-  document.getElementById('core-grid').innerHTML = items.map(item => `
+  document.getElementById('core-grid').innerHTML = (CORE_ITEMS['The Athenian']||[]).map(item => `
     <div class="core-item">
       <div class="core-item-name">${item.label}</div>
       <div class="core-item-meta">Codes: ${item.codes.join(', ')}</div>
-      <div class="core-item-meta" style="margin-top:3px;color:#666">${item.note}</div>
+      <div class="core-item-meta" style="margin-top:3px;color:#555">${item.note}</div>
     </div>
   `).join('');
 }
 </script>
-
-<!-- SheetJS for reading .xlsx in the browser -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 </body>
 </html>
